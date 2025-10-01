@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 Future<void> main() async {
+  await dotenv.load(fileName: ".env");
   await Supabase.initialize(
-    url: 'https://sndhminpxmbwrfjztllc.supabase.co',
-    anonKey:
-        '<prefer publishable key instead of anon key for mobile and desktop apps>',
+    url: dotenv.env['appLinkUrl']!,
+    anonKey: dotenv.env['supabaseAnonKey']!,
   );
   runApp(Chatter());
 }
@@ -13,6 +14,6 @@ Future<void> main() async {
 class Chatter extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(title: 'Chatter', home:Text('Hello World') );
+    return MaterialApp(title: 'Chatter', home: Text('Hello World'));
   }
 }
