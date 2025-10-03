@@ -1,3 +1,4 @@
+import 'package:chatter/splash/presentation/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -14,6 +15,10 @@ Future<void> main() async {
 class Chatter extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(title: 'Chatter', home: Text('Hello World'));
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'Chatter',
+      home: SplashScreen(),
+    );
   }
 }
