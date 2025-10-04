@@ -1,4 +1,4 @@
-import 'package:chatter/splash/presentation/splash_screen.dart';
+import 'package:chatter/feature/splash/presentation/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
