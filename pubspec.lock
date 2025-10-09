@@ -105,6 +105,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.1"
+  country_code_picker:
+    dependency: "direct main"
+    description:
+      name: country_code_picker
+      sha256: f0411f4833b6f98e8b7215f4fa3813bcc88e50f13925f70a170dbd36e3e447f5
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.4.1"
   crypto:
     dependency: transitive
     description:
@@ -137,6 +145,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.7.11"
+  diacritic:
+    dependency: transitive
+    description:
+      name: diacritic
+      sha256: "12981945ec38931748836cd76f2b38773118d0baef3c68404bdfde9566147876"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.1.6"
   equatable:
     dependency: "direct main"
     description:
@@ -432,6 +448,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "7.0.1"
+  phone_numbers_parser:
+    dependency: "direct main"
+    description:
+      name: phone_numbers_parser
+      sha256: f95f15494536712cf6c5c4303bd7c4dae788863184d2dff03fda5e084a623c01
+      url: "https://pub.dev"
+    source: hosted
+    version: "9.0.15"
   platform:
     dependency: transitive
     description:

@@ -85,7 +85,6 @@ class _IntroFirstOpeningState extends State<IntroFirstOpening>
       },
       child: Stack(
         children: [
-          // PageView
           PageView.builder(
             controller: _pageController,
             physics: const NeverScrollableScrollPhysics(),
@@ -95,7 +94,15 @@ class _IntroFirstOpeningState extends State<IntroFirstOpening>
             },
             itemCount: introScreens.length,
             itemBuilder: (context, index) {
-              return Image.asset(introScreens[index], fit: BoxFit.cover);
+              return Container(
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage(introScreens[index]),
+                    fit: BoxFit.fill,
+                  ),
+                ),
+                // child: Image.asset(introScreens[index], fit: BoxFit.cover),
+              );
             },
           ),
 
@@ -139,8 +146,16 @@ class _IntroFirstOpeningState extends State<IntroFirstOpening>
               },
             ),
           ),
-        ],
+          if (_currentIndexNotifier.value == introScreens.length - 1 &&
+              _animationController.isCompleted)
+            ... [
+           
+
+            ]
+          ],
       ),
     );
   }
 }
+
+
