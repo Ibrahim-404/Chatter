@@ -1,4 +1,5 @@
 import 'package:chatter/core/constants/assets.dart';
+import 'package:chatter/feature/Authentication/ui/widget/custom_BottomSheet.dart';
 import 'package:flutter/material.dart';
 
 class IntroFirstOpening extends StatefulWidget {
@@ -35,6 +36,25 @@ class _IntroFirstOpeningState extends State<IntroFirstOpening>
     _animationController.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
         _goToNextPage();
+      }
+      if (_currentIndexNotifier.value == introScreens.length - 1 &&
+          _animationController.isCompleted) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          showModalBottomSheet(
+            // shape: const RoundedRectangleBorder(
+
+            // ),
+            isScrollControlled: true,
+            context: context,
+            builder:
+                (context) => Padding(
+                  padding: EdgeInsets.only(
+                    bottom: MediaQuery.of(context).viewInsets.bottom,
+                  ),
+                  child: const ShowMyBottomSheet(),
+                ),
+          );
+        });
       }
     });
   }
@@ -146,16 +166,8 @@ class _IntroFirstOpeningState extends State<IntroFirstOpening>
               },
             ),
           ),
-          if (_currentIndexNotifier.value == introScreens.length - 1 &&
-              _animationController.isCompleted)
-            ... [
-           
-
-            ]
-          ],
+        ],
       ),
     );
   }
 }
-
-

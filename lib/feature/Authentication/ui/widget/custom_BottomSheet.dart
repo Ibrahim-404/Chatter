@@ -16,8 +16,6 @@ class _ShowMyBottomSheetState extends State<ShowMyBottomSheet> {
   late ValueNotifier<bool> valueNotifierisValid;
   // late ValueNotifier<String> valueselectedDialCode;
 
-  
-
   @override
   void initState() {
     super.initState();
@@ -32,13 +30,15 @@ class _ShowMyBottomSheetState extends State<ShowMyBottomSheet> {
         '${_selectedDialCode}${_PhoneNumber.text.trim()}',
       );
       // Check if the phone number is valid
-       valueNotifierisValid.value  = phoneNumber.isValid(type: PhoneNumberType.mobile);      
+      valueNotifierisValid.value = phoneNumber.isValid(
+        type: PhoneNumberType.mobile,
+      );
     } catch (e) {
       valueNotifierisValid.value = false;
       // Handle parsing error if needed
     }
   }
-  
+
   @override
   void dispose() {
     _PhoneNumber.dispose();
@@ -51,93 +51,101 @@ class _ShowMyBottomSheetState extends State<ShowMyBottomSheet> {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(top: 20, left: 8, right: 8, bottom: 40),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text(
-            "Welcome to Chatter!",
-            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-          ),
-          const SizedBox(height: 10),
-          const Text(
-            "Your journey to seamless communication starts here. Let's get you set up with your profile.",
-            textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 16),
-          ),
-          const SizedBox(height: 20),
-          Text("phone number"),
-          SizedBox(height: 8),
-          Row(
-            children: [
-              Container(
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.grey),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: CountryCodePicker(
-                  onChanged: (country) {
-                    // Update the selected dial code when a country is selected
-                      _selectedDialCode = country.dialCode!;
-                    
-                    _validtePhoneNumber(); // Re-validate the phone number
-                  },
-                  initialSelection: "EG",
-                  favorite: const ["+20", "EG"],
-                  showCountryOnly: false,
-                  showFlag: true,
-                  showOnlyCountryWhenClosed: false,
-                  alignLeft: false,
-                ),
-              ),
-              SizedBox(width: 8),
-              Expanded(
-                child: TextFormField(
-                  controller: _PhoneNumber,
-                  decoration: InputDecoration(
-                    prefixIcon: Icon(Icons.phone),
-                    border: OutlineInputBorder(),
-                    labelText: "** **** ***",
-                    
-                  ),
-                ),
-              ),
-            ],
-          ),
-          InkWell(
-            onTap: () {
-              if (valueNotifierisValid.value) {
-                // Proceed with the valid phone number
-                print('Valid phone number: ${_selectedDialCode}${_PhoneNumber.text.trim()}');
-              } else {
-                // Show an error message or handle invalid input
-                print('Invalid phone number');
-              }
-            },
-            child: ValueListenableBuilder<bool>(
-              valueListenable: valueNotifierisValid,
-              builder: (context, isValid, child) {
-                return Container(
-                  margin: const EdgeInsets.only(top: 20),
-                  height: 50,
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              "Welcome to Chatter!",
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 10),
+            const Text(
+              "Your journey to seamless communication starts here. Let's get you set up with your profile.",
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 16),
+            ),
+            const SizedBox(height: 20),
+            Text("phone number"),
+            SizedBox(height: 8),
+            Row(
+              children: [
+                Container(
                   decoration: BoxDecoration(
-                    color: isValid ? Colors.blue : Colors.grey,
+                    border: Border.all(color: Colors.grey),
                     borderRadius: BorderRadius.circular(8),
                   ),
-                  child: Center(
-                    child: Text(
-                      "Next",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
+                  child: CountryCodePicker(
+                    onChanged: (country) {
+                      // Update the selected dial code when a country is selected
+                      _selectedDialCode = country.dialCode!;
+
+                      _validtePhoneNumber(); // Re-validate the phone number
+                    },
+                    initialSelection: "EG",
+                    favorite: const ["+20", "EG"],
+                    showCountryOnly: false,
+                    showFlag: true,
+                    showOnlyCountryWhenClosed: false,
+                    alignLeft: false,
+                  ),
+                ),
+                SizedBox(width: 8),
+                Expanded(
+                  child: TextFormField(
+                    keyboardType: TextInputType.phone,
+                    controller: _PhoneNumber,
+                    decoration: InputDecoration(
+                      suffixIcon: Icon(Icons.phone),
+                      border: OutlineInputBorder(),
+                      labelText: "** **** ***",
                     ),
                   ),
-                );
-              },
+                ),
+              ],
             ),
-          )
-        ],
+            Padding(
+              padding: const EdgeInsets.only(top: 16),
+              child: InkWell(
+                onTap: () {
+                  if (valueNotifierisValid.value) {
+                    // Proceed with the valid phone number
+                    print(
+                      'Valid phone number: ${_selectedDialCode}${_PhoneNumber.text.trim()}',
+                    );
+                  } else {
+                    // Show an error message or handle invalid input
+                    print('Invalid phone number');
+                  }
+                },
+                child: ValueListenableBuilder<bool>(
+                  valueListenable: valueNotifierisValid,
+                  builder: (context, isValid, child) {
+                    return AnimatedContainer(
+                      duration: const Duration(milliseconds: 300),
+                      height: 50,
+                      decoration: BoxDecoration(
+                        color: isValid ? Colors.blue : Colors.grey,
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Center(
+                        child: Text(
+                          "Next",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
