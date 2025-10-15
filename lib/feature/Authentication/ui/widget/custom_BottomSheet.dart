@@ -1,3 +1,4 @@
+import 'package:chatter/feature/Authentication/ui/widget/custom_notification_widget.dart';
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:phone_numbers_parser/phone_numbers_parser.dart';
@@ -114,6 +115,11 @@ class _ShowMyBottomSheetState extends State<ShowMyBottomSheet> {
                     print(
                       'Valid phone number: ${_selectedDialCode}${_PhoneNumber.text.trim()}',
                     );
+                 customNotificationWidget(
+                 "The code has been sent. Please check your messages",
+                  context,
+                 );
+                 
                   } else {
                     // Show an error message or handle invalid input
                     print('Invalid phone number');

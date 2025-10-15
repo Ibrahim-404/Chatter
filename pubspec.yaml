@@ -44,6 +44,8 @@ dependencies:
   get_it: ^8.2.0
   country_code_picker: ^3.4.1
   phone_numbers_parser: ^9.0.15
+  firebase_core: ^4.2.0
+  firebase_auth: ^6.1.1
 
 
 dev_dependencies:
