@@ -1,3 +1,4 @@
+import 'package:chatter/core/routes/routes_setting.dart';
 import 'package:chatter/feature/splash/presentation/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -21,10 +22,11 @@ Future<void> main() async {
 class Chatter extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp(     
       debugShowCheckedModeBanner: false,
       title: 'Chatter',
       home: SplashScreen(),
+      onGenerateRoute:RoutesSettings.generateRoute, 
     );
   }
 }
