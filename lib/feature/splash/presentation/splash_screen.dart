@@ -1,8 +1,5 @@
 import 'dart:ui';
-
-import 'package:chatter/feature/Authentication/ui/intro_first_opeing.dart';
 import 'package:flutter/material.dart';
-
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
 
@@ -22,30 +19,7 @@ class SplashScreenState extends State<SplashScreen>
   void initState() {
     super.initState();
     Future.delayed(const Duration(seconds: 3), () {
-      Navigator.pushReplacement(
-        context,
-        PageRouteBuilder(
-          transitionDuration: const Duration(milliseconds: 900),
-          transitionsBuilder: (_, animation, __, child) {
-            final slide = Tween<Offset>(
-              begin: const Offset(0.0, 1.0),
-              end: Offset.zero,
-            ).animate(
-              CurvedAnimation(parent: animation, curve: Curves.easeOutCubic),
-            );
-
-            final fade = Tween<double>(begin: 0.0, end: 1.0).animate(
-              CurvedAnimation(parent: animation, curve: Curves.easeOut),
-            );
-
-            return SlideTransition(
-              position: slide,
-              child: FadeTransition(opacity: fade, child: child),
-            );
-          },
-          pageBuilder: (_, __, ___) => const IntroFirstOpening(),
-        ),
-      );
+     
     });
     _controller = AnimationController(
       vsync: this,

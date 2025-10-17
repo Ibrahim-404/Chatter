@@ -1,4 +1,4 @@
-import 'package:chatter/feature/Authentication/ui/widget/custom_notification_widget.dart';
+import 'package:chatter/core/widget/custom_notification_widget.dart';
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:phone_numbers_parser/phone_numbers_parser.dart';
