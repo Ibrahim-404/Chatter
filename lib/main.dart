@@ -8,25 +8,23 @@ import 'firebase_options.dart';
 
 Future<void> main() async {
   await dotenv.load(fileName: ".env");
-  
-  await Supabase.initialize(    
+
+  await Supabase.initialize(
     url: dotenv.env['appLinkUrl']!,
     anonKey: dotenv.env['supabaseAnonKey']!,
   );
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(Chatter());
 }
 
 class Chatter extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(     
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Chatter',
       home: SplashScreen(),
-      onGenerateRoute:RoutesSettings.generateRoute, 
+      onGenerateRoute: RoutesSettings.generateRoute,
     );
   }
 }

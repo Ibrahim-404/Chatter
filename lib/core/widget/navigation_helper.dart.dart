@@ -21,38 +21,41 @@ Route createAnimatedRoute(Widget screen) {
           curve: Curves.easeInOutCirc,
         ),
       );
-      return SlideTransition(position: slideIn, child: SlideTransition(position: slideOut,
-      child: child));
+      return SlideTransition(
+        position: slideIn,
+        child: SlideTransition(position: slideOut, child: child),
+      );
     },
   );
 }
+
 void customPop(BuildContext context, Widget previousScreen) {
-  Navigator.of(context).pushReplacement(PageRouteBuilder(
-    transitionDuration: const Duration(milliseconds: 500),
-    pageBuilder: (_, __, ___) => previousScreen,
-    transitionsBuilder: (context, animation, secondaryAnimation, child) {
-      // هنا بنعكس الاتجاهات عن الpush
-      final slideIn = Tween<Offset>(
-        begin: const Offset(-1, 0),
-        end: Offset.zero,
-      ).animate(
-        CurvedAnimation(parent: animation, curve: Curves.easeInOutCubic),
-      );
+  Navigator.of(context).pushReplacement(
+    PageRouteBuilder(
+      transitionDuration: const Duration(milliseconds: 500),
+      pageBuilder: (_, __, ___) => previousScreen,
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        final slideIn = Tween<Offset>(
+          begin: const Offset(-1, 0),
+          end: Offset.zero,
+        ).animate(
+          CurvedAnimation(parent: animation, curve: Curves.easeInOutCubic),
+        );
 
-      final slideOut = Tween<Offset>(
-        begin: Offset.zero,
-        end: const Offset(1, 0),
-      ).animate(
-        CurvedAnimation(parent: secondaryAnimation, curve: Curves.easeInOutCubic),
-      );
-
-      return SlideTransition(
-        position: slideIn,
-        child: SlideTransition(
-          position: slideOut,
-          child: child,
-        ),
-      );
-    },
-  ));
+        final slideOut = Tween<Offset>(
+          begin: Offset.zero,
+          end: const Offset(1, 0),
+        ).animate(
+          CurvedAnimation(
+            parent: secondaryAnimation,
+            curve: Curves.easeInOutCubic,
+          ),
+        );
+        return SlideTransition(
+          position: slideIn,
+          child: SlideTransition(position: slideOut, child: child),
+        );
+      },
+    ),
+  );
 }

@@ -115,11 +115,10 @@ class _ShowMyBottomSheetState extends State<ShowMyBottomSheet> {
                     print(
                       'Valid phone number: ${_selectedDialCode}${_PhoneNumber.text.trim()}',
                     );
-                 customNotificationWidget(
-                 "The code has been sent. Please check your messages",
-                  context,
-                 );
-                 
+                    customNotificationWidget(
+                      "The code has been sent. Please check your messages",
+                      context,
+                    );
                   } else {
                     // Show an error message or handle invalid input
                     print('Invalid phone number');

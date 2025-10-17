@@ -56,10 +56,9 @@ void customNotificationWidget(String message, BuildContext context) {
           ),
         ),
       );
-      
     },
   );
-    overlay.insert(overlayEntry);
+  overlay.insert(overlayEntry);
   animationController.forward();
   Future.delayed(const Duration(seconds: 3), () {
     {
