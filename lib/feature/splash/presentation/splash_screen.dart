@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'package:chatter/core/routes/routes_names.dart';
 import 'package:flutter/material.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -19,7 +20,9 @@ class SplashScreenState extends State<SplashScreen>
   @override
   void initState() {
     super.initState();
-    Future.delayed(const Duration(seconds: 3), () {});
+    Future.delayed(const Duration(seconds: 3), () {
+      Navigator.pushReplacementNamed(context, RoutesNames.welcome);
+    });
     _controller = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 2),

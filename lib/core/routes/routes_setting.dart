@@ -13,7 +13,7 @@ class RoutesSettings {
       case RoutesNames.welcome:
         return createAnimatedRoute(const IntroFirstOpening());
       case RoutesNames.signIn:
-        return createAnimatedRoute(const OptScreen());
+        return createAnimatedRoute(const OtpTextField());
       case RoutesNames.home:
       // return MaterialPageRoute(builder: (_) => HomeScreen());
       default:

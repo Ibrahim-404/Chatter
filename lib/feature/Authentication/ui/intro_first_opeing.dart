@@ -37,25 +37,6 @@ class _IntroFirstOpeningState extends State<IntroFirstOpening>
       if (status == AnimationStatus.completed) {
         _goToNextPage();
       }
-      if (_currentIndexNotifier.value == introScreens.length - 1 &&
-          _animationController.isCompleted) {
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          showModalBottomSheet(
-            // shape: const RoundedRectangleBorder(
-
-            // ),
-            isScrollControlled: true,
-            context: context,
-            builder:
-                (context) => Padding(
-                  padding: EdgeInsets.only(
-                    bottom: MediaQuery.of(context).viewInsets.bottom,
-                  ),
-                  child: const ShowMyBottomSheet(),
-                ),
-          );
-        });
-      }
     });
   }
 
@@ -111,14 +92,31 @@ class _IntroFirstOpeningState extends State<IntroFirstOpening>
             onPageChanged: (index) {
               _currentIndexNotifier.value = index;
               _animationController.forward(from: 0);
+
+              if (index == introScreens.length - 1) {
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+                  showModalBottomSheet(
+                    isScrollControlled: true,
+                    context: context,
+                    builder:
+                        (context) => Padding(
+                          padding: EdgeInsets.only(
+                            bottom: MediaQuery.of(context).viewInsets.bottom,
+                          ),
+                          child: const ShowMyBottomSheet(),
+                        ),
+                  );
+                });
+              }
             },
+
             itemCount: introScreens.length,
             itemBuilder: (context, index) {
               return Container(
                 decoration: BoxDecoration(
                   image: DecorationImage(
                     image: AssetImage(introScreens[index]),
-                    fit: BoxFit.fill,
+                    fit: BoxFit.cover,
                   ),
                 ),
                 // child: Image.asset(introScreens[index], fit: BoxFit.cover),
