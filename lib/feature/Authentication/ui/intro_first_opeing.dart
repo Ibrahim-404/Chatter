@@ -113,13 +113,14 @@ class _IntroFirstOpeningState extends State<IntroFirstOpening>
             itemCount: introScreens.length,
             itemBuilder: (context, index) {
               return Container(
+                
                 decoration: BoxDecoration(
                   image: DecorationImage(
                     image: AssetImage(introScreens[index]),
                     fit: BoxFit.cover,
                   ),
                 ),
-                // child: Image.asset(introScreens[index], fit: BoxFit.cover),
+                child: Image.asset(introScreens[index], fit: BoxFit.fill),
               );
             },
           ),
@@ -149,6 +150,7 @@ class _IntroFirstOpeningState extends State<IntroFirstOpening>
                               value = 0.0;
                             }
                             return LinearProgressIndicator(
+
                               value: value,
                               backgroundColor: Colors.white24,
                               valueColor: const AlwaysStoppedAnimation<Color>(

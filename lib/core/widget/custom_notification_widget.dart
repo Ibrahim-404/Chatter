@@ -1,53 +1,89 @@
 import 'package:flutter/material.dart';
 
-void customNotificationWidget(String message, BuildContext context) {
+void showCustomNotification({
+  required BuildContext context,
+  required String title,
+  required String message,
+  required String imagePath,
+}) {
+  final overlay = Overlay.of(context);
+  late OverlayEntry overlayEntry;
+
   final animationController = AnimationController(
     vsync: Navigator.of(context),
-    duration: const Duration(milliseconds: 300),
+    duration: const Duration(milliseconds: 400),
   );
+
   final animation = Tween<Offset>(
     begin: const Offset(0, -1),
     end: Offset.zero,
   ).animate(
-    CurvedAnimation(parent: animationController, curve: Curves.easeInOut),
+    CurvedAnimation(parent: animationController, curve: Curves.easeOutCubic),
   );
 
-  final overlay = Overlay.of(context);
-  late OverlayEntry overlayEntry;
   overlayEntry = OverlayEntry(
     builder: (context) {
       return Positioned(
         top: 40,
-        left: 0,
-        right: 0,
-        bottom: 0,
+        left: 12,
+        right: 12,
         child: SlideTransition(
           position: animation,
           child: Material(
-            elevation: 6,
+            color: Colors.transparent,
             child: Container(
-              margin: const EdgeInsets.symmetric(horizontal: 12),
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                color: Colors.transparent,
-                borderRadius: BorderRadius.circular(8),
+                color: const Color(0xFF6C5CE7),
+                borderRadius: BorderRadius.circular(16),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black26,
-                    blurRadius: 6,
-                    offset: Offset(0, 3),
+                    color: Colors.black.withOpacity(0.25),
+                    blurRadius: 12,
+                    offset: const Offset(0, 4),
                   ),
                 ],
               ),
-
               child: Row(
                 children: [
-                  Icon(Icons.notifications, color: Colors.white),
-                  SizedBox(width: 12),
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(10),
+                    child: Image.asset(
+                      imagePath,
+                      width: 40,
+                      height: 40,
+                    ),
+                  ),
+                  const SizedBox(width: 12),
                   Expanded(
-                    child: Text(
-                      message,
-                      style: TextStyle(color: Colors.white, fontSize: 16),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          title,
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          message,
+                          style: const TextStyle(
+                            color: Colors.white70,
+                            fontSize: 14,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const Text(
+                    "now",
+                    style: TextStyle(
+                      color: Colors.white54,
+                      fontSize: 12,
                     ),
                   ),
                 ],
@@ -58,12 +94,14 @@ void customNotificationWidget(String message, BuildContext context) {
       );
     },
   );
+
   overlay.insert(overlayEntry);
+
   animationController.forward();
-  Future.delayed(const Duration(seconds: 3), () {
-    {
-      overlayEntry.remove();
-      animationController.dispose();
-    }
+
+  Future.delayed(const Duration(seconds: 3), () async {
+    await animationController.reverse();
+    overlayEntry.remove();
+    animationController.dispose();
   });
 }

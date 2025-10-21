@@ -20,13 +20,16 @@ class SplashScreenState extends State<SplashScreen>
   @override
   void initState() {
     super.initState();
-    Future.delayed(const Duration(seconds: 3), () {
-      Navigator.pushReplacementNamed(context, RoutesNames.welcome);
-    });
+
     _controller = AnimationController(
       vsync: this,
-      duration: const Duration(seconds: 2),
+      duration: const Duration(milliseconds: 1500),
     );
+    _controller.addListener(() {
+      if (_controller.isCompleted) {
+        Navigator.pushReplacementNamed(context, RoutesNames.welcome);
+      }
+    });
 
     _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(
@@ -77,7 +80,6 @@ class SplashScreenState extends State<SplashScreen>
       backgroundColor: Colors.grey.shade100,
       body: Center(
         child: Stack(
-          // fit: StackFit.expand,
           alignment: Alignment.center,
           children: [
             CurtainPanel(

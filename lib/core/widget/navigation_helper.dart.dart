@@ -3,31 +3,33 @@ import 'package:flutter/material.dart';
 
 Route createAnimatedRoute(Widget screen) {
   return PageRouteBuilder(
-    transitionDuration: const Duration(milliseconds: 500),
+    transitionDuration: const Duration(milliseconds: 400),
+    reverseTransitionDuration: const Duration(milliseconds: 350),
     pageBuilder: (_, __, ___) => screen,
     transitionsBuilder: (context, animation, secondaryAnimation, child) {
-      final slideIn = Tween<Offset>(
-        begin: const Offset(-1, 0),
+      final slide = Tween<Offset>(
+        begin: const Offset(0.08, 0),
         end: Offset.zero,
       ).animate(
-        CurvedAnimation(parent: animation, curve: Curves.easeInOutCubic),
+        CurvedAnimation(parent: animation, curve: Curves.easeOutCubic),
       );
-      final slideOut = Tween<Offset>(
-        begin: Offset(1, 0),
-        end: Offset.zero,
-      ).animate(
-        CurvedAnimation(
-          parent: secondaryAnimation,
-          curve: Curves.easeInOutCirc,
-        ),
+
+      final fade = Tween<double>(begin: 0.0, end: 1.0).animate(
+        CurvedAnimation(parent: animation, curve: Curves.easeInOut),
       );
+
       return SlideTransition(
-        position: slideIn,
-        child: SlideTransition(position: slideOut, child: child),
+        position: slide,
+        child: FadeTransition(
+          opacity: fade,
+          child: child,
+        ),
       );
     },
   );
 }
+
+
 
 void customPop(BuildContext context, Widget previousScreen) {
   Navigator.of(context).pushReplacement(

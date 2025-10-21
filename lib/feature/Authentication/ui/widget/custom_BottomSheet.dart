@@ -1,3 +1,4 @@
+import 'package:chatter/core/constants/assets.dart';
 import 'package:chatter/core/widget/custom_notification_widget.dart';
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
@@ -95,6 +96,7 @@ class _ShowMyBottomSheetState extends State<ShowMyBottomSheet> {
                 SizedBox(width: 8),
                 Expanded(
                   child: TextFormField(
+                    onTapUpOutside: (_)=>FocusManager.instance.primaryFocus?.unfocus(),
                     keyboardType: TextInputType.phone,
                     controller: _PhoneNumber,
                     decoration: InputDecoration(
@@ -115,9 +117,11 @@ class _ShowMyBottomSheetState extends State<ShowMyBottomSheet> {
                     print(
                       'Valid phone number: ${_selectedDialCode}${_PhoneNumber.text.trim()}',
                     );
-                    customNotificationWidget(
-                      "The code has been sent. Please check your messages",
-                      context,
+                    showCustomNotification(
+                      context: context,
+                      title: "Mitch Koko",
+                      message: "Just dropped notification tutorial! 🔥",
+                      imagePath: Assets.assetsIconsChat,
                     );
                   } else {
                     // Show an error message or handle invalid input
