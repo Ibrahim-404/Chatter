@@ -113,14 +113,11 @@ class _ShowMyBottomSheetState extends State<ShowMyBottomSheet> {
               child: InkWell(
                 onTap: () {
                   if (valueNotifierisValid.value) {
-                    // Proceed with the valid phone number
-                    print(
-                      'Valid phone number: ${_selectedDialCode}${_PhoneNumber.text.trim()}',
-                    );
+                  
                     showCustomNotification(
                       context: context,
-                      title: "Mitch Koko",
-                      message: "Just dropped notification tutorial! 🔥",
+                      title: "Chatter",
+                      message: "Check Your SMS for verification code",
                       imagePath: Assets.assetsIconsChat,
                     );
                   } else {
