@@ -1,4 +1,5 @@
 import 'package:chatter/core/constants/assets.dart';
+import 'package:chatter/core/routes/routes_names.dart';
 import 'package:chatter/core/widget/custom_notification_widget.dart';
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
@@ -96,7 +97,8 @@ class _ShowMyBottomSheetState extends State<ShowMyBottomSheet> {
                 SizedBox(width: 8),
                 Expanded(
                   child: TextFormField(
-                    onTapUpOutside: (_)=>FocusManager.instance.primaryFocus?.unfocus(),
+                    onTapUpOutside:
+                        (_) => FocusManager.instance.primaryFocus?.unfocus(),
                     keyboardType: TextInputType.phone,
                     controller: _PhoneNumber,
                     decoration: InputDecoration(
@@ -113,13 +115,14 @@ class _ShowMyBottomSheetState extends State<ShowMyBottomSheet> {
               child: InkWell(
                 onTap: () {
                   if (valueNotifierisValid.value) {
-                  
                     showCustomNotification(
                       context: context,
                       title: "Chatter",
-                      message: "Check Your SMS for verification code",
+                      message: "Check Your SMS for verification code👀",
                       imagePath: Assets.assetsIconsChat,
                     );
+
+                    Navigator.pushReplacementNamed(context, RoutesNames.signIn);
                   } else {
                     // Show an error message or handle invalid input
                     print('Invalid phone number');
