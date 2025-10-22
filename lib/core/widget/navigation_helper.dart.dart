@@ -10,26 +10,20 @@ Route createAnimatedRoute(Widget screen) {
       final slide = Tween<Offset>(
         begin: const Offset(0.08, 0),
         end: Offset.zero,
-      ).animate(
-        CurvedAnimation(parent: animation, curve: Curves.easeOutCubic),
-      );
+      ).animate(CurvedAnimation(parent: animation, curve: Curves.easeOutCubic));
 
-      final fade = Tween<double>(begin: 0.0, end: 1.0).animate(
-        CurvedAnimation(parent: animation, curve: Curves.easeInOut),
-      );
+      final fade = Tween<double>(
+        begin: 0.0,
+        end: 1.0,
+      ).animate(CurvedAnimation(parent: animation, curve: Curves.easeInOut));
 
       return SlideTransition(
         position: slide,
-        child: FadeTransition(
-          opacity: fade,
-          child: child,
-        ),
+        child: FadeTransition(opacity: fade, child: child),
       );
     },
   );
 }
-
-
 
 void customPop(BuildContext context, Widget previousScreen) {
   Navigator.of(context).pushReplacement(

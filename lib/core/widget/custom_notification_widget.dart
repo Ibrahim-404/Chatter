@@ -48,11 +48,7 @@ void showCustomNotification({
                 children: [
                   ClipRRect(
                     borderRadius: BorderRadius.circular(10),
-                    child: Image.asset(
-                      imagePath,
-                      width: 40,
-                      height: 40,
-                    ),
+                    child: Image.asset(imagePath, width: 40, height: 40),
                   ),
                   const SizedBox(width: 12),
                   Expanded(
@@ -81,10 +77,7 @@ void showCustomNotification({
                   ),
                   const Text(
                     "now",
-                    style: TextStyle(
-                      color: Colors.white54,
-                      fontSize: 12,
-                    ),
+                    style: TextStyle(color: Colors.white54, fontSize: 12),
                   ),
                 ],
               ),

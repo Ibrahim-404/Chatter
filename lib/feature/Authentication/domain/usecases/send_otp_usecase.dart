@@ -6,7 +6,7 @@ class SendOtpUseCase {
   SendOtpUseCase(this.authRepo);
 
   Future<void> call(String phoneNumber) {
-    if(phoneNumber.isEmpty){
+    if (phoneNumber.isEmpty) {
       throw Exception("Phone number cannot be empty");
     }
     return authRepo.sendOtp(phoneNumber);

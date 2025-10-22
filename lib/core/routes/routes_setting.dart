@@ -11,8 +11,8 @@ class RoutesSettings {
       case RoutesNames.splash:
         return createAnimatedRoute(const SplashScreen());
       case RoutesNames.welcome:
-        return  createAnimatedRoute(IntroFirstOpening());
-         case RoutesNames.signIn:
+        return createAnimatedRoute(IntroFirstOpening());
+      case RoutesNames.signIn:
         return createAnimatedRoute(const OtpTextField());
       case RoutesNames.home:
       // return MaterialPageRoute(builder: (_) => HomeScreen());
