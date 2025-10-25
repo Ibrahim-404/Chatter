@@ -14,42 +14,6 @@ class ShowMyBottomSheet extends StatefulWidget {
 
 class _ShowMyBottomSheetState extends State<ShowMyBottomSheet> {
   TextEditingController _PhoneNumber = TextEditingController();
-  bool _isValid = false;
-  String _selectedDialCode = '+20';
-  late ValueNotifier<bool> valueNotifierisValid;
-  // late ValueNotifier<String> valueselectedDialCode;
-
-  @override
-  void initState() {
-    super.initState();
-    _PhoneNumber.addListener(_validtePhoneNumber);
-    valueNotifierisValid = ValueNotifier(_isValid);
-    // valueselectedDialCode = ValueNotifier(_selectedDialCode);
-  }
-
-  void _validtePhoneNumber() {
-    try {
-      final phoneNumber = PhoneNumber.parse(
-        '${_selectedDialCode}${_PhoneNumber.text.trim()}',
-      );
-      // Check if the phone number is valid
-      valueNotifierisValid.value = phoneNumber.isValid(
-        type: PhoneNumberType.mobile,
-      );
-    } catch (e) {
-      valueNotifierisValid.value = false;
-      // Handle parsing error if needed
-    }
-  }
-
-  @override
-  void dispose() {
-    _PhoneNumber.dispose();
-    valueNotifierisValid.dispose();
-    // valueselectedDialCode.dispose();
-    super.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -81,10 +45,7 @@ class _ShowMyBottomSheetState extends State<ShowMyBottomSheet> {
                   ),
                   child: CountryCodePicker(
                     onChanged: (country) {
-                      // Update the selected dial code when a country is selected
                       _selectedDialCode = country.dialCode!;
-
-                      _validtePhoneNumber(); // Re-validate the phone number
                     },
                     initialSelection: "EG",
                     favorite: const ["+20", "EG"],
@@ -114,7 +75,7 @@ class _ShowMyBottomSheetState extends State<ShowMyBottomSheet> {
               padding: const EdgeInsets.only(top: 16),
               child: InkWell(
                 onTap: () {
-                  if (valueNotifierisValid.value) {
+                 
                     showCustomNotification(
                       context: context,
                       title: "Chatter",
@@ -123,33 +84,26 @@ class _ShowMyBottomSheetState extends State<ShowMyBottomSheet> {
                     );
 
                     Navigator.pushReplacementNamed(context, RoutesNames.signIn);
-                  } else {
-                    // Show an error message or handle invalid input
-                    print('Invalid phone number');
-                  }
+             
+                  
                 },
-                child: ValueListenableBuilder<bool>(
-                  valueListenable: valueNotifierisValid,
-                  builder: (context, isValid, child) {
-                    return AnimatedContainer(
-                      duration: const Duration(milliseconds: 300),
-                      height: 50,
-                      decoration: BoxDecoration(
-                        color: isValid ? Colors.blue : Colors.grey,
-                        borderRadius: BorderRadius.circular(8),
+                child: AnimatedContainer(
+                  duration: const Duration(milliseconds: 300),
+                  height: 50,
+                  decoration: BoxDecoration(
+                    color: isValid ? Colors.blue : Colors.grey,
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Center(
+                    child: Text(
+                      "Next",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
                       ),
-                      child: Center(
-                        child: Text(
-                          "Next",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    );
-                  },
+                    ),
+                  ),
                 ),
               ),
             ),

@@ -5,10 +5,10 @@ class SendOtpUseCase {
 
   SendOtpUseCase(this.authRepo);
 
-  Future<void> call(String phoneNumber) {
+  Future<void> call(String phoneNumber, String dialCode) {
     if (phoneNumber.isEmpty) {
       throw Exception("Phone number cannot be empty");
     }
-    return authRepo.sendOtp(phoneNumber);
+    return authRepo.sendOtp(phoneNumber, dialCode);
   }
 }

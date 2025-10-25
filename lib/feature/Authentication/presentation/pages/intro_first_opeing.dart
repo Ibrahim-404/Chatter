@@ -1,5 +1,5 @@
 import 'package:chatter/core/constants/assets.dart';
-import 'package:chatter/feature/Authentication/ui/widget/custom_BottomSheet.dart';
+import 'package:chatter/feature/Authentication/presentation/pages/widget/custom_BottomSheet.dart';
 import 'package:flutter/material.dart';
 
 class IntroFirstOpening extends StatefulWidget {
