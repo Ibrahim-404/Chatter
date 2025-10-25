@@ -2,14 +2,17 @@ part of 'send_varify_bloc.dart';
 
 sealed class SendVarifyState extends Equatable {
   const SendVarifyState();
-  
+
   @override
   List<Object> get props => [];
 }
 
 final class SendVarifyInitial extends SendVarifyState {}
+
 final class SendLoading extends SendVarifyState {}
+
 final class SendSuccess extends SendVarifyState {}
+
 final class SendFailure extends SendVarifyState {
   final String errorMessage;
 
@@ -18,6 +21,7 @@ final class SendFailure extends SendVarifyState {
   @override
   List<Object> get props => [errorMessage];
 }
+
 final class SendNetworkError extends SendVarifyState {
   final String errorMessage;
 
@@ -26,6 +30,7 @@ final class SendNetworkError extends SendVarifyState {
   @override
   List<Object> get props => [errorMessage];
 }
+
 final class SendServerError extends SendVarifyState {
   final String errorMessage;
 
@@ -34,7 +39,9 @@ final class SendServerError extends SendVarifyState {
   @override
   List<Object> get props => [errorMessage];
 }
-final class verifyCodeLoading extends SendVarifyState{}
-final class verifyCodeSuccess extends SendVarifyState{}
-final class verifyCodeFailure extends SendVarifyState {}
 
+final class verifyCodeLoading extends SendVarifyState {}
+
+final class verifyCodeSuccess extends SendVarifyState {}
+
+final class verifyCodeFailure extends SendVarifyState {}

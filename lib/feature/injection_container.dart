@@ -4,13 +4,8 @@ import 'package:chatter/feature/Authentication/presentation/manager/auht_bloc/bl
 import 'package:get_it/get_it.dart';
 
 final sl = GetIt.instance;
-  Future<void> init() async {
-    
-    sl.registerFactory(() => SendVarifyBloc(authRepo: sl()));
-  
-  
-    sl.registerLazySingleton<AuthRepo>(() => AuthRepoDataLayer());
+Future<void> init() async {
+  sl.registerFactory(() => SendVarifyBloc(authRepo: sl()));
 
-  }
-  
-  
+  sl.registerLazySingleton<AuthRepo>(() => AuthRepoDataLayer());
+}

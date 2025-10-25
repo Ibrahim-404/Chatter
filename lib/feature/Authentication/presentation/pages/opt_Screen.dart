@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:pinput/pinput.dart';
+
 class OtpTextField extends StatefulWidget {
   const OtpTextField({super.key});
   @override
   State<OtpTextField> createState() => _OtpTextFieldState();
 }
+
 class _OtpTextFieldState extends State<OtpTextField> {
   final pinController = TextEditingController();
   @override

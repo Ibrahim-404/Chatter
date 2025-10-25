@@ -75,17 +75,14 @@ class _ShowMyBottomSheetState extends State<ShowMyBottomSheet> {
               padding: const EdgeInsets.only(top: 16),
               child: InkWell(
                 onTap: () {
-                 
-                    showCustomNotification(
-                      context: context,
-                      title: "Chatter",
-                      message: "Check Your SMS for verification code👀",
-                      imagePath: Assets.assetsIconsChat,
-                    );
+                  showCustomNotification(
+                    context: context,
+                    title: "Chatter",
+                    message: "Check Your SMS for verification code👀",
+                    imagePath: Assets.assetsIconsChat,
+                  );
 
-                    Navigator.pushReplacementNamed(context, RoutesNames.signIn);
-             
-                  
+                  Navigator.pushReplacementNamed(context, RoutesNames.signIn);
                 },
                 child: AnimatedContainer(
                   duration: const Duration(milliseconds: 300),

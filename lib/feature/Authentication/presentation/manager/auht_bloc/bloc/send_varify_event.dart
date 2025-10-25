@@ -5,12 +5,14 @@ sealed class SendVarifyEvent extends Equatable {
   @override
   List<Object> get props => [];
 }
+
 class SendOtpEvent extends SendVarifyEvent {
   final String phoneNumber;
   const SendOtpEvent({required this.phoneNumber});
   @override
   List<Object> get props => [phoneNumber];
 }
+
 class VerifyOtpEvent extends SendVarifyEvent {
   final String otp;
   const VerifyOtpEvent({required this.otp});
