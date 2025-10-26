@@ -40,8 +40,15 @@ final class SendServerError extends SendVarifyState {
   List<Object> get props => [errorMessage];
 }
 
-final class verifyCodeLoading extends SendVarifyState {}
+final class VerifyCodeLoading extends SendVarifyState {}
 
-final class verifyCodeSuccess extends SendVarifyState {}
+final class VerifyCodeSuccess extends SendVarifyState {}
 
-final class verifyCodeFailure extends SendVarifyState {}
+final class VerifyCodeFailure extends SendVarifyState {
+  final String errorMessage;
+
+  const VerifyCodeFailure(this.errorMessage);
+
+  @override
+  List<Object> get props => [errorMessage];
+}

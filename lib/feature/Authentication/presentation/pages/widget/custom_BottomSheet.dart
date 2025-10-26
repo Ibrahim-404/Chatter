@@ -1,9 +1,10 @@
 import 'package:chatter/core/constants/assets.dart';
 import 'package:chatter/core/routes/routes_names.dart';
 import 'package:chatter/core/widget/custom_notification_widget.dart';
+import 'package:chatter/feature/Authentication/presentation/manager/auht_bloc/bloc/send_varify_bloc.dart';
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:phone_numbers_parser/phone_numbers_parser.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ShowMyBottomSheet extends StatefulWidget {
   const ShowMyBottomSheet({super.key});
@@ -16,97 +17,115 @@ class _ShowMyBottomSheetState extends State<ShowMyBottomSheet> {
   TextEditingController _PhoneNumber = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 20, left: 8, right: 8, bottom: 40),
-      child: SingleChildScrollView(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              "Welcome to Chatter!",
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 10),
-            const Text(
-              "Your journey to seamless communication starts here. Let's get you set up with your profile.",
-              textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 16),
-            ),
-            const SizedBox(height: 20),
-            Text("phone number"),
-            SizedBox(height: 8),
-            Row(
+    return BlocBuilder<SendVarifyBloc, SendVarifyState>(
+      builder: (context, state) {
+        return Padding(
+          padding: const EdgeInsets.only(
+            top: 20,
+            left: 8,
+            right: 8,
+            bottom: 40,
+          ),
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Container(
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.grey),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: CountryCodePicker(
-                    onChanged: (country) {
-                      _selectedDialCode = country.dialCode!;
-                    },
-                    initialSelection: "EG",
-                    favorite: const ["+20", "EG"],
-                    showCountryOnly: false,
-                    showFlag: true,
-                    showOnlyCountryWhenClosed: false,
-                    alignLeft: false,
-                  ),
+                const Text(
+                  "Welcome to Chatter!",
+                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                 ),
-                SizedBox(width: 8),
-                Expanded(
-                  child: TextFormField(
-                    onTapUpOutside:
-                        (_) => FocusManager.instance.primaryFocus?.unfocus(),
-                    keyboardType: TextInputType.phone,
-                    controller: _PhoneNumber,
-                    decoration: InputDecoration(
-                      suffixIcon: Icon(Icons.phone),
-                      border: OutlineInputBorder(),
-                      labelText: "** **** ***",
+                const SizedBox(height: 10),
+                const Text(
+                  "Your journey to seamless communication starts here. Let's get you set up with your profile.",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 16),
+                ),
+                const SizedBox(height: 20),
+                Text("phone number"),
+                SizedBox(height: 8),
+                Row(
+                  children: [
+                    Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.grey),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: CountryCodePicker(
+                        onChanged: (country) {
+                          context.read<SendVarifyBloc>().add(
+                            SendOtpEvent(
+                              phoneNumber:
+                                  '${_PhoneNumber.text}${country.dialCode}',
+                            ),
+                          );
+                        },
+                        initialSelection: "EG",
+                        favorite: const ["+20", "EG"],
+                        showCountryOnly: false,
+                        showFlag: true,
+                        showOnlyCountryWhenClosed: false,
+                        alignLeft: false,
+                      ),
+                    ),
+                    SizedBox(width: 8),
+                    Expanded(
+                      child: TextFormField(
+                        onTapUpOutside:
+                            (_) =>
+                                FocusManager.instance.primaryFocus?.unfocus(),
+                        keyboardType: TextInputType.phone,
+                        controller: _PhoneNumber,
+                        decoration: InputDecoration(
+                          suffixIcon: Icon(Icons.phone),
+                          border: OutlineInputBorder(),
+                          labelText: "** **** ***",
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 16),
+                  child: InkWell(
+                    onTap: () {
+                      showCustomNotification(
+                        context: context,
+                        title: "Chatter",
+                        message: "Check Your SMS for verification code👀",
+                        imagePath: Assets.assetsIconsChat,
+                      );
+
+                      Navigator.pushReplacementNamed(
+                        context,
+                        RoutesNames.signIn,
+                      );
+                    },
+                    child: AnimatedContainer(
+                      duration: const Duration(milliseconds: 300),
+                      height: 50,
+                      decoration: BoxDecoration(
+                        color: state is SendLoading ? Colors.blue : Colors.grey,
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Center(
+                        child: Text(
+                          "Next",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
                     ),
                   ),
                 ),
               ],
             ),
-            Padding(
-              padding: const EdgeInsets.only(top: 16),
-              child: InkWell(
-                onTap: () {
-                  showCustomNotification(
-                    context: context,
-                    title: "Chatter",
-                    message: "Check Your SMS for verification code👀",
-                    imagePath: Assets.assetsIconsChat,
-                  );
-
-                  Navigator.pushReplacementNamed(context, RoutesNames.signIn);
-                },
-                child: AnimatedContainer(
-                  duration: const Duration(milliseconds: 300),
-                  height: 50,
-                  decoration: BoxDecoration(
-                    color: isValid ? Colors.blue : Colors.grey,
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: Center(
-                    child: Text(
-                      "Next",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
+          ),
+        );
+      },
     );
   }
 }
