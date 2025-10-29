@@ -15,10 +15,31 @@ class ShowMyBottomSheet extends StatefulWidget {
 
 class _ShowMyBottomSheetState extends State<ShowMyBottomSheet> {
   TextEditingController _PhoneNumber = TextEditingController();
+  String selectedCountryCode = "+20";
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<SendVarifyBloc, SendVarifyState>(
       builder: (context, state) {
+        if (state is SendSuccess) {
+          showCustomNotification(
+            context: context,
+            title: "Chatter",
+            message: "Check Your SMS for verification code👀",
+            imagePath: Assets.assetsIconsChat,
+          );
+          Navigator.pushReplacementNamed(
+                          context,
+                          RoutesNames.signIn,
+                        );
+        }
+        if (state is SendFailure) {
+          showCustomNotification(
+            context: context,
+            title: "Chatter",
+            message: "${state.errorMessage}❌",
+            imagePath: Assets.assetsIconsChat,
+          );
+        }
         return Padding(
           padding: const EdgeInsets.only(
             top: 20,
@@ -53,12 +74,7 @@ class _ShowMyBottomSheetState extends State<ShowMyBottomSheet> {
                       ),
                       child: CountryCodePicker(
                         onChanged: (country) {
-                          context.read<SendVarifyBloc>().add(
-                            SendOtpEvent(
-                              phoneNumber:
-                                  '${_PhoneNumber.text}${country.dialCode}',
-                            ),
-                          );
+                          selectedCountryCode = country.dialCode ?? "+20";
                         },
                         initialSelection: "EG",
                         favorite: const ["+20", "EG"],
@@ -71,6 +87,7 @@ class _ShowMyBottomSheetState extends State<ShowMyBottomSheet> {
                     SizedBox(width: 8),
                     Expanded(
                       child: TextFormField(
+
                         onTapUpOutside:
                             (_) =>
                                 FocusManager.instance.primaryFocus?.unfocus(),
@@ -87,34 +104,37 @@ class _ShowMyBottomSheetState extends State<ShowMyBottomSheet> {
                 ),
                 Padding(
                   padding: const EdgeInsets.only(top: 16),
-                  child: InkWell(
-                    onTap: () {
-                      showCustomNotification(
-                        context: context,
-                        title: "Chatter",
-                        message: "Check Your SMS for verification code👀",
-                        imagePath: Assets.assetsIconsChat,
-                      );
-
-                      Navigator.pushReplacementNamed(
-                        context,
-                        RoutesNames.signIn,
-                      );
+                  child: BlocListener(
+                    listener: (BuildContext context, state) 
+                    {
+                      
                     },
-                    child: AnimatedContainer(
-                      duration: const Duration(milliseconds: 300),
-                      height: 50,
-                      decoration: BoxDecoration(
-                        color: state is SendLoading ? Colors.blue : Colors.grey,
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: Center(
-                        child: Text(
-                          "Next",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
+                    child: InkWell(
+                      onTap: () {
+                        if(_PhoneNumber.text.isNotEmpty){
+                          String phoneNumber =
+                              selectedCountryCode + _PhoneNumber.text;
+                          BlocProvider.of<SendVarifyBloc>(context).add(
+                            SendOtpEvent(phoneNumber: phoneNumber),
+                          );
+                        }
+                      },
+                      child: AnimatedContainer(
+                        duration: const Duration(milliseconds: 300),
+                        height: 50,
+                        decoration: BoxDecoration(
+                          color:
+                              state is SendLoading ? Colors.blue : Colors.grey,
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Center(
+                          child: Text(
+                            "Next",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
                       ),

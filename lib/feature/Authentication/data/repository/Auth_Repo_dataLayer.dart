@@ -70,14 +70,15 @@ class AuthRepoDataLayer implements AuthRepo {
     }
   }
 
-  @override
-  Future<Either<Failure, void>> signOut() {
-    try {
-      FirebaseAuth auth = FirebaseAuth.instance;
-      auth.signOut();
-      return Future.value(const Right(unit));
-    } catch (e) {
-      return Future.value(Left(FirebaseErrorHandler(e.toString())));
-    }
+@override
+Future<Either<Failure, void>> signOut() async {
+  try {
+    await FirebaseAuth.instance.signOut();
+    await Supabase.instance.client.auth.signOut();
+    return const Right(unit);
+  } catch (e) {
+    return Left(FirebaseErrorHandler(e.toString()));
   }
+}
+
 }
