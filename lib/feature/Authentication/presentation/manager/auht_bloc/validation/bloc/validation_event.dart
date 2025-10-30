@@ -5,7 +5,8 @@ sealed class ValidationEvent extends Equatable {
 
   @override
   List<Object> get props => [];
-} 
+}
+
 final class ValidatePhoneNumber extends ValidationEvent {
   final String phoneNumber;
   final String dialCode;

@@ -7,6 +7,6 @@ class ValidationUtils {
       return parsedPhoneNumber.isValid(type: PhoneNumberType.mobile);
     } catch (e) {
       return false;
-  
+    }
   }
-  }}
+}

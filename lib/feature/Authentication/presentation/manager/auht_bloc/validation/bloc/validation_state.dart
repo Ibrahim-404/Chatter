@@ -17,4 +17,3 @@ final class NumberPhoneValidation extends ValidationState {
   @override
   List<Object> get props => [isValid];
 }
-

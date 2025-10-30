@@ -2,6 +2,7 @@ import 'package:chatter/core/constants/assets.dart';
 import 'package:chatter/core/routes/routes_names.dart';
 import 'package:chatter/core/widget/custom_notification_widget.dart';
 import 'package:chatter/feature/Authentication/presentation/manager/auht_bloc/bloc/send_varify_bloc.dart';
+import 'package:chatter/feature/Authentication/presentation/manager/auht_bloc/validation/bloc/validation_bloc.dart';
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -14,138 +15,168 @@ class ShowMyBottomSheet extends StatefulWidget {
 }
 
 class _ShowMyBottomSheetState extends State<ShowMyBottomSheet> {
-  TextEditingController _PhoneNumber = TextEditingController();
+  final TextEditingController _phoneNumber = TextEditingController();
   String selectedCountryCode = "+20";
+
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<SendVarifyBloc, SendVarifyState>(
-      builder: (context, state) {
-        if (state is SendSuccess) {
+    return BlocListener<SendVarifyBloc, SendVarifyState>(
+      listener: (context, sendOtpState) {
+        if (sendOtpState is SendSuccess) {
           showCustomNotification(
             context: context,
             title: "Chatter",
-            message: "Check Your SMS for verification code👀",
+            message: "Check your SMS for the verification code 👀",
             imagePath: Assets.assetsIconsChat,
           );
-          Navigator.pushReplacementNamed(
-                          context,
-                          RoutesNames.signIn,
-                        );
+          Navigator.pushReplacementNamed(context, RoutesNames.signIn);
         }
-        if (state is SendFailure) {
-          showCustomNotification(
-            context: context,
-            title: "Chatter",
-            message: "${state.errorMessage}❌",
-            imagePath: Assets.assetsIconsChat,
-          );
-        }
-        return Padding(
-          padding: const EdgeInsets.only(
-            top: 20,
-            left: 8,
-            right: 8,
-            bottom: 40,
-          ),
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  "Welcome to Chatter!",
-                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(height: 10),
-                const Text(
-                  "Your journey to seamless communication starts here. Let's get you set up with your profile.",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 16),
-                ),
-                const SizedBox(height: 20),
-                Text("phone number"),
-                SizedBox(height: 8),
-                Row(
-                  children: [
-                    Container(
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.grey),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: CountryCodePicker(
-                        onChanged: (country) {
-                          selectedCountryCode = country.dialCode ?? "+20";
-                        },
-                        initialSelection: "EG",
-                        favorite: const ["+20", "EG"],
-                        showCountryOnly: false,
-                        showFlag: true,
-                        showOnlyCountryWhenClosed: false,
-                        alignLeft: false,
-                      ),
-                    ),
-                    SizedBox(width: 8),
-                    Expanded(
-                      child: TextFormField(
 
-                        onTapUpOutside:
-                            (_) =>
-                                FocusManager.instance.primaryFocus?.unfocus(),
-                        keyboardType: TextInputType.phone,
-                        controller: _PhoneNumber,
-                        decoration: InputDecoration(
-                          suffixIcon: Icon(Icons.phone),
-                          border: OutlineInputBorder(),
-                          labelText: "** **** ***",
-                        ),
-                      ),
+        if (sendOtpState is SendFailure) {
+          showCustomNotification(
+            context: context,
+            title: "Chatter",
+            message: "${sendOtpState.errorMessage} ❌",
+            imagePath: Assets.assetsIconsChat,
+          );
+        }
+      },
+      child: Padding(
+        padding: const EdgeInsets.only(top: 20, left: 8, right: 8, bottom: 40),
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                "Welcome to Chatter!",
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 10),
+              const Text(
+                "Your journey to seamless communication starts here. Let's get you set up with your profile.",
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 16),
+              ),
+              const SizedBox(height: 20),
+              const Text("Phone number"),
+              const SizedBox(height: 8),
+
+              /// Country picker + phone number field
+              Row(
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.grey),
+                      borderRadius: BorderRadius.circular(8),
                     ),
-                  ],
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 16),
-                  child: BlocListener(
-                    listener: (BuildContext context, state) 
-                    {
-                      
-                    },
-                    child: InkWell(
-                      onTap: () {
-                        if(_PhoneNumber.text.isNotEmpty){
-                          String phoneNumber =
-                              selectedCountryCode + _PhoneNumber.text;
-                          BlocProvider.of<SendVarifyBloc>(context).add(
-                            SendOtpEvent(phoneNumber: phoneNumber),
-                          );
-                        }
+                    child: CountryCodePicker(
+                      onChanged: (country) {
+                        selectedCountryCode = country.dialCode ?? "+20";
                       },
+                      initialSelection: "EG",
+                      favorite: const ["+20", "EG"],
+                      showCountryOnly: false,
+                      showFlag: true,
+                      showOnlyCountryWhenClosed: false,
+                      alignLeft: false,
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: TextFormField(
+                      controller: _phoneNumber,
+                      keyboardType: TextInputType.phone,
+                      decoration: const InputDecoration(
+                        suffixIcon: Icon(Icons.phone),
+                        border: OutlineInputBorder(),
+                        labelText: "** **** ***",
+                      ),
+                      onChanged: (value) {
+                        BlocProvider.of<ValidationBloc>(
+                          context,
+                        ).add(ValidatePhoneNumber(value, selectedCountryCode));
+                      },
+                      onTapOutside:
+                          (_) => FocusManager.instance.primaryFocus?.unfocus(),
+                    ),
+                  ),
+                ],
+              ),
+
+              /// Next button
+              Padding(
+                padding: const EdgeInsets.only(top: 16),
+                child: BlocBuilder<ValidationBloc, ValidationState>(
+                  builder: (context, validationState) {
+                    final isValid =
+                        validationState is NumberPhoneValidation &&
+                        validationState.isValid;
+
+                    return InkWell(
+                      onTap:
+                          isValid
+                              ? () {
+                                final phone = _phoneNumber.text.trim();
+                                BlocProvider.of<SendVarifyBloc>(context).add(
+                                  SendOtpEvent(
+                                    phoneNumber: phone,
+                                    dialCode: selectedCountryCode,
+                                  ),
+                                );
+                              }
+                              : null,
                       child: AnimatedContainer(
                         duration: const Duration(milliseconds: 300),
                         height: 50,
                         decoration: BoxDecoration(
-                          color:
-                              state is SendLoading ? Colors.blue : Colors.grey,
+                          color: isValid ? Colors.blue : Colors.grey,
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: Center(
-                          child: Text(
-                            "Next",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
+                          child: AnimatedSwitcher(
+                            duration: const Duration(milliseconds: 300),
+                            child: BlocBuilder<SendVarifyBloc, SendVarifyState>(
+                              builder: (context, sendOtpState) {
+                                if (sendOtpState is SendLoading) {
+                                  return const SizedBox(
+                                    key: ValueKey('loading'),
+                                    height: 24,
+                                    width: 24,
+                                    child: CircularProgressIndicator(
+                                      color: Colors.white,
+                                      strokeWidth: 2,
+                                    ),
+                                  );
+                                }
+                                return const Text(
+                                  "Next",
+                                  key: ValueKey('text'),
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                );
+                              },
                             ),
                           ),
                         ),
                       ),
-                    ),
-                  ),
+                    );
+                  },
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
-        );
-      },
+        ),
+      ),
     );
+  }
+
+  @override
+  void dispose() {
+    _phoneNumber.dispose();
+    super.dispose();
   }
 }

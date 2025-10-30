@@ -1,21 +1,28 @@
 part of 'send_varify_bloc.dart';
 
-sealed class SendVarifyEvent extends Equatable {
+abstract class SendVarifyEvent extends Equatable {
   const SendVarifyEvent();
+
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [];
 }
 
 class SendOtpEvent extends SendVarifyEvent {
   final String phoneNumber;
-  const SendOtpEvent({required this.phoneNumber});
+  final String dialCode;
+
+  const SendOtpEvent({required this.phoneNumber, required this.dialCode});
+
   @override
-  List<Object> get props => [phoneNumber];
+  List<Object?> get props => [phoneNumber, dialCode];
 }
 
 class VerifyOtpEvent extends SendVarifyEvent {
   final String otp;
-  const VerifyOtpEvent({required this.otp});
+  final String verificationId;
+
+  const VerifyOtpEvent({required this.otp, required this.verificationId});
+
   @override
-  List<Object> get props => [otp];
+  List<Object?> get props => [otp, verificationId];
 }
