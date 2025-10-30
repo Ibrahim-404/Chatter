@@ -1,8 +1,9 @@
 import 'package:chatter/core/constants/assets.dart';
-import 'package:chatter/feature/Authentication/data/repository/Auth_Repo_dataLayer.dart';
+// import 'package:chatter/feature/Authentication/data/repository/Auth_Repo_dataLayer.dart';
 import 'package:chatter/feature/Authentication/presentation/manager/auht_bloc/bloc/send_varify_bloc.dart';
+import 'package:chatter/feature/Authentication/presentation/manager/auht_bloc/validation/bloc/validation_bloc.dart';
 import 'package:chatter/feature/Authentication/presentation/pages/widget/custom_BottomSheet.dart';
-import 'package:chatter/feature/injection_container.dart';
+// import 'package:chatter/feature/injection_container.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -88,94 +89,98 @@ class _IntroFirstOpeningState extends State<IntroFirstOpening>
           _goToNextPage();
         }
       },
-      child: BlocProvider(
-        create: (context) => SendVarifyBloc(authRepo: sl<AuthRepoDataLayer>()),
-        child: Stack(
-          children: [
-            PageView.builder(
-              controller: _pageController,
-              physics: const NeverScrollableScrollPhysics(),
-              onPageChanged: (index) {
-                _currentIndexNotifier.value = index;
-                _animationController.forward(from: 0);
-                _animationController.addStatusListener((states) {
-                  if (states == AnimationStatus.completed) {
-                    _goToNextPage();
-                  }
-                });
-                if (index == introScreens.length - 1) {
-                  WidgetsBinding.instance.addPostFrameCallback((_) {
-                    showModalBottomSheet(
-                      isScrollControlled: true,
-                      context: context,
-                      builder:
-                          (context) => Padding(
-                            padding: EdgeInsets.only(
-                              bottom: MediaQuery.of(context).viewInsets.bottom,
-                            ),
-                            child: const ShowMyBottomSheet(),
-                          ),
-                    );
-                  });
+      child: Stack(
+        children: [
+          PageView.builder(
+            controller: _pageController,
+            physics: const NeverScrollableScrollPhysics(),
+            onPageChanged: (index) {
+              _currentIndexNotifier.value = index;
+              _animationController.forward(from: 0);
+              _animationController.addStatusListener((states) {
+                if (states == AnimationStatus.completed) {
+                  _goToNextPage();
                 }
-              },
+              });
+              if (index == introScreens.length - 1) {
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+              showModalBottomSheet(
+  isScrollControlled: true,
+  context: context,
+  builder: (context) {
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider.value(
+          value: context.read<SendVarifyBloc>(),
+        ),
+        BlocProvider.value(
+          value: context.read<ValidationBloc>(),
+        ),
+      ],
+      child: const ShowMyBottomSheet(),
+    );
+  },
+);
 
-              itemCount: introScreens.length,
-              itemBuilder: (context, index) {
-                return Container(
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: AssetImage(introScreens[index]),
-                      fit: BoxFit.cover,
-                    ),
+                });
+              }
+            },
+
+            itemCount: introScreens.length,
+            itemBuilder: (context, index) {
+              return Container(
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage(introScreens[index]),
+                    fit: BoxFit.cover,
                   ),
-                  child: Image.asset(introScreens[index], fit: BoxFit.fill),
+                ),
+                child: Image.asset(introScreens[index], fit: BoxFit.fill),
+              );
+            },
+          ),
+
+          // Progress Bars
+          Positioned(
+            top: 40,
+            left: 10,
+            right: 10,
+            child: ValueListenableBuilder<int>(
+              valueListenable: _currentIndexNotifier,
+              builder: (context, currentIndex, _) {
+                return Row(
+                  children: List.generate(introScreens.length, (index) {
+                    return Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 2),
+                        child: AnimatedBuilder(
+                          animation: _animationController,
+                          builder: (context, child) {
+                            double value;
+                            if (index < currentIndex) {
+                              value = 1.0;
+                            } else if (index == currentIndex) {
+                              value = _animationController.value;
+                            } else {
+                              value = 0.0;
+                            }
+                            return LinearProgressIndicator(
+                              value: value,
+                              backgroundColor: Colors.white24,
+                              valueColor: const AlwaysStoppedAnimation<Color>(
+                                Colors.white,
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                    );
+                  }),
                 );
               },
             ),
-
-            // Progress Bars
-            Positioned(
-              top: 40,
-              left: 10,
-              right: 10,
-              child: ValueListenableBuilder<int>(
-                valueListenable: _currentIndexNotifier,
-                builder: (context, currentIndex, _) {
-                  return Row(
-                    children: List.generate(introScreens.length, (index) {
-                      return Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 2),
-                          child: AnimatedBuilder(
-                            animation: _animationController,
-                            builder: (context, child) {
-                              double value;
-                              if (index < currentIndex) {
-                                value = 1.0;
-                              } else if (index == currentIndex) {
-                                value = _animationController.value;
-                              } else {
-                                value = 0.0;
-                              }
-                              return LinearProgressIndicator(
-                                value: value,
-                                backgroundColor: Colors.white24,
-                                valueColor: const AlwaysStoppedAnimation<Color>(
-                                  Colors.white,
-                                ),
-                              );
-                            },
-                          ),
-                        ),
-                      );
-                    }),
-                  );
-                },
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

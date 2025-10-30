@@ -12,6 +12,7 @@ class RoutesSettings {
         return createAnimatedRoute(const SplashScreen());
       case RoutesNames.welcome:
         return createAnimatedRoute(IntroFirstOpening());
+
       case RoutesNames.signIn:
         return createAnimatedRoute(const OtpTextField());
       case RoutesNames.home:
