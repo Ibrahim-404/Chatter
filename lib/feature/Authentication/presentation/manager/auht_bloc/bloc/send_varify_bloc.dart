@@ -1,12 +1,12 @@
 import 'package:bloc/bloc.dart';
-import 'package:chatter/feature/Authentication/data/repository/Auth_Repo_dataLayer.dart';
+import 'package:chatter/feature/Authentication/domain/repository/domain_auth_repo.dart';
 import 'package:equatable/equatable.dart';
 
 part 'send_varify_event.dart';
 part 'send_varify_state.dart';
 
 class SendVarifyBloc extends Bloc<SendVarifyEvent, SendVarifyState> {
-  final AuthRepoDataLayer authRepo;
+  final AuthRepo authRepo;
 
   SendVarifyBloc({required this.authRepo}) : super(SendVarifyInitial()) {
     on<SendOtpEvent>((event, emit) async {

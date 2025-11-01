@@ -1,4 +1,5 @@
 import 'package:chatter/core/routes/routes_setting.dart';
+import 'package:chatter/feature/injection_container.dart';
 import 'package:chatter/feature/splash/presentation/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -14,6 +15,7 @@ Future<void> main() async {
     anonKey: dotenv.env['supabaseAnonKey']!,
   );
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  await init();
   runApp(Chatter());
 }
 

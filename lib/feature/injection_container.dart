@@ -6,7 +6,7 @@ import 'package:get_it/get_it.dart';
 
 final sl = GetIt.instance;
 Future<void> init() async {
+  sl.registerLazySingleton<AuthRepo>(() => AuthRepoDataLayer());
   sl.registerFactory(() => SendVarifyBloc(authRepo: sl()));
   // sl.registerFactory(() => ValidationBloc());
-  sl.registerLazySingleton<AuthRepo>(() => AuthRepoDataLayer());
 }

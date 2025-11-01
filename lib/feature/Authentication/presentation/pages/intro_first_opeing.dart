@@ -104,24 +104,22 @@ class _IntroFirstOpeningState extends State<IntroFirstOpening>
               });
               if (index == introScreens.length - 1) {
                 WidgetsBinding.instance.addPostFrameCallback((_) {
-              showModalBottomSheet(
-  isScrollControlled: true,
-  context: context,
-  builder: (context) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider.value(
-          value: context.read<SendVarifyBloc>(),
-        ),
-        BlocProvider.value(
-          value: context.read<ValidationBloc>(),
-        ),
-      ],
-      child: const ShowMyBottomSheet(),
-    );
-  },
-);
+                  final sendBloc = context.read<SendVarifyBloc>();
+                  final validationBloc = context.read<ValidationBloc>();
 
+                  showModalBottomSheet(
+                    isScrollControlled: true,
+                    context: context,
+                    builder: (_) {
+                      return MultiBlocProvider(
+                        providers: [
+                          BlocProvider.value(value: sendBloc),
+                          BlocProvider.value(value: validationBloc),
+                        ],
+                        child: const ShowMyBottomSheet(),
+                      );
+                    },
+                  );
                 });
               }
             },
