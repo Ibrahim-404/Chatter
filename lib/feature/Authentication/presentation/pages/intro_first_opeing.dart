@@ -1,9 +1,7 @@
 import 'package:chatter/core/constants/assets.dart';
-// import 'package:chatter/feature/Authentication/data/repository/Auth_Repo_dataLayer.dart';
 import 'package:chatter/feature/Authentication/presentation/manager/auht_bloc/bloc/send_varify_bloc.dart';
 import 'package:chatter/feature/Authentication/presentation/manager/auht_bloc/validation/bloc/validation_bloc.dart';
 import 'package:chatter/feature/Authentication/presentation/pages/widget/custom_BottomSheet.dart';
-// import 'package:chatter/feature/injection_container.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

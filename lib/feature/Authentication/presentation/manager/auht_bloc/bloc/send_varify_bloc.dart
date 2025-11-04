@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:chatter/core/function/logger.dart';
 import 'package:chatter/feature/Authentication/domain/repository/domain_auth_repo.dart';
 import 'package:equatable/equatable.dart';
 
@@ -10,12 +11,19 @@ class SendVarifyBloc extends Bloc<SendVarifyEvent, SendVarifyState> {
 
   SendVarifyBloc({required this.authRepo}) : super(SendVarifyInitial()) {
     on<SendOtpEvent>((event, emit) async {
+      logger.i("➡️ SendOtpEvent triggered with ${event.phoneNumber}");
       emit(SendLoading());
       final result = await authRepo.sendOtp(event.phoneNumber, event.dialCode);
 
       result.fold(
-        (failure) => emit(SendFailure(failure.message)),
-        (_) => emit(SendSuccess()),
+        (failure) {
+          logger.e("❌ Send OTP failed: ${failure.message}");
+          emit(SendFailure(failure.message));
+        },
+        (verificationId) {
+          logger.i("✅ OTP sent successfully. Verification ID: $verificationId");
+          emit(SendSuccess(verificationId: verificationId));
+        },
       );
     });
 

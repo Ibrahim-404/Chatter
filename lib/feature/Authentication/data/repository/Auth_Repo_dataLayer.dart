@@ -1,4 +1,5 @@
 import 'package:chatter/core/feuille/failure.dart';
+import 'package:chatter/core/function/logger.dart';
 import 'package:chatter/feature/Authentication/domain/repository/domain_auth_repo.dart';
 import 'package:chatter/feature/Authentication/errors/auth_error_handling.dart';
 import 'package:dartz/dartz.dart';
@@ -9,7 +10,7 @@ class AuthRepoDataLayer implements AuthRepo {
   String? verificationId;
 
   @override
-  Future<Either<Failure, void>> sendOtp(
+  Future<Either<Failure, String>> sendOtp(
     String phoneNumber,
     String dialCode,
   ) async {
@@ -18,17 +19,24 @@ class AuthRepoDataLayer implements AuthRepo {
       FirebaseAuth auth = FirebaseAuth.instance;
       await auth.verifyPhoneNumber(
         phoneNumber: fullPhoneNumber,
-        verificationCompleted: (PhoneAuthCredential credential) {},
+        verificationCompleted: (PhoneAuthCredential credential) {
+          logger.d("✅ Verification completed automatically.");
+        },
         verificationFailed: (FirebaseAuthException error) {
+          logger.e("❌ Verification failed: ${error.message}");
           throw FirebaseAuthException(code: error.code, message: error.message);
         },
         codeSent: (String verificationId, int? resendToken) {
           this.verificationId = verificationId;
+                  logger.i("📩 Code sent successfully. verificationId: $verificationId");
+
         },
-        codeAutoRetrievalTimeout: (String verificationId) {},
+        codeAutoRetrievalTimeout: (String verificationId) {
+            logger.w("⌛ Auto retrieval timeout. verificationId: $verificationId");
+        },
       );
 
-      return const Right(unit);
+      return Right(this.verificationId!);
     } catch (e) {
       return Left(FirebaseErrorHandler(e.toString()));
     }
@@ -43,7 +51,7 @@ class AuthRepoDataLayer implements AuthRepo {
       final auth = FirebaseAuth.instance;
 
       final credential = PhoneAuthProvider.credential(
-        verificationId: this.verificationId!,
+        verificationId: verificationId,
         smsCode: smsCode,
       );
 
@@ -71,6 +79,7 @@ class AuthRepoDataLayer implements AuthRepo {
       await FirebaseAuth.instance.signOut();
       return const Right(unit);
     } catch (e) {
+      
       return Left(FirebaseErrorHandler(e.toString()));
     }
   }

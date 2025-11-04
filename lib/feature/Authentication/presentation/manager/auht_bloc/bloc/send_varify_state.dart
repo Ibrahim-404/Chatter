@@ -11,7 +11,10 @@ final class SendVarifyInitial extends SendVarifyState {}
 
 final class SendLoading extends SendVarifyState {}
 
-final class SendSuccess extends SendVarifyState {}
+final class SendSuccess extends SendVarifyState {
+  final String verificationId;
+  const SendSuccess({required this.verificationId });
+}
 
 final class SendFailure extends SendVarifyState {
   final String errorMessage;
