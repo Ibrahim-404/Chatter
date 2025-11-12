@@ -28,11 +28,12 @@ class AuthRepoDataLayer implements AuthRepo {
         },
         codeSent: (String verificationId, int? resendToken) {
           this.verificationId = verificationId;
-                  logger.i("📩 Code sent successfully. verificationId: $verificationId");
-
+          logger.i(
+            "📩 Code sent successfully. verificationId: $verificationId",
+          );
         },
         codeAutoRetrievalTimeout: (String verificationId) {
-            logger.w("⌛ Auto retrieval timeout. verificationId: $verificationId");
+          logger.w("⌛ Auto retrieval timeout. verificationId: $verificationId");
         },
       );
 
@@ -79,7 +80,6 @@ class AuthRepoDataLayer implements AuthRepo {
       await FirebaseAuth.instance.signOut();
       return const Right(unit);
     } catch (e) {
-      
       return Left(FirebaseErrorHandler(e.toString()));
     }
   }

@@ -27,56 +27,58 @@ class _OtpTextFieldState extends State<OtpTextField> {
       ),
     );
 
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Directionality(
-          textDirection: TextDirection.ltr,
-          child: Pinput(
-            length: 4,
-            controller: pinController,
-            validator: (value) {
-              if (value == null || value.length != 4) {
-                return 'Enter 4 digits';
-              }
-              return null;
-            },
-            defaultPinTheme: defaultPinTheme,
-            hapticFeedbackType: HapticFeedbackType.lightImpact,
-            onCompleted: (pin) => debugPrint('Completed: $pin'),
-            onChanged: (value) => debugPrint('Changed: $value'),
-            cursor: Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Container(
-                  margin: const EdgeInsets.only(bottom: 9),
-                  width: 24,
-                  height: 2,
-                  color: theme.textTheme.bodyLarge?.color ?? Colors.black,
+    return Scaffold(
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Directionality(
+            textDirection: TextDirection.ltr,
+            child: Pinput(
+              length: 4,
+              controller: pinController,
+              validator: (value) {
+                if (value == null || value.length != 4) {
+                  return 'Enter 4 digits';
+                }
+                return null;
+              },
+              defaultPinTheme: defaultPinTheme,
+              hapticFeedbackType: HapticFeedbackType.lightImpact,
+              onCompleted: (pin) => debugPrint('Completed: $pin'),
+              onChanged: (value) => debugPrint('Changed: $value'),
+              cursor: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Container(
+                    margin: const EdgeInsets.only(bottom: 9),
+                    width: 24,
+                    height: 2,
+                    color: theme.textTheme.bodyLarge?.color ?? Colors.black,
+                  ),
+                ],
+              ),
+              focusedPinTheme: defaultPinTheme.copyWith(
+                decoration: defaultPinTheme.decoration!.copyWith(
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(color: theme.colorScheme.primary),
                 ),
-              ],
-            ),
-            focusedPinTheme: defaultPinTheme.copyWith(
-              decoration: defaultPinTheme.decoration!.copyWith(
-                borderRadius: BorderRadius.circular(8),
-                border: Border.all(color: theme.colorScheme.primary),
               ),
-            ),
-            submittedPinTheme: defaultPinTheme.copyWith(
-              decoration: defaultPinTheme.decoration!.copyWith(
-                color: theme.colorScheme.surface,
-                borderRadius: BorderRadius.circular(10),
-                border: Border.all(color: theme.colorScheme.primary),
+              submittedPinTheme: defaultPinTheme.copyWith(
+                decoration: defaultPinTheme.decoration!.copyWith(
+                  color: theme.colorScheme.surface,
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(color: theme.colorScheme.primary),
+                ),
               ),
-            ),
-            errorPinTheme: defaultPinTheme.copyWith(
-              decoration: defaultPinTheme.decoration!.copyWith(
-                border: Border.all(color: theme.colorScheme.error),
+              errorPinTheme: defaultPinTheme.copyWith(
+                decoration: defaultPinTheme.decoration!.copyWith(
+                  border: Border.all(color: theme.colorScheme.error),
+                ),
               ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 

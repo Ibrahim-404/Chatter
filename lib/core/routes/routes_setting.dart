@@ -18,12 +18,10 @@ class RoutesSettings {
         return createAnimatedRoute(
           MultiBlocProvider(
             providers: [
-              BlocProvider(
-                create: (context) => SendVarifyBloc(authRepo: sl())),
-                BlocProvider(
-                  create: (context) => ValidationBloc()),
+              BlocProvider(create: (context) => SendVarifyBloc(authRepo: sl())),
+              BlocProvider(create: (context) => ValidationBloc()),
             ],
-            
+
             child: IntroFirstOpening(),
           ),
         );

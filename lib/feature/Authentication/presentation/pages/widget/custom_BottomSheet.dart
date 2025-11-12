@@ -16,7 +16,8 @@ class ShowMyBottomSheet extends StatefulWidget {
 
 class _ShowMyBottomSheetState extends State<ShowMyBottomSheet> {
   final TextEditingController _phoneNumber = TextEditingController();
-  String selectedCountryCode = "+20";
+  // String selectedCountryCode = "+20";
+  final ValueNotifier<String> selectedCountryCode = ValueNotifier("+20");
 
   @override
   Widget build(BuildContext context) {
@@ -70,16 +71,24 @@ class _ShowMyBottomSheetState extends State<ShowMyBottomSheet> {
                       border: Border.all(color: Colors.grey),
                       borderRadius: BorderRadius.circular(8),
                     ),
-                    child: CountryCodePicker(
-                      onChanged: (country) {
-                        selectedCountryCode = country.dialCode ?? "+20";
-                      },
-                      initialSelection: "EG",
-                      favorite: const ["+20", "EG"],
-                      showCountryOnly: false,
-                      showFlag: true,
-                      showOnlyCountryWhenClosed: false,
-                      alignLeft: false,
+                    child: ValueListenableBuilder(
+                      valueListenable: selectedCountryCode,
+                      builder: (context, value, child) {
+                        return CountryCodePicker(
+                          onChanged: (country) {
+                            selectedCountryCode.value = country.dialCode ?? "+20";
+                          },
+                          onInit: (country) {
+                            selectedCountryCode.value = country?.dialCode ?? "+20";
+                          },
+                          initialSelection: "EG",
+                          favorite: const ["+20", "EG"],
+                          showCountryOnly: false,
+                          showFlag: true,
+                          showOnlyCountryWhenClosed: false,
+                          alignLeft: false,
+                        );
+                      }
                     ),
                   ),
                   const SizedBox(width: 8),
@@ -95,7 +104,7 @@ class _ShowMyBottomSheetState extends State<ShowMyBottomSheet> {
                       onChanged: (value) {
                         BlocProvider.of<ValidationBloc>(
                           context,
-                        ).add(ValidatePhoneNumber(value, selectedCountryCode));
+                        ).add(ValidatePhoneNumber(value, selectedCountryCode.value));
                       },
                       onTapOutside:
                           (_) => FocusManager.instance.primaryFocus?.unfocus(),
@@ -121,7 +130,7 @@ class _ShowMyBottomSheetState extends State<ShowMyBottomSheet> {
                                 BlocProvider.of<SendVarifyBloc>(context).add(
                                   SendOtpEvent(
                                     phoneNumber: phone,
-                                    dialCode: selectedCountryCode,
+                                    dialCode: selectedCountryCode.value,
                                   ),
                                 );
                               }
