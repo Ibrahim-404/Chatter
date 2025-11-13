@@ -30,14 +30,16 @@ class _ShowMyBottomSheetState extends State<ShowMyBottomSheet> {
             message: "Check your SMS for the verification code 👀",
             imagePath: Assets.assetsIconsChat,
           );
-          Navigator.pushReplacementNamed(context, RoutesNames.signIn);
+          Future.delayed(const Duration(milliseconds: 500), () {
+            Navigator.pushReplacementNamed(context, RoutesNames.signIn);
+          });
         }
 
         if (sendOtpState is SendFailure) {
           showCustomNotification(
             context: context,
             title: "Chatter",
-            message: "${sendOtpState.errorMessage} ❌",
+            message: "${sendOtpState.errorMessage} ",
             imagePath: Assets.assetsIconsChat,
           );
         }
@@ -76,10 +78,12 @@ class _ShowMyBottomSheetState extends State<ShowMyBottomSheet> {
                       builder: (context, value, child) {
                         return CountryCodePicker(
                           onChanged: (country) {
-                            selectedCountryCode.value = country.dialCode ?? "+20";
+                            selectedCountryCode.value =
+                                country.dialCode ?? "+20";
                           },
                           onInit: (country) {
-                            selectedCountryCode.value = country?.dialCode ?? "+20";
+                            selectedCountryCode.value =
+                                country?.dialCode ?? "+20";
                           },
                           initialSelection: "EG",
                           favorite: const ["+20", "EG"],
@@ -88,7 +92,7 @@ class _ShowMyBottomSheetState extends State<ShowMyBottomSheet> {
                           showOnlyCountryWhenClosed: false,
                           alignLeft: false,
                         );
-                      }
+                      },
                     ),
                   ),
                   const SizedBox(width: 8),
@@ -102,9 +106,10 @@ class _ShowMyBottomSheetState extends State<ShowMyBottomSheet> {
                         labelText: "** **** ***",
                       ),
                       onChanged: (value) {
-                        BlocProvider.of<ValidationBloc>(
-                          context,
-                        ).add(ValidatePhoneNumber(value, selectedCountryCode.value));
+                        BlocProvider.of<ValidationBloc>(context).add(
+                          ValidatePhoneNumber(value, selectedCountryCode.value),
+                        );
+                        print(value);
                       },
                       onTapOutside:
                           (_) => FocusManager.instance.primaryFocus?.unfocus(),
@@ -113,7 +118,6 @@ class _ShowMyBottomSheetState extends State<ShowMyBottomSheet> {
                 ],
               ),
 
-              /// Next button
               Padding(
                 padding: const EdgeInsets.only(top: 16),
                 child: BlocBuilder<ValidationBloc, ValidationState>(
@@ -125,7 +129,7 @@ class _ShowMyBottomSheetState extends State<ShowMyBottomSheet> {
                     return InkWell(
                       onTap:
                           isValid
-                              ? () {
+                              ? () async {
                                 final phone = _phoneNumber.text.trim();
                                 BlocProvider.of<SendVarifyBloc>(context).add(
                                   SendOtpEvent(

@@ -3,7 +3,7 @@ import 'package:chatter/core/widget/navigation_helper.dart.dart';
 import 'package:chatter/feature/Authentication/presentation/manager/auht_bloc/bloc/send_varify_bloc.dart';
 import 'package:chatter/feature/Authentication/presentation/manager/auht_bloc/validation/bloc/validation_bloc.dart';
 import 'package:chatter/feature/Authentication/presentation/pages/intro_first_opeing.dart';
-import 'package:chatter/feature/Authentication/presentation/pages/opt_Screen.dart';
+import 'package:chatter/feature/Authentication/presentation/pages/otp_screen.dart';
 import 'package:chatter/feature/injection_container.dart';
 import 'package:chatter/feature/splash/presentation/splash_screen.dart';
 import 'package:flutter/material.dart';
@@ -27,7 +27,7 @@ class RoutesSettings {
         );
 
       case RoutesNames.signIn:
-        return createAnimatedRoute(const OtpTextField());
+        return createAnimatedRoute(const OtpScreen());
       case RoutesNames.home:
       // return MaterialPageRoute(builder: (_) => HomeScreen());
       default:

@@ -5,6 +5,7 @@ import 'package:chatter/feature/Authentication/errors/auth_error_handling.dart';
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'dart:async';
 
 class AuthRepoDataLayer implements AuthRepo {
   String? verificationId;
@@ -17,27 +18,36 @@ class AuthRepoDataLayer implements AuthRepo {
     try {
       final String fullPhoneNumber = ('$dialCode$phoneNumber');
       FirebaseAuth auth = FirebaseAuth.instance;
+
+      // Create a completer to wait for the codeSent callback
+      final completer = Completer<String>();
+
       await auth.verifyPhoneNumber(
         phoneNumber: fullPhoneNumber,
         verificationCompleted: (PhoneAuthCredential credential) {
-          logger.d("✅ Verification completed automatically.");
+          logger.d(" Verification completed automatically.");
         },
         verificationFailed: (FirebaseAuthException error) {
-          logger.e("❌ Verification failed: ${error.message}");
-          throw FirebaseAuthException(code: error.code, message: error.message);
+          logger.e(" Verification failed: ${error.message}");
+          if (!completer.isCompleted) {
+            completer.completeError(error);
+          }
         },
         codeSent: (String verificationId, int? resendToken) {
           this.verificationId = verificationId;
-          logger.i(
-            "📩 Code sent successfully. verificationId: $verificationId",
-          );
+          logger.i(" Code sent successfully. verificationId: $verificationId");
+          if (!completer.isCompleted) {
+            completer.complete(verificationId);
+          }
         },
         codeAutoRetrievalTimeout: (String verificationId) {
-          logger.w("⌛ Auto retrieval timeout. verificationId: $verificationId");
+          logger.w(" Auto retrieval timeout. verificationId: $verificationId");
         },
       );
 
-      return Right(this.verificationId!);
+      // Wait for the codeSent callback to complete
+      final verificationId = await completer.future;
+      return Right(verificationId);
     } catch (e) {
       return Left(FirebaseErrorHandler(e.toString()));
     }

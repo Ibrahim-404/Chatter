@@ -11,17 +11,17 @@ class SendVarifyBloc extends Bloc<SendVarifyEvent, SendVarifyState> {
 
   SendVarifyBloc({required this.authRepo}) : super(SendVarifyInitial()) {
     on<SendOtpEvent>((event, emit) async {
-      logger.i("➡️ SendOtpEvent triggered with ${event.phoneNumber}");
+      logger.i(" SendOtpEvent triggered with ${event.phoneNumber}");
       emit(SendLoading());
       final result = await authRepo.sendOtp(event.phoneNumber, event.dialCode);
 
       result.fold(
         (failure) {
-          logger.e("❌ Send OTP failed: ${failure.message}");
+          logger.e(" Send OTP failed: ${failure.message}");
           emit(SendFailure(failure.message));
         },
         (verificationId) {
-          logger.i("✅ OTP sent successfully. Verification ID: $verificationId");
+          logger.i(" OTP sent successfully. Verification ID: $verificationId");
           emit(SendSuccess(verificationId: verificationId));
         },
       );
