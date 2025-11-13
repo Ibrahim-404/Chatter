@@ -16,7 +16,6 @@ class ShowMyBottomSheet extends StatefulWidget {
 
 class _ShowMyBottomSheetState extends State<ShowMyBottomSheet> {
   final TextEditingController _phoneNumber = TextEditingController();
-  // String selectedCountryCode = "+20";
   final ValueNotifier<String> selectedCountryCode = ValueNotifier("+20");
 
   @override
@@ -31,7 +30,7 @@ class _ShowMyBottomSheetState extends State<ShowMyBottomSheet> {
             imagePath: Assets.assetsIconsChat,
           );
           Future.delayed(const Duration(milliseconds: 500), () {
-            Navigator.pushReplacementNamed(context, RoutesNames.signIn);
+            Navigator.pushReplacementNamed(context, RoutesNames.signIn,arguments: "${selectedCountryCode.value}${_phoneNumber.text.trim()}",);
           });
         }
 
