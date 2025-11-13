@@ -46,33 +46,40 @@ class _OtpTextFieldState extends State<OtpTextField> {
               }
               return null;
             },
-            defaultPinTheme: defaultPinTheme.copyWith(
+            defaultPinTheme: PinTheme(
+              width: 56,
+              height: 56,
+              textStyle: TextStyle(
+                fontSize: 22,
+                color: theme.textTheme.bodyLarge?.color ?? Colors.black,
+              ),
               decoration: BoxDecoration(
                 border: Border(
-                  bottom: BorderSide(color: Colors.blue, width: 2),
+                  bottom: BorderSide(
+                    color: theme.textTheme.bodyLarge?.color ?? Colors.black,
+                    width: 2,
+                  ),
                 ),
               ),
             ),
-            hapticFeedbackType: HapticFeedbackType.lightImpact,
-            onCompleted: (pin) => debugPrint('Completed: $pin'),
-            onChanged: (value) => debugPrint('Changed: $value'),
-            cursor: Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Container(
-                  margin: const EdgeInsets.only(bottom: 9),
-                  width: 24,
-                  height: 2,
-                  color: theme.textTheme.bodyLarge?.color ?? Colors.black,
+
+            focusedPinTheme: PinTheme(
+              width: 56,
+              height: 56,
+              textStyle: TextStyle(
+                fontSize: 22,
+                color: theme.textTheme.bodyLarge?.color ?? Colors.black,
+              ),
+              decoration: BoxDecoration(
+                border: Border(
+                  bottom: BorderSide(
+                    color: theme.colorScheme.primary,
+                    width: 3,
+                  ),
                 ),
-              ],
-            ),
-            focusedPinTheme: defaultPinTheme.copyWith(
-              decoration: defaultPinTheme.decoration!.copyWith(
-                borderRadius: BorderRadius.circular(8),
-                border: Border.all(color: theme.colorScheme.primary),
               ),
             ),
+
             submittedPinTheme: defaultPinTheme.copyWith(
               decoration: defaultPinTheme.decoration!.copyWith(
                 color: theme.colorScheme.surface,

@@ -13,5 +13,5 @@ class Assets {
       "assets/images/stay_connected.png";
 
   static const String assetsImagesWelcome = "assets/images/welcome.png";
-  static const String assetsImagesOtp = "assets/images/otp.png";
+  static const String assetsImagesOtp = "assets/images/OTP 1.png";
 }

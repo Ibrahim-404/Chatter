@@ -18,7 +18,9 @@ class _OtpScreenState extends State<OtpScreen> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Image.asset(Assets.assetsImagesOtp),
+          Expanded(
+            flex: 2,
+            child: Center(child: Image.asset(Assets.assetsImagesOtp, fit: BoxFit.contain,))),
           const SizedBox(height: 20),
           Text(
             "OTP Verification",
@@ -27,7 +29,7 @@ class _OtpScreenState extends State<OtpScreen> {
           const SizedBox(height: 10),
           CustomRichTextEnterOtp(phoneNumber: widget.phoneNumber),
           const SizedBox(height: 24),
-          OtpTextField(),
+          Center(child: OtpTextField()),
           const SizedBox(height: 24),
         ],
       ),
