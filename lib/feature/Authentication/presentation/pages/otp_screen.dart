@@ -1,7 +1,10 @@
 import 'package:chatter/core/constants/assets.dart';
 import 'package:chatter/core/widget/custom_notification_widget.dart';
+import 'package:chatter/feature/Authentication/presentation/manager/auht_bloc/bloc/send_varify_bloc.dart';
 import 'package:chatter/feature/Authentication/presentation/pages/widget/OtpInputField.dart';
+import 'package:chatter/feature/injection_container.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class OtpScreen extends StatefulWidget {
   String phoneNumber;
@@ -18,9 +21,7 @@ class _OtpScreenState extends State<OtpScreen> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Expanded(
-            flex: 2,
-            child: Center(child: Image.asset(Assets.assetsImagesOtp, fit: BoxFit.contain,))),
+          OtpImage(),
           const SizedBox(height: 20),
           Text(
             "OTP Verification",
@@ -29,9 +30,31 @@ class _OtpScreenState extends State<OtpScreen> {
           const SizedBox(height: 10),
           CustomRichTextEnterOtp(phoneNumber: widget.phoneNumber),
           const SizedBox(height: 24),
-          Center(child: OtpTextField()),
+          Center(
+            child: BlocProvider(
+              create: (context) => SendVarifyBloc(authRepo: sl()),
+              child: OtpTextField(),
+            ),
+          ),
           const SizedBox(height: 24),
         ],
+      ),
+    );
+  }
+}
+
+class OtpImage extends StatelessWidget {
+  const OtpImage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Align(
+      alignment: Alignment.topCenter,
+      child: Image.asset(
+        Assets.assetsImagesOtp,
+        fit: BoxFit.contain,
+        width: 200,
+        height: 200,
       ),
     );
   }

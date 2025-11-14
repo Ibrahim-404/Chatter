@@ -27,8 +27,8 @@ class RoutesSettings {
         );
 
       case RoutesNames.signIn:
-      final phoneNumber = settings.arguments as String;
-        return createAnimatedRoute( OtpScreen(phoneNumber: phoneNumber,));
+        final phoneNumber = settings.arguments as String;
+        return createAnimatedRoute(OtpScreen(phoneNumber: phoneNumber));
       case RoutesNames.home:
       // return MaterialPageRoute(builder: (_) => HomeScreen());
       default:

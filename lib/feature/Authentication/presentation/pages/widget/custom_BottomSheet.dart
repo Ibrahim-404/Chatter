@@ -30,7 +30,12 @@ class _ShowMyBottomSheetState extends State<ShowMyBottomSheet> {
             imagePath: Assets.assetsIconsChat,
           );
           Future.delayed(const Duration(milliseconds: 500), () {
-            Navigator.pushReplacementNamed(context, RoutesNames.signIn,arguments: "${selectedCountryCode.value}${_phoneNumber.text.trim()}",);
+            Navigator.pushReplacementNamed(
+              context,
+              RoutesNames.signIn,
+              arguments:
+                  "${selectedCountryCode.value}${_phoneNumber.text.trim()}",
+            );
           });
         }
 

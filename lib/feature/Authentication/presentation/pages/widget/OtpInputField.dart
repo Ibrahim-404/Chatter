@@ -1,4 +1,6 @@
+import 'package:chatter/feature/Authentication/presentation/manager/auht_bloc/bloc/send_varify_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pinput/pinput.dart';
 
 class OtpTextField extends StatefulWidget {
@@ -32,69 +34,73 @@ class _OtpTextFieldState extends State<OtpTextField> {
       ),
     );
 
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Directionality(
-          textDirection: TextDirection.ltr,
-          child: Pinput(
-            length: 6,
-            controller: pinController,
-            validator: (value) {
-              if (value == null || value.length != 6) {
-                return 'Enter 6 digits';
-              }
-              return null;
-            },
-            defaultPinTheme: PinTheme(
-              width: 56,
-              height: 56,
-              textStyle: TextStyle(
-                fontSize: 22,
-                color: theme.textTheme.bodyLarge?.color ?? Colors.black,
-              ),
-              decoration: BoxDecoration(
-                border: Border(
-                  bottom: BorderSide(
+    return BlocBuilder<SendVarifyBloc, SendVarifyState>(
+      builder: (context, state) {
+        return Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Directionality(
+              textDirection: TextDirection.ltr,
+              child: Pinput(
+                length: 6,
+                controller: pinController,
+                validator: (value) {
+                  if (value == null || value.length != 6) {
+                    return 'Enter 6 digits';
+                  }
+                  return null;
+                },
+                defaultPinTheme: PinTheme(
+                  width: 56,
+                  height: 56,
+                  textStyle: TextStyle(
+                    fontSize: 22,
                     color: theme.textTheme.bodyLarge?.color ?? Colors.black,
-                    width: 2,
+                  ),
+                  decoration: BoxDecoration(
+                    border: Border(
+                      bottom: BorderSide(
+                        color: theme.textTheme.bodyLarge?.color ?? Colors.black,
+                        width: 2,
+                      ),
+                    ),
+                  ),
+                ),
+
+                focusedPinTheme: PinTheme(
+                  width: 56,
+                  height: 56,
+                  textStyle: TextStyle(
+                    fontSize: 22,
+                    color: theme.textTheme.bodyLarge?.color ?? Colors.black,
+                  ),
+                  decoration: BoxDecoration(
+                    border: Border(
+                      bottom: BorderSide(
+                        color: theme.colorScheme.primary,
+                        width: 3,
+                      ),
+                    ),
+                  ),
+                ),
+
+                submittedPinTheme: defaultPinTheme.copyWith(
+                  decoration: defaultPinTheme.decoration!.copyWith(
+                    color: theme.colorScheme.surface,
+                    borderRadius: BorderRadius.circular(10),
+                    border: Border.all(color: theme.colorScheme.primary),
+                  ),
+                ),
+                errorPinTheme: defaultPinTheme.copyWith(
+                  decoration: defaultPinTheme.decoration!.copyWith(
+                    border: Border.all(color: theme.colorScheme.error),
                   ),
                 ),
               ),
             ),
-
-            focusedPinTheme: PinTheme(
-              width: 56,
-              height: 56,
-              textStyle: TextStyle(
-                fontSize: 22,
-                color: theme.textTheme.bodyLarge?.color ?? Colors.black,
-              ),
-              decoration: BoxDecoration(
-                border: Border(
-                  bottom: BorderSide(
-                    color: theme.colorScheme.primary,
-                    width: 3,
-                  ),
-                ),
-              ),
-            ),
-
-            submittedPinTheme: defaultPinTheme.copyWith(
-              decoration: defaultPinTheme.decoration!.copyWith(
-                color: theme.colorScheme.surface,
-                borderRadius: BorderRadius.circular(10),
-                border: Border.all(color: theme.colorScheme.primary),
-              ),
-            ),
-            errorPinTheme: defaultPinTheme.copyWith(
-              decoration: defaultPinTheme.decoration!.copyWith(
-                border: Border.all(color: theme.colorScheme.error),
-              ),
-            ),
-          ),
-        ),
-      ],
+          ],
+        );
+      },
     );
   }
 
