@@ -19,10 +19,10 @@ class SendOtpEvent extends SendVarifyEvent {
 
 class VerifyOtpEvent extends SendVarifyEvent {
   final String otp;
-  final String verificationId;
+  // final String verificationId;
 
-  const VerifyOtpEvent({required this.otp, required this.verificationId});
+  const VerifyOtpEvent({required this.otp});
 
   @override
-  List<Object?> get props => [otp, verificationId];
+  List<Object?> get props => [otp];
 }

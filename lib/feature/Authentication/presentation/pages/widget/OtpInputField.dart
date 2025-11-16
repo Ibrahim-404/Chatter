@@ -1,6 +1,7 @@
 import 'package:chatter/feature/Authentication/presentation/manager/auht_bloc/bloc/send_varify_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:logger/logger.dart';
 import 'package:pinput/pinput.dart';
 
 class OtpTextField extends StatefulWidget {
@@ -43,6 +44,7 @@ class _OtpTextFieldState extends State<OtpTextField> {
               backgroundColor: theme.colorScheme.error,
             ),
           );
+          Logger().e(" OTP Verification failed: ${state.errorMessage}");
         }
         if (state is VerifyCodeSuccess) {
           ScaffoldMessenger.of(context).showSnackBar(
@@ -81,7 +83,6 @@ class _OtpTextFieldState extends State<OtpTextField> {
                   context.read<SendVarifyBloc>().add(
                     VerifyOtpEvent(
                       otp: pin,
-                      verificationId: (state as SendSuccess).verificationId,
                     ),
                   );
                 },

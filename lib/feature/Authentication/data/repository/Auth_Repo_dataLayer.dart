@@ -62,8 +62,7 @@ class AuthRepoDataLayer implements AuthRepo {
       final auth = FirebaseAuth.instance;
 
       final credential = PhoneAuthProvider.credential(
-
-        verificationId:verificationId!,
+        verificationId: verificationId!,
         smsCode: smsCode,
       );
 
@@ -73,7 +72,7 @@ class AuthRepoDataLayer implements AuthRepo {
       if (user == null) {
         return Left(FirebaseErrorHandler("User not found after verification"));
       }
-
+      await auth.signInWithCredential(credential);
       await Supabase.instance.client.from('users').upsert({
         'id': user.uid,
         'phone_number': user.phoneNumber,
