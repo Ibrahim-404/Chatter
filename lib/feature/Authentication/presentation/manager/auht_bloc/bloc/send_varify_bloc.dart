@@ -29,7 +29,7 @@ class SendVarifyBloc extends Bloc<SendVarifyEvent, SendVarifyState> {
 
     on<VerifyOtpEvent>((event, emit) async {
       emit(VerifyCodeLoading());
-      final result = await authRepo.verifyOtp(event.otp, event.verificationId);
+      final result = await authRepo.verifyOtp(event.otp);
       result.fold(
         (failure) => emit(VerifyCodeFailure(failure.message)),
         (_) => emit(VerifyCodeSuccess()),

@@ -6,6 +6,6 @@ class VerifyOtpUseCase {
   VerifyOtpUseCase(this.authRepo);
 
   Future<void> call(String smsCode, String verificationId) async {
-    await authRepo.verifyOtp(smsCode, verificationId);
+    await authRepo.verifyOtp(smsCode);
   }
 }

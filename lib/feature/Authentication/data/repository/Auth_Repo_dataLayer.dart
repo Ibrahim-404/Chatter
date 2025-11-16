@@ -56,13 +56,14 @@ class AuthRepoDataLayer implements AuthRepo {
   @override
   Future<Either<Failure, void>> verifyOtp(
     String smsCode,
-    String verificationId,
+    // String verificationId,
   ) async {
     try {
       final auth = FirebaseAuth.instance;
 
       final credential = PhoneAuthProvider.credential(
-        verificationId: verificationId,
+
+        verificationId:verificationId!,
         smsCode: smsCode,
       );
 

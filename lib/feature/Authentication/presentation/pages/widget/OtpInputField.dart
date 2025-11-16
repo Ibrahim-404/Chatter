@@ -34,7 +34,29 @@ class _OtpTextFieldState extends State<OtpTextField> {
       ),
     );
 
-    return BlocBuilder<SendVarifyBloc, SendVarifyState>(
+    return BlocConsumer<SendVarifyBloc, SendVarifyState>(
+      listener: (context, state) {
+        if (state is VerifyCodeFailure) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(state.errorMessage),
+              backgroundColor: theme.colorScheme.error,
+            ),
+          );
+        }
+        if (state is VerifyCodeSuccess) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('OTP Verified Successfully!'),
+              backgroundColor: theme.colorScheme.primary,
+            ),
+          );
+          // Navigator.of(context).pop();
+        }
+     if (state is VerifyCodeLoading) {
+        CircularProgressIndicator(color: theme.colorScheme.primary);
+      }
+      },
       builder: (context, state) {
         return Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -42,8 +64,27 @@ class _OtpTextFieldState extends State<OtpTextField> {
             Directionality(
               textDirection: TextDirection.ltr,
               child: Pinput(
+                closeKeyboardWhenCompleted: true,
+                keyboardType: TextInputType.number,
+                errorBuilder: (errorText, pin) {
+                  return Text(
+                    'Invalid OTP',
+                    style: TextStyle(
+                      color: theme.colorScheme.error,
+                      fontSize: 12,
+                    ),
+                  );
+                },
                 length: 6,
                 controller: pinController,
+                onCompleted: (pin) {
+                  context.read<SendVarifyBloc>().add(
+                    VerifyOtpEvent(
+                      otp: pin,
+                      verificationId: (state as SendSuccess).verificationId,
+                    ),
+                  );
+                },
                 validator: (value) {
                   if (value == null || value.length != 6) {
                     return 'Enter 6 digits';
