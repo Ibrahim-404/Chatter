@@ -27,8 +27,11 @@ class RoutesSettings {
         );
 
       case RoutesNames.signIn:
-        final phoneNumber = settings.arguments as String;
-        return createAnimatedRoute(OtpScreen(phoneNumber: phoneNumber));
+        final phoneNumber = settings.arguments as Map<String, String>;
+        final phone = phoneNumber['phone']!;
+        final dialCode = phoneNumber['dialCode']!;
+
+        return createAnimatedRoute(OtpScreen(phoneNumber: phone, dialCode: dialCode));
       case RoutesNames.home:
       // return MaterialPageRoute(builder: (_) => HomeScreen());
       default:

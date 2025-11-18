@@ -55,9 +55,9 @@ class _OtpTextFieldState extends State<OtpTextField> {
           );
           // Navigator.of(context).pop();
         }
-     if (state is VerifyCodeLoading) {
-        CircularProgressIndicator(color: theme.colorScheme.primary);
-      }
+        if (state is VerifyCodeLoading) {
+          CircularProgressIndicator(color: theme.colorScheme.primary);
+        }
       },
       builder: (context, state) {
         return Column(
@@ -80,11 +80,7 @@ class _OtpTextFieldState extends State<OtpTextField> {
                 length: 6,
                 controller: pinController,
                 onCompleted: (pin) {
-                  context.read<SendVarifyBloc>().add(
-                    VerifyOtpEvent(
-                      otp: pin,
-                    ),
-                  );
+                  context.read<SendVarifyBloc>().add(VerifyOtpEvent(otp: pin));
                 },
                 validator: (value) {
                   if (value == null || value.length != 6) {

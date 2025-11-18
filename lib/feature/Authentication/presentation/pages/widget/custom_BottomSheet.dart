@@ -33,8 +33,11 @@ class _ShowMyBottomSheetState extends State<ShowMyBottomSheet> {
             Navigator.pushReplacementNamed(
               context,
               RoutesNames.signIn,
-              arguments:
-                  "${selectedCountryCode.value}${_phoneNumber.text.trim()}",
+              arguments:{
+                'phone': _phoneNumber.text.trim(),
+                'dialCode': selectedCountryCode.value,
+              }
+                  
             );
           });
         }
