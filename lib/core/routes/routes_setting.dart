@@ -4,6 +4,7 @@ import 'package:chatter/feature/Authentication/presentation/manager/auht_bloc/bl
 import 'package:chatter/feature/Authentication/presentation/manager/auht_bloc/validation/bloc/validation_bloc.dart';
 import 'package:chatter/feature/Authentication/presentation/pages/intro_first_opeing.dart';
 import 'package:chatter/feature/Authentication/presentation/pages/otp_screen.dart';
+import 'package:chatter/feature/Chats%20List/presentation/UI/Screens/home.dart';
 import 'package:chatter/feature/injection_container.dart';
 import 'package:chatter/feature/splash/presentation/splash_screen.dart';
 import 'package:flutter/material.dart';
@@ -31,9 +32,11 @@ class RoutesSettings {
         final phone = phoneNumber['phone']!;
         final dialCode = phoneNumber['dialCode']!;
 
-        return createAnimatedRoute(OtpScreen(phoneNumber: phone, dialCode: dialCode));
+        return createAnimatedRoute(
+          OtpScreen(phoneNumber: phone, dialCode: dialCode),
+        );
       case RoutesNames.home:
-      // return MaterialPageRoute(builder: (_) => HomeScreen());
+        return MaterialPageRoute(builder: (_) => HomeScreen());
       default:
         return null;
     }

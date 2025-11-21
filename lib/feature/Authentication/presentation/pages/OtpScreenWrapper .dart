@@ -8,19 +8,19 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class OtpScreenWrapper extends StatelessWidget {
   final String phone;
   final String dialCode;
-  
-  const OtpScreenWrapper({super.key, required this.phone, required this.dialCode});
+
+  const OtpScreenWrapper({
+    super.key,
+    required this.phone,
+    required this.dialCode,
+  });
 
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(
-          create: (_) => TimerCubit(30)..startTimer(),
-        ),
-        BlocProvider(
-          create: (_) => SendVarifyBloc(authRepo: sl()),
-        ),
+        BlocProvider(create: (_) => TimerCubit(30)..startTimer()),
+        BlocProvider(create: (_) => SendVarifyBloc(authRepo: sl())),
       ],
       child: OtpScreen(phoneNumber: phone, dialCode: dialCode),
     );

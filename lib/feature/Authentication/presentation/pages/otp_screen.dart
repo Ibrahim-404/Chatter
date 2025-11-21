@@ -11,7 +11,7 @@ import 'package:chatter/feature/Authentication/presentation/pages/widget/OtpInpu
 class OtpScreen extends StatefulWidget {
   final String phoneNumber;
   final String dialCode;
-  
+
   OtpScreen({super.key, required this.phoneNumber, required this.dialCode});
 
   @override
@@ -21,30 +21,30 @@ class OtpScreen extends StatefulWidget {
 class _OtpScreenState extends State<OtpScreen> {
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
-      body: 
-         Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            OtpImage(),
-            const SizedBox(height: 20),
-            Text(
-              "OTP Verification",
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-            const SizedBox(height: 10),
-            CustomRichTextEnterOtp(phoneNumber: widget.phoneNumber),
-            const SizedBox(height: 24),
-            Center(child: OtpTextField()),
-            const SizedBox(height: 24),
-            ResendOtpWithTimer(phoneNumber: widget.phoneNumber, dialCode: widget.dialCode),
-          ],
-        ),
-      
+    return Scaffold(
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          OtpImage(),
+          const SizedBox(height: 20),
+          Text(
+            "OTP Verification",
+            style: Theme.of(context).textTheme.headlineMedium,
+          ),
+          const SizedBox(height: 10),
+          CustomRichTextEnterOtp(phoneNumber: widget.phoneNumber),
+          const SizedBox(height: 24),
+          Center(child: OtpTextField()),
+          const SizedBox(height: 24),
+          ResendOtpWithTimer(
+            phoneNumber: widget.phoneNumber,
+            dialCode: widget.dialCode,
+          ),
+        ],
+      ),
     );
   }
 }
-
 
 class OtpImage extends StatelessWidget {
   const OtpImage({super.key});
@@ -64,7 +64,7 @@ class OtpImage extends StatelessWidget {
 }
 
 class CustomRichTextEnterOtp extends StatelessWidget {
-  final String phoneNumber ;
+  final String phoneNumber;
   CustomRichTextEnterOtp({super.key, required this.phoneNumber});
 
   @override
@@ -85,6 +85,7 @@ class CustomRichTextEnterOtp extends StatelessWidget {
     );
   }
 }
+
 class ResendOtp extends StatelessWidget {
   const ResendOtp({super.key});
 
@@ -117,12 +118,16 @@ class ResendOtp extends StatelessWidget {
     );
   }
 }
+
 class ResendOtpWithTimer extends StatelessWidget {
   final String phoneNumber;
   final String dialCode;
-  
-  const ResendOtpWithTimer({Key? key, required this.phoneNumber, required this.dialCode})
-    : super(key: key);
+
+  const ResendOtpWithTimer({
+    Key? key,
+    required this.phoneNumber,
+    required this.dialCode,
+  }) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<SendVarifyBloc, SendVarifyState>(

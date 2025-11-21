@@ -14,4 +14,5 @@ class Assets {
 
   static const String assetsImagesWelcome = "assets/images/welcome.png";
   static const String assetsImagesOtp = "assets/images/OTP 1.png";
+  static const String userPhoto = "assets/images/user_photo.jpg";
 }

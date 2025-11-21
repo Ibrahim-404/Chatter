@@ -41,7 +41,6 @@ class AuthRepoDataLayer implements AuthRepo {
           }
         },
         codeAutoRetrievalTimeout: (String verificationId) {
-          
           logger.w(" Auto retrieval timeout. verificationId: $verificationId");
         },
       );
