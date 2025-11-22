@@ -1,32 +1,34 @@
 import 'package:chatter/core/constants/assets.dart';
+import 'package:chatter/feature/Chats%20List/presentation/UI/widget/showCustomBottomSheet.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 
 class ChatTile extends StatelessWidget {
-  Widget? changeableWidget;
-  ChatTile({super.key, this.changeableWidget});
+  final Widget? changeableWidget;
+  const ChatTile({super.key, this.changeableWidget});
   @override
   Widget build(BuildContext context) {
-    return Dismissible(
-      direction: DismissDirection.endToStart,
-      key: UniqueKey(),
-      onDismissed: (direction) {},
-      background: Row(
+    return Slidable(
+      key: ValueKey(0),
+      endActionPane: ActionPane(
+        motion: ScrollMotion(),
         children: [
-          DismissibleSwibeWidget(
-            color: Colors.grey,
-            text: 'More',
-            onTap: () {},
+          SlidableAction(
+            onPressed: (ctx) {
+              showCustomBottomSheet(context);
+            },
+            backgroundColor: Colors.grey,
             icon: Icons.more_horiz,
+            label: 'More',
           ),
-          DismissibleSwibeWidget(
-            color:Color(0xFF3E70A7),
-            text: 'Archive',
-            onTap: () {},
+          SlidableAction(
+            onPressed: (ctx) {},
+            backgroundColor: Colors.blue,
             icon: Icons.archive,
+            label: 'Archive',
           ),
         ],
       ),
-
       child: Center(
         child: Padding(
           padding: const EdgeInsets.all(8.0),
@@ -93,36 +95,3 @@ class ChatTile extends StatelessWidget {
   }
 }
 
-class DismissibleSwibeWidget extends StatelessWidget {
-  final Color color;
-  final String text;
-  final void Function()? onTap;
-  final IconData? icon;
-  const DismissibleSwibeWidget({
-    super.key,
-    required this.color,
-    required this.text,
-    required this.onTap,
-    required this.icon,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      child: Container(
-        color: color,
-        alignment: Alignment.centerRight,
-        padding: EdgeInsets.only(right: 20),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(icon, color: Colors.white),
-            SizedBox(height: 4),
-            Text(text, style: TextStyle(color: Colors.white)),
-          ],
-        ),
-      ),
-    );
-  }
-}
