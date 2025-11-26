@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 Future<void> showCustomBottomSheet(BuildContext context) {
   return showModalBottomSheet(
     context: context,
-    backgroundColor: Colors.white, 
+    backgroundColor: Colors.white,
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
     ),
@@ -19,7 +19,7 @@ Future<void> showCustomBottomSheet(BuildContext context) {
               title: Text('Delete Chat', style: TextStyle(color: Colors.red)),
               onTap: () {},
             ),
-SizedBox(height: 10),
+            SizedBox(height: 10),
             Container(
               width: double.infinity,
               margin: EdgeInsets.symmetric(horizontal: 10),
@@ -39,8 +39,8 @@ SizedBox(height: 10),
               ),
             ),
 
-SizedBox(height: 10),        
-  ],
+            SizedBox(height: 10),
+          ],
         ),
       );
     },

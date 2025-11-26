@@ -8,6 +8,17 @@ class ChatTile extends StatelessWidget {
   const ChatTile({super.key, this.changeableWidget});
   @override
   Widget build(BuildContext context) {
+    return CustomSlidable(changeableWidget: changeableWidget);
+  }
+}
+
+class CustomSlidable extends StatelessWidget {
+  const CustomSlidable({super.key, required this.changeableWidget});
+
+  final Widget? changeableWidget;
+
+  @override
+  Widget build(BuildContext context) {
     return Slidable(
       key: ValueKey(0),
       endActionPane: ActionPane(
@@ -94,4 +105,3 @@ class ChatTile extends StatelessWidget {
     );
   }
 }
-
