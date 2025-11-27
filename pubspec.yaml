@@ -49,6 +49,7 @@ dependencies:
   pinput: ^5.0.0
   logger: ^2.6.2
   flutter_slidable: ^4.0.3
+  image_picker: ^1.2.1
 
 
 dev_dependencies:
