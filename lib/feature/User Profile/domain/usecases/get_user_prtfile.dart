@@ -10,6 +10,3 @@ class GetUserProfileUseCase {
     return repository.getUserProfile(userId);
   }
 }
-
-
-

@@ -9,7 +9,7 @@ class UserProfile extends StatelessWidget {
   final TextEditingController bioController = TextEditingController();
 
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-   UserProfile({super.key, required this.phoneNumber});
+  UserProfile({super.key, required this.phoneNumber});
   final auth = FirebaseAuth.instance.currentUser!.uid;
   final TryphoneNumber =
       Supabase.instance.client

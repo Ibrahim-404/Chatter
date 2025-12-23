@@ -10,12 +10,12 @@ class MessageStatusTable {
   static Future<void> createTable(Database db) async {
     await db.execute('''
       CREATE TABLE $tableName (
-        $messageId INTEGER NOT NULL,
+        $messageId TEXT NOT NULL,
         $userId TEXT NOT NULL,
-        $statusId INTEGER PRIMARY KEY ,
+        $statusId TEXT PRIMARY KEY ,
         $updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP,
         $status TEXT NOT NULL
       )
     ''');
-  } 
+  }
 }

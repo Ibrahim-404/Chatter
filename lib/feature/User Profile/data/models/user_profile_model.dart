@@ -4,7 +4,9 @@ class UserProfileModel extends UserProfileEntity {
   UserProfileModel({
     required super.name,
     required super.bio,
-    required super.phoneNumber, required super.userId, required super.profilePictureUrl,
+    required super.phoneNumber,
+    required super.userId,
+    required super.profilePictureUrl,
   });
 
   factory UserProfileModel.fromJson(Map<String, dynamic> json) {
@@ -18,11 +20,6 @@ class UserProfileModel extends UserProfileEntity {
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      'name': name,
-      'bio': bio,
-      'phoneNumber': phoneNumber,
-    };
+    return {'name': name, 'bio': bio, 'phoneNumber': phoneNumber};
   }
- 
 }

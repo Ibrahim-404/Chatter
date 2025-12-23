@@ -12,6 +12,7 @@ class MessageTable {
   static const String isEdit = 'is_edit';
   static const String replyToMessageId = 'reply_to_message_id';
   static const String messageType = 'message_type';
+  static const String SyncState = 'sync_state';
   static Future<void> createdb(Database db) async {
     await db.execute('''
       CREATE TABLE $tableName (
@@ -23,7 +24,10 @@ class MessageTable {
         $isRead INTEGER DEFAULT 0,
         $isEdit INTEGER DEFAULT 0,
         $replyToMessageId INTEGER,
-        $messageType TEXT NOT NULL
+        $messageType TEXT NOT NULL ,
+        FOREIGN KEY ($senderId) REFERENCES users(id),
+        FOREIGN KEY ($conversationId) REFERENCES conversations(id)
+
       
     ''');
   }

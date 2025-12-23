@@ -5,7 +5,10 @@ import 'package:dartz/dartz.dart';
 class UpdateUserProfileUseCase {
   final ProfileRepository repository;
   UpdateUserProfileUseCase(this.repository);
-  Future<Either<Failure, Unit>> call(String userId, Map<String, dynamic> profileData) {
+  Future<Either<Failure, Unit>> call(
+    String userId,
+    Map<String, dynamic> profileData,
+  ) {
     return repository.updateUserProfile(userId, profileData);
   }
 }

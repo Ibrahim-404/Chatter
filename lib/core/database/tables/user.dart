@@ -13,10 +13,9 @@ class UserTable {
   static const String createdAt = 'created_at';
 
   static Future<void> createTable(Database db) async {
-    await db.execute(
-      '''
+    await db.execute('''
     CREATE TABLE $tableName (
-      $userId INTEGER PRIMARY KEY ,
+      $userId TEXT PRIMARY KEY ,
       $userName TEXT NOT NULL,
       $phoneNumber TEXT,
       $lastSeen TEXT,
@@ -24,9 +23,9 @@ class UserTable {
       $bio TEXT,
       $isOnline INTEGER DEFAULT 0,
       $status TEXT,
-      $createdAt TEXT DEFAULT CURRENT_TIMESTAMP
+      $createdAt TEXT DEFAULT CURRENT_TIMESTAMP 
+      
     )
-  '''
-);
+  ''');
   }
 }

@@ -12,13 +12,15 @@ class ParticipantTable {
   static Future<void> createdb(Database db) async {
     await db.execute('''
       CREATE TABLE $tableName (
-        $participantId INTEGER PRIMARY KEY ,
-        $conversationId INTEGER NOT NULL,
+        $participantId TEXT PRIMARY KEY ,
+        $conversationId TEXT NOT NULL,
         $muted INTEGER DEFAULT 0,
         $joinedAt TEXT NOT NULL,
         $role TEXT NOT NULL,
-        $leftAt TEXT
-      
+        $leftAt TEXT,
+        FOREIGN KEY ($conversationId) REFERENCES conversations(conversation_id),
+        FOREIGN KEY ($participantId) REFERENCES users(id)
+      )
     ''');
   }
 }
