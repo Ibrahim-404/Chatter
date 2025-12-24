@@ -1,8 +1,5 @@
-enum SyncState {
-   pending,
-  synced,
-  failed,
-}
+enum SyncState { pending, synced, failed }
+
 extension SyncStateExtension on SyncState {
   int toInt() {
     switch (this) {
