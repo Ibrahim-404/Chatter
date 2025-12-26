@@ -9,7 +9,7 @@ class ParticipantTable {
   static const String role = 'role';
   static const String leftAt = 'left_at';
 
-  static Future<void> createdb(Database db) async {
+  static Future<void> createTable(Database db) async {
     await db.execute('''
       CREATE TABLE $tableName (
         $participantId TEXT PRIMARY KEY ,

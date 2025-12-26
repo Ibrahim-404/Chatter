@@ -13,7 +13,7 @@ class MessageTable {
   static const String replyToMessageId = 'reply_to_message_id';
   static const String messageType = 'message_type';
   static const String SyncState = 'sync_state';
-  static Future<void> createdb(Database db) async {
+  static Future<void> createTable(Database db) async {
     await db.execute('''
       CREATE TABLE $tableName (
         $messageId INTEGER PRIMARY KEY AUTOINCREMENT,

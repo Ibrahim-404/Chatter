@@ -1,3 +1,8 @@
+import 'package:chatter/core/database/tables/conversation.dart';
+import 'package:chatter/core/database/tables/message.dart';
+import 'package:chatter/core/database/tables/message_status.dart';
+import 'package:chatter/core/database/tables/participant.dart';
+import 'package:chatter/core/database/tables/user.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -10,13 +15,15 @@ class DatabaseHelper {
   }
 
   Future<void> _onCreate(Database db, int version) async {
-    await db.execute('''
+    
+      
       await UserTable.createTable(db);
       await MessageTable.createTable(db);
       await MessageStatusTable.createTable(db);
       await ConversationTable.createTable(db);
       await ParticipantTable.createTable(db);
-    ''');
+   
+
   }
 
   Future<Database> initializeDatabase() async {

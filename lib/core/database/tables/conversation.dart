@@ -11,7 +11,7 @@ class ConversationTable {
   static const String lastMessageTimestamp = 'last_message_timestamp';
   static const String SyncState = 'sync_state';
 
-  static Future<void> createdb(Database db) async {
+  static Future<void> createTable(Database db) async {
     await db.execute('''
       CREATE TABLE $tableName (
         $conversationId TEXT PRIMARY KEY ,
