@@ -15,15 +15,11 @@ class DatabaseHelper {
   }
 
   Future<void> _onCreate(Database db, int version) async {
-    
-      
-      await UserTable.createTable(db);
-      await MessageTable.createTable(db);
-      await MessageStatusTable.createTable(db);
-      await ConversationTable.createTable(db);
-      await ParticipantTable.createTable(db);
-   
-
+    await UserTable.createTable(db);
+    await MessageTable.createTable(db);
+    await MessageStatusTable.createTable(db);
+    await ConversationTable.createTable(db);
+    await ParticipantTable.createTable(db);
   }
 
   Future<Database> initializeDatabase() async {

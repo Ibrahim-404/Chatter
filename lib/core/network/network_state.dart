@@ -1,5 +1,1 @@
-enum NetworkState {
-  online,
-  offline,
-
-}
+enum NetworkState { online, offline }
