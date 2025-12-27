@@ -1,3 +1,4 @@
+import 'package:chatter/core/database/database_helper.dart';
 import 'package:chatter/core/network/network_checker_implemant.dart';
 import 'package:chatter/feature/Authentication/data/repository/Auth_Repo_dataLayer.dart';
 import 'package:chatter/feature/Authentication/domain/repository/domain_auth_repo.dart';
@@ -10,6 +11,7 @@ Future<void> init() async {
   sl.registerLazySingleton(
     () => NetworkCheckerImplemant(connectionChecker: sl()),
   );
+  sl.registerLazySingleton<DatabaseHelper>(() => DatabaseHelper());
   sl.registerLazySingleton<AuthRepo>(() => AuthRepoDataLayer());
   sl.registerFactory(() => SendVarifyBloc(authRepo: sl()));
 
