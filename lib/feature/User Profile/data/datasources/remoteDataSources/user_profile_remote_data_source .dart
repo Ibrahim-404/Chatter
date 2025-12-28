@@ -1,4 +1,6 @@
+import 'package:chatter/feature/User%20Profile/data/models/user_profile_model.dart';
+
 abstract class UserProfileRemoteDataSource {
-  Future<Map<String, dynamic>> getUserProfile(String userId);
-  Future<void> updateUserProfile(String userId, String userProfile);
+  Future<UserProfileModel> getUserProfile(String userId);
+  Future<void> updateUserProfile(String userId, String imagePath);
 }
