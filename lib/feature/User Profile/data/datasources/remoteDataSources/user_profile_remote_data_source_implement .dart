@@ -15,7 +15,7 @@ class UserProfileRemoteDataSourceImplementation
   }
 
   @override
-  Future<void> updateUserProfile(String userId, String imagePath) async {
+  Future<void> updateUserProfilePicture(String userId, String imagePath) async {
     final String userProfile = imagePath;
     final file = File(imagePath);
     final fileName = '${userId}_profile_picture.png';
@@ -29,5 +29,13 @@ class UserProfileRemoteDataSourceImplementation
         .from('users')
         .update({'profile_photo_link': getPictureUrl})
         .eq('id', userId);
+  }
+
+  @override
+  Future<void> editUserProfile(
+    String userId,
+    Map<String, dynamic> userProfileData,
+  ) {
+    return supabase.from('users').update(userProfileData).eq('id', userId);
   }
 }

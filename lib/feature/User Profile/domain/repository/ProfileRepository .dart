@@ -8,7 +8,7 @@ abstract class ProfileRepository {
     String userId,
     Map<String, dynamic> profileData,
   );
-  Future<Either<Failure, String>> uploadProfilePicture(
+  Future<Either<Failure, Unit>> uploadProfilePicture(
     String userId,
     String imagePath,
   );

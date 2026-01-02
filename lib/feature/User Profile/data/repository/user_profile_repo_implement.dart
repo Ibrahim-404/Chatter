@@ -2,7 +2,8 @@
 import 'package:chatter/core/network/network_checker.dart';
 import 'package:chatter/feature/User%20Profile/data/datasources/localDataScources/user_profile_local_data_source%20.dart';
 import 'package:chatter/feature/User%20Profile/data/datasources/remoteDataSources/user_profile_remote_data_source%20.dart';
-import 'package:chatter/feature/User%20Profile/data/models/user_profile_model.dart';
+import 'package:chatter/feature/User%20Profile/data/models/mappers/user_profile_model_mapper.dart';
+import 'package:chatter/feature/User%20Profile/domain/entities/user_prtofile_entity.dart';
 import 'package:dartz/dartz.dart';
 
 import 'package:chatter/core/feuille/failure.dart';
@@ -24,7 +25,7 @@ class UserProfileRepositoryImplementation implements ProfileRepository {
   }
 
   @override
-  Future<Either<Failure, UserProfileModel>> getUserProfile(
+  Future<Either<Failure, UserProfileEntity>> getUserProfile(
     String userId,
   ) async {
     if (await networkChecker.isConnected) {
@@ -33,7 +34,7 @@ class UserProfileRepositoryImplementation implements ProfileRepository {
           userId,
         );
         await userProfileLocalDataSource.cacheUserProfile(userProfile);
-        return Right(userProfile);
+        return Right(userProfile.toEntity());
       } on Exception catch (e) {
         return Left(ServerFailure(e.toString()));
       }
@@ -41,7 +42,7 @@ class UserProfileRepositoryImplementation implements ProfileRepository {
       try {
         final cachedProfile = await userProfileLocalDataSource
             .getCachedUserProfile(userId);
-        return Right(cachedProfile);
+        return Right(cachedProfile.toEntity());
       } on Exception catch (e) {
         return Left(ServerFailure(e.toString()));
       }
@@ -52,17 +53,34 @@ class UserProfileRepositoryImplementation implements ProfileRepository {
   Future<Either<Failure, Unit>> updateUserProfile(
     String userId,
     Map<String, dynamic> profileData,
-  ) {
-    // TODO: implement updateUserProfile
-    throw UnimplementedError();
+  ) async {
+    if (await networkChecker.isConnected) {
+      try {
+        await userProfileRemoteDataSource.editUserProfile(userId, profileData);
+        return Right(unit);
+      } on Exception catch (e) {
+        return Left(ServerFailure(e.toString()));
+      }
+    } else {
+      return Left(NetworkFailure());
+    }
   }
 
   @override
-  Future<Either<Failure, String>> uploadProfilePicture(
+  Future<Either<Failure, Unit>> uploadProfilePicture(
     String userId,
     String imagePath,
-  ) {
-    // TODO: implement uploadProfilePicture
-    throw UnimplementedError();
+  ) async {
+    if (await networkChecker.isConnected) {
+      try {
+        final imageUrl = await userProfileRemoteDataSource
+            .updateUserProfilePicture(userId, imagePath);
+        return Right(unit);
+      } on Exception catch (e) {
+        return Left(ServerFailure(e.toString()));
+      }
+    } else {
+      return Left(NetworkFailure());
+    }
   }
 }

@@ -5,7 +5,7 @@ import 'package:dartz/dartz.dart';
 class UploadProfilePictureUseCase {
   final ProfileRepository repository;
   UploadProfilePictureUseCase(this.repository);
-  Future<Either<Failure, String>> call(String userId, String imagePath) {
+  Future<Either<Failure, Unit>> call(String userId, String imagePath) {
     return repository.uploadProfilePicture(userId, imagePath);
   }
 }

@@ -1,23 +1,28 @@
-import 'package:chatter/feature/User%20Profile/domain/entities/user_prtofile_entity.dart';
 
-class UserProfileModel extends UserProfileEntity {
+class UserProfileModel {
+  final String name;
+  final String bio;
+  final String phoneNumber;
+  final String userId;
+  final String email;
+  final String profilePictureUrl;
   UserProfileModel({
-    required super.name,
-    required super.bio,
-    required super.phoneNumber,
-    required super.userId,
-    required super.profilePictureUrl,
-    required super.email,
+    required this.name,
+    required this.bio,
+    required this.phoneNumber,
+    required this.userId,
+    required this.email,
+    required this.profilePictureUrl,
   });
 
-  factory UserProfileModel.fromJson(Map<String, dynamic> json) {
+  factory UserProfileModel.fromJson(Map<String, dynamic> fromJson) {
     return UserProfileModel(
-      name: json['name'],
-      bio: json['bio'],
-      phoneNumber: json['phoneNumber'],
-      userId: json['userId'],
-      email: json['email'],
-      profilePictureUrl: json['profilePictureUrl'],
+      name: fromJson['name'],
+      bio: fromJson['bio'],
+      phoneNumber: fromJson['phoneNumber'],
+      userId: fromJson['userId'],
+      email: fromJson['email'],
+      profilePictureUrl: fromJson['profilePictureUrl'],
     );
   }
 
@@ -31,4 +36,17 @@ class UserProfileModel extends UserProfileEntity {
       'profilePictureUrl': profilePictureUrl,
     };
   }
+
+  Map<String, dynamic> updateUserProfileModel() {
+    return {
+      'name': name,
+      'bio': bio,
+      'phoneNumber': phoneNumber,
+      'id': userId,
+      'email': email,
+      'profile_photo_link': profilePictureUrl,
+    };
+  }
+
+
 }

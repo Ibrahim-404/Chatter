@@ -2,5 +2,9 @@ import 'package:chatter/feature/User%20Profile/data/models/user_profile_model.da
 
 abstract class UserProfileRemoteDataSource {
   Future<UserProfileModel> getUserProfile(String userId);
-  Future<void> updateUserProfile(String userId, String imagePath);
+  Future<void> updateUserProfilePicture(String userId, String imagePath);
+  Future<void> editUserProfile(
+    String userId,
+    Map<String, dynamic> userProfileData,
+  );
 }
