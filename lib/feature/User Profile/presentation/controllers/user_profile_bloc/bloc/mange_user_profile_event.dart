@@ -24,17 +24,6 @@ final class UpdateUserProfileEvent extends MangeUserProfileEvent {
   List<Object> get props => [userId, profileData];
 }
 
-final class UploadProfilePictureEvent extends MangeUserProfileEvent {
-  final String userId;
-  final String imagePath;
-  const UploadProfilePictureEvent({
-    required this.userId,
-    required this.imagePath,
-  });
-  @override
-  List<Object> get props => [userId, imagePath];
-}
-
 final class CompleteUserOnboardingEvent extends MangeUserProfileEvent {
   final String userId;
   const CompleteUserOnboardingEvent({required this.userId});

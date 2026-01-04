@@ -3,7 +3,6 @@ import 'package:chatter/feature/User%20Profile/domain/entities/user_prtofile_ent
 import 'package:chatter/feature/User%20Profile/domain/usecases/complete_user_onborading.dart';
 import 'package:chatter/feature/User%20Profile/domain/usecases/get_user_prtfile.dart';
 import 'package:chatter/feature/User%20Profile/domain/usecases/update_user_profile.dart';
-import 'package:chatter/feature/User%20Profile/domain/usecases/upload_profile_picture.dart';
 import 'package:equatable/equatable.dart';
 part 'mange_user_profile_event.dart';
 part 'mange_user_profile_state.dart';
@@ -12,12 +11,10 @@ class MangeUserProfileBloc
     extends Bloc<MangeUserProfileEvent, MangeUserProfileState> {
   final GetUserProfileUseCase getUserProfile;
   final UpdateUserProfileUseCase updateUserProfile;
-  final UploadProfilePictureUseCase uploadProfilePicture;
   final CompleteUserOnboardingUseCase completeUserOnboarding;
   MangeUserProfileBloc(
     this.getUserProfile,
     this.updateUserProfile,
-    this.uploadProfilePicture,
     this.completeUserOnboarding,
   ) : super(MangeUserProfileInitial()) {
     on<GetUserProfileEvent>((event, emit) async {
@@ -52,25 +49,7 @@ class MangeUserProfileBloc
         emit(UpdateUserProfileFailure(errorMessage: e.toString()));
       }
     });
-    on<UploadProfilePictureEvent>((event, emit) async {
-      emit(UploadProfilePictureLoading());
-      try {
-        final result = await uploadProfilePicture(
-          event.userId,
-          event.imagePath,
-        );
-        result.fold(
-          (failure) {
-            emit(UploadProfilePictureFailure(errorMessage: failure.toString()));
-          },
-          (_) {
-            emit(UploadProfilePictureSuccess());
-          },
-        );
-      } on Exception catch (e) {
-        emit(UploadProfilePictureFailure(errorMessage: e.toString()));
-      }
-    });
+
     on<CompleteUserOnboardingEvent>((event, emit) async {
       emit(CompleteUserOnboardingLoading());
       try {
