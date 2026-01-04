@@ -1,4 +1,3 @@
-
 class UserProfileModel {
   final String name;
   final String bio;
@@ -47,6 +46,4 @@ class UserProfileModel {
       'profile_photo_link': profilePictureUrl,
     };
   }
-
-
 }
