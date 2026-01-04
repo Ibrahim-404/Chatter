@@ -7,20 +7,21 @@ part 'profile_picture_state.dart';
 
 class ProfilePictureBloc
     extends Bloc<ProfilePictureEvent, ProfilePictureState> {
-   final UploadProfilePictureUseCase uploadProfilePicture;
+  final UploadProfilePictureUseCase uploadProfilePicture;
 
-  ProfilePictureBloc(this.uploadProfilePicture) : super(ProfilePictureInitial()) {
-    on<SelectProfilePictureEvent>((event, emit)async {
+  ProfilePictureBloc(this.uploadProfilePicture)
+    : super(ProfilePictureInitial()) {
+    on<SelectProfilePictureEvent>((event, emit) async {
       emit(UploadProfilePictureLoading());
-     final result = await uploadProfilePicture(event.imagePath , event.userId);
-     result.fold(
-          (failure) {
-            emit(UploadProfilePictureFailure(errorMessage: failure.toString()));
-          },
-          (success) {
-            emit(UploadProfilePictureSuccess());
-          },
-        );
+      final result = await uploadProfilePicture(event.imagePath, event.userId);
+      result.fold(
+        (failure) {
+          emit(UploadProfilePictureFailure(errorMessage: failure.toString()));
+        },
+        (success) {
+          emit(UploadProfilePictureSuccess());
+        },
+      );
     });
   }
 }

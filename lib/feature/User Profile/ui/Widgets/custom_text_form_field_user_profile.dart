@@ -15,6 +15,7 @@ class CustomTextFormFieldInUserProfile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      readOnly: isnum,
       maxLength: 1,
       maxLines: isnum ? 1 : null,
       controller: isnum ? null : controller,
