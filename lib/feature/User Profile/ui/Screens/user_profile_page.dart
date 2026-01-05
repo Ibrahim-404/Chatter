@@ -8,8 +8,6 @@ class UserProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: UserProfile(phoneNumber: phoneNumber), 
-    );
+    return Scaffold(body: UserProfile(phoneNumber: phoneNumber));
   }
 }
