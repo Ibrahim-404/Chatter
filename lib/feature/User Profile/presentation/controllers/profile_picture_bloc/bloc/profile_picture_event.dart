@@ -8,12 +8,15 @@ sealed class ProfilePictureEvent extends Equatable {
 }
 
 final class SelectProfilePictureEvent extends ProfilePictureEvent {
-  final String imagePath;
-  final String userId;
-  const SelectProfilePictureEvent({
-    required this.imagePath,
-    required this.userId,
-  });
+  final String imageSource;
+  const SelectProfilePictureEvent({required this.imageSource});
   @override
-  List<Object> get props => [imagePath, userId];
+  List<Object> get props => [imageSource];
+}
+
+final class DefaultProfilePictureEvent extends ProfilePictureEvent {
+  final String genderValue;
+  const DefaultProfilePictureEvent({required this.genderValue});
+  @override
+  List<Object> get props => [genderValue];
 }

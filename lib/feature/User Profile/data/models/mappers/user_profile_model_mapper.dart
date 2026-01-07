@@ -10,6 +10,7 @@ extension UserProfileModelMapper on UserProfileModel {
       userId: userId,
       email: email,
       profilePictureUrl: profilePictureUrl,
+      gender: gender,
     );
   }
 }

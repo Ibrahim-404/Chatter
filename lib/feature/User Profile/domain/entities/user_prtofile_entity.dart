@@ -5,7 +5,9 @@ class UserProfileEntity {
   String phoneNumber;
   String profilePictureUrl;
   String email;
+  String gender;
   UserProfileEntity({
+    required this.gender,
     required this.userId,
     required this.name,
     required this.bio,

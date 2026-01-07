@@ -1,8 +1,10 @@
 import 'package:chatter/core/network/network_checker.dart';
+import 'package:chatter/feature/User%20Profile/data/datasources/image_picker/image_picker_data_source.dart';
 import 'package:chatter/feature/User%20Profile/data/datasources/localDataScources/user_profile_local_data_source%20.dart';
 import 'package:chatter/feature/User%20Profile/data/datasources/remoteDataSources/user_profile_remote_data_source%20.dart';
 import 'package:chatter/feature/User%20Profile/data/models/mappers/user_profile_model_mapper.dart';
 import 'package:chatter/feature/User%20Profile/domain/entities/user_prtofile_entity.dart';
+import 'package:chatter/feature/User%20Profile/domain/enums/image_source_type.dart';
 import 'package:dartz/dartz.dart';
 
 import 'package:chatter/core/feuille/failure.dart';
@@ -12,11 +14,13 @@ class UserProfileRepositoryImplementation implements ProfileRepository {
   final NetworkChecker networkChecker;
   final UserProfileLocalDataSource userProfileLocalDataSource;
   final UserProfileRemoteDataSource userProfileRemoteDataSource;
+  final ImagePickerDataSource imagePickerDataSource;
 
   UserProfileRepositoryImplementation({
     required this.networkChecker,
     required this.userProfileLocalDataSource,
     required this.userProfileRemoteDataSource,
+    required this.imagePickerDataSource,
   });
   @override
   Future<Either<Failure, Unit>> completeUserOnboarding(String userId) {
@@ -63,15 +67,16 @@ class UserProfileRepositoryImplementation implements ProfileRepository {
     } else {
       return Left(NetworkFailure());
     }
-  }
+  } 
 
   @override
   Future<Either<Failure, Unit>> uploadProfilePicture(
     String userId,
-    String imagePath,
+    ImageSourceType source,
   ) async {
     if (await networkChecker.isConnected) {
       try {
+        final imagePath = await imagePickerDataSource.pickImage(source);
         final imageUrl = await userProfileRemoteDataSource
             .updateUserProfilePicture(userId, imagePath);
         return Right(unit);

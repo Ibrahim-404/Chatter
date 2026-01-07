@@ -7,6 +7,7 @@ import 'package:chatter/feature/User%20Profile/presentation/controllers/profile_
 import 'package:chatter/feature/User%20Profile/presentation/controllers/user_profile_bloc/bloc/mange_user_profile_bloc.dart';
 // import 'package:chatter/feature/Authentication/presentation/manager/auht_bloc/validation/bloc/validation_bloc.dart';
 import 'package:get_it/get_it.dart';
+import 'package:image_picker/image_picker.dart';
 
 final sl = GetIt.instance;
 Future<void> init() async {
@@ -16,6 +17,8 @@ Future<void> init() async {
   sl.registerLazySingleton<DatabaseHelper>(() => DatabaseHelper());
   sl.registerLazySingleton<AuthRepo>(() => AuthRepoDataLayer());
   sl.registerFactory(() => SendVarifyBloc(authRepo: sl()));
+  // sl.registerLazySingleton(() => NetworkCheckerImplemant(connectionChecker: sl()));
+  sl.registerLazySingleton(() => ImagePicker());
   sl.registerLazySingleton(() => ProfilePictureBloc(sl()));
   sl.registerLazySingleton(() => MangeUserProfileBloc(sl(), sl(), sl()));
   // sl.registerFactory(() => ValidationBloc());

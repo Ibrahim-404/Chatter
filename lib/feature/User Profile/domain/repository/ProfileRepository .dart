@@ -1,5 +1,6 @@
 import 'package:chatter/core/feuille/failure.dart';
 import 'package:chatter/feature/User%20Profile/domain/entities/user_prtofile_entity.dart';
+import 'package:chatter/feature/User%20Profile/domain/enums/image_source_type.dart';
 import 'package:dartz/dartz.dart';
 
 abstract class ProfileRepository {
@@ -10,7 +11,7 @@ abstract class ProfileRepository {
   );
   Future<Either<Failure, Unit>> uploadProfilePicture(
     String userId,
-    String imagePath,
+    ImageSourceType source,
   );
   Future<Either<Failure, Unit>> completeUserOnboarding(String userId);
 }

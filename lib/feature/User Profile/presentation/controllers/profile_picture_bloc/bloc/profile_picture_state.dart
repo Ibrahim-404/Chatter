@@ -52,3 +52,17 @@ final class ProfileImageSelected extends ProfilePictureState {
   @override
   List<Object> get props => [imagePath];
 }
+
+final class DefaultProfilePictureFemale extends ProfilePictureState {
+  final String imageProfile;
+  const DefaultProfilePictureFemale({required this.imageProfile});
+  @override
+  List<Object> get props => [imageProfile];
+}
+
+final class DefaultProfilePictureMale extends ProfilePictureState {
+  final String imageProfile;
+  const DefaultProfilePictureMale({required this.imageProfile});
+  @override
+  List<Object> get props => [imageProfile];
+}

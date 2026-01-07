@@ -5,6 +5,7 @@ class UserProfileModel {
   final String userId;
   final String email;
   final String profilePictureUrl;
+  final String gender;
   UserProfileModel({
     required this.name,
     required this.bio,
@@ -12,6 +13,7 @@ class UserProfileModel {
     required this.userId,
     required this.email,
     required this.profilePictureUrl,
+    required this.gender,
   });
 
   factory UserProfileModel.fromJson(Map<String, dynamic> fromJson) {
@@ -22,6 +24,7 @@ class UserProfileModel {
       userId: fromJson['userId'],
       email: fromJson['email'],
       profilePictureUrl: fromJson['profilePictureUrl'],
+      gender: fromJson['gender'],
     );
   }
 

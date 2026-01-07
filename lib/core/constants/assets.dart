@@ -15,4 +15,10 @@ class Assets {
   static const String assetsImagesWelcome = "assets/images/welcome.png";
   static const String assetsImagesOtp = "assets/images/OTP 1.png";
   static const String userPhoto = "assets/images/user_photo.jpg";
+  static const String assetsImagesNoInternet = "assets/images/no_internet.png";
+  static const String assetsImagesServerError =
+      "assets/images/server_error.png";
+  static const String assetsanonymousMaleUser = "assets/images/male user.jpg";
+  static const String assetsanonymousFemaleUser =
+      "assets/images/female user.jpg";
 }

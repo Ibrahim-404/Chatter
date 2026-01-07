@@ -38,6 +38,7 @@ class UserProfileLocalDataSourceImplement
           phoneNumber: maps[0]['phone'],
           bio: maps[0]['bio'] ?? '',
           profilePictureUrl: maps[0]['avatar_url'],
+          gender: maps[0]['gender'] ?? '',
         );
       } else {
         throw Exception('No cached user profile found for userId: $userId');

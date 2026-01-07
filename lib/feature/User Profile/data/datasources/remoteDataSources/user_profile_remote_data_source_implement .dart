@@ -16,7 +16,6 @@ class UserProfileRemoteDataSourceImplementation
 
   @override
   Future<void> updateUserProfilePicture(String userId, String imagePath) async {
-    final String userProfile = imagePath;
     final file = File(imagePath);
     final fileName = '${userId}_profile_picture.png';
     await supabaseStorage.from('user_profile_pictures').upload(fileName, file);
