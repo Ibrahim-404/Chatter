@@ -1,3 +1,4 @@
+import 'package:chatter/core/function/permission_menager.dart';
 import 'package:chatter/core/network/network_checker.dart';
 import 'package:chatter/feature/User%20Profile/data/datasources/image_picker/image_picker_data_source.dart';
 import 'package:chatter/feature/User%20Profile/data/datasources/localDataScources/user_profile_local_data_source%20.dart';
@@ -15,12 +16,14 @@ class UserProfileRepositoryImplementation implements ProfileRepository {
   final UserProfileLocalDataSource userProfileLocalDataSource;
   final UserProfileRemoteDataSource userProfileRemoteDataSource;
   final ImagePickerDataSource imagePickerDataSource;
+  final ManagePermission managePermission;
 
   UserProfileRepositoryImplementation({
     required this.networkChecker,
     required this.userProfileLocalDataSource,
     required this.userProfileRemoteDataSource,
     required this.imagePickerDataSource,
+    required this.managePermission,
   });
   @override
   Future<Either<Failure, Unit>> completeUserOnboarding(String userId) {
@@ -67,7 +70,7 @@ class UserProfileRepositoryImplementation implements ProfileRepository {
     } else {
       return Left(NetworkFailure());
     }
-  } 
+  }
 
   @override
   Future<Either<Failure, Unit>> uploadProfilePicture(
@@ -76,10 +79,16 @@ class UserProfileRepositoryImplementation implements ProfileRepository {
   ) async {
     if (await networkChecker.isConnected) {
       try {
+        final hasPermission = await managePermission.requestPermission(source);
+        if(!hasPermission){
+          return Left(PermissionFailure('Permission denied'));
+        }else{
         final imagePath = await imagePickerDataSource.pickImage(source);
         final imageUrl = await userProfileRemoteDataSource
             .updateUserProfilePicture(userId, imagePath);
-        return Right(unit);
+        return Right(unit);  
+        }
+        
       } on Exception catch (e) {
         return Left(ServerFailure(e.toString()));
       }

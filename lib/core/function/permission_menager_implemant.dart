@@ -5,9 +5,10 @@ import 'package:permission_handler/permission_handler.dart';
 class PermissionMenagerImplemant implements ManagePermission {
   @override
   Future<bool> requestPermission(ImageSourceType source) async {
-    final  permissionToRequest = source == ImageSourceType.camera
-        ? Permission.camera
-        : Permission.storage;
+    final permissionToRequest =
+        source == ImageSourceType.camera
+            ? Permission.camera
+            : Permission.storage;
     if (await permissionToRequest.isGranted) {
       return true;
     }
