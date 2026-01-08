@@ -1,5 +1,5 @@
 // ignore: file_names
-import 'package:chatter/core/constants/assets.dart';
+import 'package:chatter/feature/User%20Profile/domain/enums/image_source_type.dart';
 import 'package:chatter/feature/User%20Profile/presentation/controllers/profile_picture_bloc/bloc/profile_picture_bloc.dart';
 import 'package:chatter/feature/User%20Profile/ui/Widgets/custom_text_form_field_user_profile.dart';
 import 'package:flutter/material.dart';
@@ -22,9 +22,18 @@ class _UserProfileState extends State<UserProfile> {
   late ValueNotifier<String> profilePictureNotifier;
 
   @override
+  void initState() {
+    profilePictureNotifier = ValueNotifier<String>(
+      'assets/anonymous_male_user.png',
+    );
+    super.initState();
+  }
+
+  @override
   void dispose() {
     nameController.dispose();
     bioController.dispose();
+    profilePictureNotifier.dispose();
     super.dispose();
   }
 
@@ -51,9 +60,13 @@ class _UserProfileState extends State<UserProfile> {
                   ValueListenableBuilder(
                     valueListenable: profilePictureNotifier,
                     builder: (context, value, child) {
-                      return CircleAvatar(
-                        radius: 50,
-                        backgroundImage: AssetImage(value),
+                      return AnimatedSwitcher(
+                        duration: Duration(milliseconds: 500),
+                        child: CircleAvatar(
+                          key: ValueKey(value),
+                          radius: 50,
+                          backgroundImage: AssetImage(value),
+                        ),
                       );
                     },
                   ),
@@ -65,8 +78,15 @@ class _UserProfileState extends State<UserProfile> {
                       backgroundColor: Colors.green,
                       child: IconButton(
                         onPressed: () {
-                          showBottomSheet(
+                          showModalBottomSheet(
                             context: context,
+                            elevation: 3,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.vertical(
+                                top: Radius.circular(20),
+                              ),
+                            ),
+                            
                             builder: (context) {
                               return Container(
                                 height: 120,
@@ -76,14 +96,24 @@ class _UserProfileState extends State<UserProfile> {
                                       leading: Icon(Icons.camera),
                                       title: Text('Take Photo'),
                                       onTap: () {
-                                        // Handle take photo
+                                        context.read<ProfilePictureBloc>().add(
+                                          SelectProfilePictureEvent(
+                                            userid: 'userId',
+                                            source: ImageSourceType.camera,
+                                          ),
+                                        );
                                       },
                                     ),
                                     ListTile(
                                       leading: Icon(Icons.photo_library),
                                       title: Text('Choose from Gallery'),
                                       onTap: () {
-                                        // Handle choose from gallery
+                                        context.read<ProfilePictureBloc>().add(
+                                          SelectProfilePictureEvent(
+                                            userid: 'userId',
+                                            source: ImageSourceType.gallery,
+                                          ),
+                                        );
                                       },
                                     ),
                                   ],
