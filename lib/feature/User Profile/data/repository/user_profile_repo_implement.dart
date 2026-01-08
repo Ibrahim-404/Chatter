@@ -80,15 +80,14 @@ class UserProfileRepositoryImplementation implements ProfileRepository {
     if (await networkChecker.isConnected) {
       try {
         final hasPermission = await managePermission.requestPermission(source);
-        if(!hasPermission){
+        if (!hasPermission) {
           return Left(PermissionFailure('Permission denied'));
-        }else{
-        final imagePath = await imagePickerDataSource.pickImage(source);
-        final imageUrl = await userProfileRemoteDataSource
-            .updateUserProfilePicture(userId, imagePath);
-        return Right(unit);  
+        } else {
+          final imagePath = await imagePickerDataSource.pickImage(source);
+          final imageUrl = await userProfileRemoteDataSource
+              .updateUserProfilePicture(userId, imagePath);
+          return Right(unit);
         }
-        
       } on Exception catch (e) {
         return Left(ServerFailure(e.toString()));
       }

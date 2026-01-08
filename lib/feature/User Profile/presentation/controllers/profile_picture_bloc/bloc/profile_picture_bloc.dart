@@ -14,11 +14,14 @@ class ProfilePictureBloc
   ProfilePictureBloc(this.uploadProfilePicture)
     : super(ProfilePictureInitial()) {
     on<SelectProfilePictureEvent>((event, emit) async {
-emit(UploadProfilePictureLoading());
- final result = await uploadProfilePicture.call(event.userid, event.source);
+      emit(UploadProfilePictureLoading());
+      final result = await uploadProfilePicture.call(
+        event.userid,
+        event.source,
+      );
       result.fold(
-        (failure) => emit(UploadProfilePictureFailure(
-            errorMessage: failure.message)),
+        (failure) =>
+            emit(UploadProfilePictureFailure(errorMessage: failure.message)),
         (_) => emit(UploadProfilePictureSuccess()),
       );
     });

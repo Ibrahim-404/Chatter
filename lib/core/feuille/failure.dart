@@ -15,6 +15,7 @@ class NetworkFailure extends Failure {
   const NetworkFailure([String message = 'No internet connection'])
     : super(message);
 }
+
 class PermissionFailure extends Failure {
   const PermissionFailure([String message = 'Permission denied'])
     : super(message);
