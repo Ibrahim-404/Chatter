@@ -3,7 +3,9 @@ import 'package:chatter/core/network/network_checker.dart';
 import 'package:chatter/feature/User%20Profile/data/datasources/image_picker/image_picker_data_source.dart';
 import 'package:chatter/feature/User%20Profile/data/datasources/localDataScources/user_profile_local_data_source%20.dart';
 import 'package:chatter/feature/User%20Profile/data/datasources/remoteDataSources/user_profile_remote_data_source%20.dart';
+import 'package:chatter/feature/User%20Profile/data/models/mappers/update_user_profile_mapper.dart';
 import 'package:chatter/feature/User%20Profile/data/models/mappers/user_profile_model_mapper.dart';
+import 'package:chatter/feature/User%20Profile/domain/entities/update_user_profile_entity.dart';
 import 'package:chatter/feature/User%20Profile/domain/entities/user_prtofile_entity.dart';
 import 'package:chatter/feature/User%20Profile/domain/enums/image_source_type.dart';
 import 'package:dartz/dartz.dart';
@@ -57,12 +59,11 @@ class UserProfileRepositoryImplementation implements ProfileRepository {
 
   @override
   Future<Either<Failure, Unit>> updateUserProfile(
-    String userId,
-    Map<String, dynamic> profileData,
+    UpdateUserProfileEntity profileData
   ) async {
     if (await networkChecker.isConnected) {
       try {
-        await userProfileRemoteDataSource.editUserProfile(userId, profileData);
+        await userProfileRemoteDataSource.editUserProfile(profileData.toModel());
         return Right(unit);
       } on Exception catch (e) {
         return Left(ServerFailure(e.toString()));

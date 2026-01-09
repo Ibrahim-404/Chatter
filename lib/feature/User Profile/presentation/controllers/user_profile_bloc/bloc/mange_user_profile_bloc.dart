@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:chatter/feature/User%20Profile/domain/entities/update_user_profile_entity.dart';
 import 'package:chatter/feature/User%20Profile/domain/entities/user_prtofile_entity.dart';
 import 'package:chatter/feature/User%20Profile/domain/usecases/complete_user_onborading.dart';
 import 'package:chatter/feature/User%20Profile/domain/usecases/get_user_prtfile.dart';

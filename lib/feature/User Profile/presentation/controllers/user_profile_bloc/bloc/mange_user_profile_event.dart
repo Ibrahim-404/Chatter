@@ -15,7 +15,7 @@ final class GetUserProfileEvent extends MangeUserProfileEvent {
 
 final class UpdateUserProfileEvent extends MangeUserProfileEvent {
   final String userId;
-  final Map<String, dynamic> profileData;
+  final UpdateUserProfileEntity profileData;
   const UpdateUserProfileEvent({
     required this.userId,
     required this.profileData,

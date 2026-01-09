@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:chatter/feature/User%20Profile/data/datasources/remoteDataSources/user_profile_remote_data_source%20.dart';
+import 'package:chatter/feature/User%20Profile/data/models/update_user_profile_model.dart';
 import 'package:chatter/feature/User%20Profile/data/models/user_profile_model.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -32,9 +33,8 @@ class UserProfileRemoteDataSourceImplementation
 
   @override
   Future<void> editUserProfile(
-    String userId,
-    Map<String, dynamic> userProfileData,
+    UpdateUserProfileModel userProfileData
   ) {
-    return supabase.from('users').update(userProfileData).eq('id', userId);
+    return supabase.from('users').update(userProfileData.toMap()).eq('id', userProfileData.userId);
   }
 }
