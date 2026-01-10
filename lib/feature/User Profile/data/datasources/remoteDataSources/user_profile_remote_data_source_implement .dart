@@ -32,9 +32,10 @@ class UserProfileRemoteDataSourceImplementation
   }
 
   @override
-  Future<void> editUserProfile(
-    UpdateUserProfileModel userProfileData
-  ) {
-    return supabase.from('users').update(userProfileData.toMap()).eq('id', userProfileData.userId);
+  Future<void> editUserProfile(UpdateUserProfileModel userProfileData) {
+    return supabase
+        .from('users')
+        .update(userProfileData.toMap())
+        .eq('id', userProfileData.userId);
   }
 }

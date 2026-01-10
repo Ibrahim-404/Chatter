@@ -12,11 +12,6 @@ class UpdateUserProfileModel {
   });
 
   Map<String, dynamic> toMap() {
-    return {
-      'userId': userId,
-      'name': name,
-      'email': email,
-      'bio': bio,
-    };
+    return {'userId': userId, 'name': name, 'email': email, 'bio': bio};
   }
 }

@@ -59,11 +59,13 @@ class UserProfileRepositoryImplementation implements ProfileRepository {
 
   @override
   Future<Either<Failure, Unit>> updateUserProfile(
-    UpdateUserProfileEntity profileData
+    UpdateUserProfileEntity profileData,
   ) async {
     if (await networkChecker.isConnected) {
       try {
-        await userProfileRemoteDataSource.editUserProfile(profileData.toModel());
+        await userProfileRemoteDataSource.editUserProfile(
+          profileData.toModel(),
+        );
         return Right(unit);
       } on Exception catch (e) {
         return Left(ServerFailure(e.toString()));
