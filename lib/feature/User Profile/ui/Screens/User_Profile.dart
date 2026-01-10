@@ -47,18 +47,21 @@ class _UserProfileState extends State<UserProfile> {
     return BlocConsumer<MangeUserProfileBloc, MangeUserProfileState>(
       listener: (context, state) {
         if (state is UpdateUserProfileSuccess) {
+          _formKey.currentState!.reset();
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text('Profile updated successfully'),
             ),
           );
-        } else if (state is UpdateUserProfileFailure) {
+        }  if (state is UpdateUserProfileFailure) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text('Failed to update profile: ${state.errorMessage}'),
             ),
           );
+
         }
+        
       },
       builder: (context, state) {
         return Form(
@@ -212,7 +215,10 @@ class _UserProfileState extends State<UserProfile> {
                     );
                   }
                 },
-                child: Text('Save'),
+                child: AnimatedSwitcher(
+                  duration: Duration(milliseconds: 300),
+                  child: state is UpdateUserProfileLoading ? CircularProgressIndicator() : Text('Save'),
+                ),
               ),
             ],
           ),
