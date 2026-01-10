@@ -19,6 +19,8 @@ class _UserProfileState extends State<UserProfile> {
 
   final TextEditingController bioController = TextEditingController();
 
+  final TextEditingController emailController = TextEditingController();
+
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   late ValueNotifier<String> profilePictureNotifier;
@@ -35,13 +37,29 @@ class _UserProfileState extends State<UserProfile> {
   void dispose() {
     nameController.dispose();
     bioController.dispose();
+    emailController.dispose();
     profilePictureNotifier.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<MangeUserProfileBloc, MangeUserProfileState>(
+    return BlocConsumer<MangeUserProfileBloc, MangeUserProfileState>(
+      listener: (context, state) {
+        if (state is UpdateUserProfileSuccess) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Profile updated successfully'),
+            ),
+          );
+        } else if (state is UpdateUserProfileFailure) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Failed to update profile: ${state.errorMessage}'),
+            ),
+          );
+        }
+      },
       builder: (context, state) {
         return Form(
           key: _formKey,
@@ -173,18 +191,21 @@ class _UserProfileState extends State<UserProfile> {
                 controller: null,
                 isnum: true,
               ),
-
+              CustomTextFormFieldInUserProfile(
+                labelText: 'Email',
+                controller: emailController,
+                isnum: false,
+              ),
               SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
                     context.read<MangeUserProfileBloc>().add(
                       UpdateUserProfileEvent(
-                        userId: 'currentUserId',
                         profileData: UpdateUserProfileEntity(
                           userId: 'currentUserId',
                           name: nameController.text,
-                          email: '',
+                          email: emailController.text,
                           bio: bioController.text,
                         ),
                       ),

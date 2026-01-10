@@ -14,14 +14,10 @@ final class GetUserProfileEvent extends MangeUserProfileEvent {
 }
 
 final class UpdateUserProfileEvent extends MangeUserProfileEvent {
-  final String userId;
   final UpdateUserProfileEntity profileData;
-  const UpdateUserProfileEvent({
-    required this.userId,
-    required this.profileData,
-  });
+  const UpdateUserProfileEvent({required this.profileData});
   @override
-  List<Object> get props => [userId, profileData];
+  List<Object> get props => [profileData];
 }
 
 final class CompleteUserOnboardingEvent extends MangeUserProfileEvent {

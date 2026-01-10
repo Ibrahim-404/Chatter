@@ -37,7 +37,7 @@ class MangeUserProfileBloc
     on<UpdateUserProfileEvent>((event, emit) async {
       emit(UpdateUserProfileLoading());
       try {
-        final result = await updateUserProfile(event.userId, event.profileData);
+        final result = await updateUserProfile(event.profileData);
         result.fold(
           (failure) {
             emit(UpdateUserProfileFailure(errorMessage: failure.toString()));

@@ -17,7 +17,6 @@ Future<void> init() async {
   sl.registerLazySingleton<DatabaseHelper>(() => DatabaseHelper());
   sl.registerLazySingleton<AuthRepo>(() => AuthRepoDataLayer());
   sl.registerFactory(() => SendVarifyBloc(authRepo: sl()));
-  // sl.registerLazySingleton(() => NetworkCheckerImplemant(connectionChecker: sl()));
   sl.registerLazySingleton(() => ImagePicker());
   sl.registerLazySingleton(() => ProfilePictureBloc(sl()));
   sl.registerLazySingleton(() => MangeUserProfileBloc(sl(), sl(), sl()));
