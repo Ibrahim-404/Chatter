@@ -11,6 +11,6 @@ abstract class ChatListRepository {
   Future<Either<Failure, Unit>> muteChat(String chatId);
   Future<Either<Failure, Unit>> unmuteChat(String chatId);
   Future<Either<Failure, List<ChatListItemEntity>>> searchAtUser(
-    String userName_query,
+    String userNameQuery,
   );
 }
