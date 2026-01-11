@@ -49,19 +49,16 @@ class _UserProfileState extends State<UserProfile> {
         if (state is UpdateUserProfileSuccess) {
           _formKey.currentState!.reset();
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('Profile updated successfully'),
-            ),
+            SnackBar(content: Text('Profile updated successfully')),
           );
-        }  if (state is UpdateUserProfileFailure) {
+        }
+        if (state is UpdateUserProfileFailure) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text('Failed to update profile: ${state.errorMessage}'),
             ),
           );
-
         }
-        
       },
       builder: (context, state) {
         return Form(
@@ -217,7 +214,10 @@ class _UserProfileState extends State<UserProfile> {
                 },
                 child: AnimatedSwitcher(
                   duration: Duration(milliseconds: 300),
-                  child: state is UpdateUserProfileLoading ? CircularProgressIndicator() : Text('Save'),
+                  child:
+                      state is UpdateUserProfileLoading
+                          ? CircularProgressIndicator()
+                          : Text('Save'),
                 ),
               ),
             ],
