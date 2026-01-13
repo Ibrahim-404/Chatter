@@ -28,9 +28,11 @@ class ChatListModel {
     return ChatListModel(
       messageStatusEnum: MessageStatus.values.firstWhere(
         (e) => describeEnum(e) == json['messageStatusEnum'],
+        orElse: () => MessageStatus.sent,
       ),
       messageTypeEnum: MessageType.values.firstWhere(
         (e) => describeEnum(e) == json['messageTypeEnum'],
+        orElse: () => MessageType.text,
       ),
       chatId: json['chatId'],
       uid: json['uid'],
@@ -38,7 +40,7 @@ class ChatListModel {
       displayName: json['displayName'],
       photoUrl: json['photoUrl'],
       lastMessage: json['lastMessage'],
-      lastMessageTime: DateTime.parse(json['lastMessageTime']),
+      lastMessageTime: DateTime.parse(json['lastMessageTime'])?? DateTime.now(),
     );
   }
 }
