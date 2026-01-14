@@ -4,6 +4,9 @@ import 'package:dartz/dartz.dart';
 
 abstract class ChatListLocalDataSource {
   Future<Either<Failure, List<ChatListItemEntity>>> getChatsList();
+  Future<Either<Failure, Unit>> saveChatsList(
+    List<ChatListItemEntity> chatList,
+  );
   Future<Either<Failure, Unit>> deleteChat(String chatId);
   Future<Either<Failure, Unit>> pinChat(String chatId);
   Future<Either<Failure, Unit>> unpinChat(String chatId);

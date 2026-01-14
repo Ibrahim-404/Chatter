@@ -8,5 +8,4 @@ abstract class ChatListRepository {
   Future<Either<Failure, Unit>> unmuteChat(String chatId);
   Future<Either<Failure, Unit>> pinChat(String chatId);
   Future<Either<Failure, Unit>> unpinChat(String chatId);
-
 }

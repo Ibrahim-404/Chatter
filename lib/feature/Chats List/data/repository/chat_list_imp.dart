@@ -29,7 +29,9 @@ class ChatListImp implements ChatListRepository {
   }
 
   @override
-  Future<Either<Failure, List<ChatListItemEntity>>> searchAtUser(String userNameQuery) {
+  Future<Either<Failure, List<ChatListItemEntity>>> searchAtUser(
+    String userNameQuery,
+  ) {
     // TODO: implement searchAtUser
     throw UnimplementedError();
   }

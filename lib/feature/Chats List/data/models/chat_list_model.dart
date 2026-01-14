@@ -12,10 +12,9 @@ class ChatListModel {
   final DateTime lastMessageTime;
   final MessageStatus messageStatusEnum;
   final MessageType messageTypeEnum;
-  ChatListModel(
-    {
+  ChatListModel({
     required this.messageStatusEnum,
-    required this.messageTypeEnum, 
+    required this.messageTypeEnum,
     required this.chatId,
     required this.uid,
     required this.phoneNumber,
@@ -40,7 +39,8 @@ class ChatListModel {
       displayName: json['displayName'],
       photoUrl: json['photoUrl'],
       lastMessage: json['lastMessage'],
-      lastMessageTime: DateTime.parse(json['lastMessageTime'])?? DateTime.now(),
+      lastMessageTime:
+          DateTime.parse(json['lastMessageTime']) ?? DateTime.now(),
     );
   }
 }

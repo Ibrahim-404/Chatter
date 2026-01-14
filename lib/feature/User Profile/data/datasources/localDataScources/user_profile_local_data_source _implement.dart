@@ -1,4 +1,4 @@
-import 'package:chatter/core/database/base_local_data_source%20.dart';
+import 'package:chatter/core/database/base_local_data_source.dart';
 import 'package:chatter/core/database/database_helper.dart';
 import 'package:chatter/feature/User%20Profile/data/datasources/localDataScources/user_profile_local_data_source%20.dart';
 import 'package:chatter/feature/User%20Profile/data/models/user_profile_model.dart';

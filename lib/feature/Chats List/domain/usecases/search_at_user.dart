@@ -6,9 +6,7 @@ import 'package:dartz/dartz.dart';
 class SearchAtUser {
   final ChatListRepository repository;
   SearchAtUser(this.repository);
-  Future<Either<Failure, List<ChatListItemEntity>>> call(
-    String userNameQuery,
-  ) {
+  Future<Either<Failure, List<ChatListItemEntity>>> call(String userNameQuery) {
     return repository.searchAtUser(userNameQuery);
   }
 }

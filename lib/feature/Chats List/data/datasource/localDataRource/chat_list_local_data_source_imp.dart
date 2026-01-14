@@ -1,9 +1,13 @@
+import 'package:chatter/core/database/base_local_data_source.dart';
 import 'package:chatter/core/feuille/failure.dart';
 import 'package:chatter/feature/Chats%20List/data/datasource/localDataRource/chat_list_local_data_source.dart';
 import 'package:chatter/feature/Chats%20List/domain/entities/chat_list_Item_entity.dart';
 import 'package:dartz/dartz.dart';
 
-class ChatListLocalDataSourceImp implements ChatListLocalDataSource {
+class ChatListLocalDataSourceImp extends BaseLocalDataSource
+    implements ChatListLocalDataSource {
+  ChatListLocalDataSourceImp({required super.databaseHelper});
+
   @override
   Future<Either<Failure, Unit>> deleteChat(String chatId) {
     // TODO: implement deleteChat
@@ -29,7 +33,9 @@ class ChatListLocalDataSourceImp implements ChatListLocalDataSource {
   }
 
   @override
-  Future<Either<Failure, List<ChatListItemEntity>>> searchAtUser(String userNameQuery) {
+  Future<Either<Failure, List<ChatListItemEntity>>> searchAtUser(
+    String userNameQuery,
+  ) {
     // TODO: implement searchAtUser
     throw UnimplementedError();
   }
@@ -44,5 +50,31 @@ class ChatListLocalDataSourceImp implements ChatListLocalDataSource {
   Future<Either<Failure, Unit>> unpinChat(String chatId) {
     // TODO: implement unpinChat
     throw UnimplementedError();
+  }
+  
+  @override
+    Future<Either<Failure, Unit>> saveChatsList(List<ChatListItemEntity> chatList) async {
+      final db = await databaseHelper.database;
+      db.transaction((txn) async {
+        final batch = txn.batch();
+        for (var chat in chatList) {
+          batch.insert(
+            'chat_list',
+            {
+              'chatId': chat.chatId,
+              'uid': chat.uid,
+              'phoneNumber': chat.phoneNumber,
+              'displayName': chat.displayName,
+              'photoUrl': chat.photoUrl,
+              'lastMessage': chat.lastMessage,
+              'lastMessageTime': chat.lastMessageTime.toIso8601String(),
+              'messageStatusEnum': chat.messageStatusEnum.index,
+              'messageTypeEnum': chat.messageTypeEnum.index,
+            },
+            conflictAlgorithm: ConflictAlgorithm.replace,
+          );
+        }
+        await batch.commit(noResult: true);
+      });
   }
 }
