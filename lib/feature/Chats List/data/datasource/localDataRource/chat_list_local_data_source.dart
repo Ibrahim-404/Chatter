@@ -1,18 +1,12 @@
-import 'package:chatter/core/feuille/failure.dart';
-import 'package:chatter/feature/Chats%20List/domain/entities/chat_list_Item_entity.dart';
-import 'package:dartz/dartz.dart';
+import 'package:chatter/feature/Chats%20List/data/models/chat_list_model.dart';
 
 abstract class ChatListLocalDataSource {
-  Future<Either<Failure, List<ChatListItemEntity>>> getChatsList();
-  Future<Either<Failure, Unit>> saveChatsList(
-    List<ChatListItemEntity> chatList,
-  );
-  Future<Either<Failure, Unit>> deleteChat(String chatId);
-  Future<Either<Failure, Unit>> pinChat(String chatId);
-  Future<Either<Failure, Unit>> unpinChat(String chatId);
-  Future<Either<Failure, Unit>> muteChat(String chatId);
-  Future<Either<Failure, Unit>> unmuteChat(String chatId);
-  Future<Either<Failure, List<ChatListItemEntity>>> searchAtUser(
-    String userNameQuery,
-  );
+  Future<List<ChatListModel>> getChatsList();
+  Future<void> saveChatsList(List<ChatListModel> chatList);
+  Future<void> deleteChat(String chatId);
+  Future<void> pinChat(String chatId);
+  Future<void> unpinChat(String chatId);
+  Future<void> muteChat(String chatId);
+  Future<void> unmuteChat(String chatId);
+  Future<List<ChatListModel>> searchAtUser(String userNameQuery);
 }

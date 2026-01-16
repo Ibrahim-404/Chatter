@@ -3,7 +3,7 @@ import 'package:chatter/feature/Chats%20List/domain/entities/enums/message_type.
 
 class ChatListItemEntity {
   final String chatId;
-  final String uid;
+  final String userId;
   final String phoneNumber;
   final String displayName;
   final String photoUrl;
@@ -15,7 +15,7 @@ class ChatListItemEntity {
     this.messageStatusEnum,
     this.messageTypeEnum, {
     required this.chatId,
-    required this.uid,
+    required this.userId,
     required this.phoneNumber,
     required this.displayName,
     required this.photoUrl,

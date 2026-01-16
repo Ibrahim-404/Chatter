@@ -20,3 +20,8 @@ class PermissionFailure extends Failure {
   const PermissionFailure([String message = 'Permission denied'])
     : super(message);
 }
+
+class DatabaseFailure extends Failure {
+  final String message;
+  const DatabaseFailure(this.message) : super(message);
+}

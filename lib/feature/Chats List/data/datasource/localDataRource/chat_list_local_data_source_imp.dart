@@ -1,80 +1,168 @@
 import 'package:chatter/core/database/base_local_data_source.dart';
-import 'package:chatter/core/feuille/failure.dart';
 import 'package:chatter/feature/Chats%20List/data/datasource/localDataRource/chat_list_local_data_source.dart';
-import 'package:chatter/feature/Chats%20List/domain/entities/chat_list_Item_entity.dart';
-import 'package:dartz/dartz.dart';
+import 'package:chatter/feature/Chats%20List/data/models/chat_list_model.dart';
+import 'package:chatter/feature/Chats%20List/domain/entities/enums/message_status.dart';
+import 'package:chatter/feature/Chats%20List/domain/entities/enums/message_type.dart';
+import 'package:sqflite/sqflite.dart';
 
 class ChatListLocalDataSourceImp extends BaseLocalDataSource
     implements ChatListLocalDataSource {
   ChatListLocalDataSourceImp({required super.databaseHelper});
 
   @override
-  Future<Either<Failure, Unit>> deleteChat(String chatId) {
-    // TODO: implement deleteChat
-    throw UnimplementedError();
+  Future<void> deleteChat(String chatId) async {
+    final db = await databaseHelper.database;
+    final rows = db.delete(
+      'chat_list',
+      where: 'chatId = ?',
+      whereArgs: [chatId],
+    );
+
+    if (rows == 0) {
+      throw Exception('Chat with chatId $chatId not found for deletion');
+    }
+    return;
   }
 
   @override
-  Future<Either<Failure, List<ChatListItemEntity>>> getChatsList() {
-    // TODO: implement getChatsList
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<Either<Failure, Unit>> muteChat(String chatId) {
-    // TODO: implement muteChat
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<Either<Failure, Unit>> pinChat(String chatId) {
-    // TODO: implement pinChat
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<Either<Failure, List<ChatListItemEntity>>> searchAtUser(
-    String userNameQuery,
-  ) {
-    // TODO: implement searchAtUser
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<Either<Failure, Unit>> unmuteChat(String chatId) {
-    // TODO: implement unmuteChat
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<Either<Failure, Unit>> unpinChat(String chatId) {
-    // TODO: implement unpinChat
-    throw UnimplementedError();
-  }
-  
-  @override
-    Future<Either<Failure, Unit>> saveChatsList(List<ChatListItemEntity> chatList) async {
+  Future<List<ChatListModel>> getChatsList() async {
+    try {
       final db = await databaseHelper.database;
+      final List<Map<String, dynamic>> chatListforLocal = await db.query(
+        'chat_list',
+      );
+      final List<ChatListModel> chatList =
+          chatListforLocal.map((chatMap) {
+            return ChatListModel(
+              chatId: chatMap['chatId'],
+              userId: chatMap['userId'],
+              phoneNumber: chatMap['phoneNumber'],
+              displayName: chatMap['displayName'],
+              photoUrl: chatMap['photoUrl'],
+              lastMessage: chatMap['lastMessage'],
+              lastMessageTime:
+                  DateTime.tryParse(chatMap['lastMessageTime'] ?? '') ??
+                  DateTime.now(),
+              messageStatusEnum:
+                  MessageStatus.values[chatMap['messageStatusEnum'] ?? 0],
+              messageTypeEnum:
+                  MessageType.values[chatMap['messageTypeEnum'] ?? 0],
+            );
+          }).toList();
+      if (chatList.isEmpty) {
+        throw Exception('No chats found in local database');
+      }
+      return chatList;
+    } on Exception catch (e) {
+      throw Exception('Failed to load chats from local database: $e');
+    }
+  }
+
+  @override
+  Future<void> muteChat(String chatId) {
+    final db = databaseHelper.database;
+    return db.then(
+      (database) => database.update(
+        'chat_list',
+        {'isMuted': 1},
+        where: 'chatId = ?',
+        whereArgs: [chatId],
+      ),
+    );
+  }
+
+  @override
+  Future<void> pinChat(String chatId) {
+    final db = databaseHelper.database;
+    return db.then(
+      (database) => database.update(
+        'chat_list',
+        {'isPinned': 1},
+        where: 'chatId = ?',
+        whereArgs: [chatId],
+      ),
+    );
+  }
+
+  @override
+  Future<List<ChatListModel>> searchAtUser(String userNameQuery) {
+    final dbFuture = databaseHelper.database;
+    return dbFuture.then((database) async {
+      final List<Map<String, dynamic>> results = await database.query(
+        'chat_list',
+        where: 'displayName LIKE ?',
+        whereArgs: ['%$userNameQuery%'],
+      );
+
+      return results.map((chatMap) {
+        return ChatListModel(
+          chatId: chatMap['chatId'],
+          userId: chatMap['userId'],
+          phoneNumber: chatMap['phoneNumber'],
+          displayName: chatMap['displayName'],
+          photoUrl: chatMap['photoUrl'],
+          lastMessage: chatMap['lastMessage'],
+          lastMessageTime:
+              DateTime.tryParse(chatMap['lastMessageTime'] ?? '') ??
+              DateTime.now(),
+          messageStatusEnum:
+              MessageStatus.values[chatMap['messageStatusEnum'] ?? 0],
+          messageTypeEnum: MessageType.values[chatMap['messageTypeEnum'] ?? 0],
+        );
+      }).toList();
+    });
+  }
+
+  @override
+  Future<void> unmuteChat(String chatId) {
+    final db = databaseHelper.database;
+    return db.then(
+      (database) => database.update(
+        'chat_list',
+        {'isMuted': 0},
+        where: 'chatId = ?',
+        whereArgs: [chatId],
+      ),
+    );
+  }
+
+  @override
+  Future<void> unpinChat(String chatId) {
+    final db = databaseHelper.database;
+    return db.then(
+      (database) => database.update(
+        'chat_list',
+        {'isPinned': 0},
+        where: 'chatId = ?',
+        whereArgs: [chatId],
+      ),
+    );
+  }
+
+  @override
+  Future<void> saveChatsList(List<ChatListModel> chatList) async {
+    final db = await databaseHelper.database;
+    try {
       db.transaction((txn) async {
         final batch = txn.batch();
         for (var chat in chatList) {
-          batch.insert(
-            'chat_list',
-            {
-              'chatId': chat.chatId,
-              'uid': chat.uid,
-              'phoneNumber': chat.phoneNumber,
-              'displayName': chat.displayName,
-              'photoUrl': chat.photoUrl,
-              'lastMessage': chat.lastMessage,
-              'lastMessageTime': chat.lastMessageTime.toIso8601String(),
-              'messageStatusEnum': chat.messageStatusEnum.index,
-              'messageTypeEnum': chat.messageTypeEnum.index,
-            },
-            conflictAlgorithm: ConflictAlgorithm.replace,
-          );
+          batch.insert('chat_list', {
+            'chatId': chat.chatId,
+            'userId': chat.userId,
+            'phoneNumber': chat.phoneNumber,
+            'displayName': chat.displayName,
+            'photoUrl': chat.photoUrl,
+            'lastMessage': chat.lastMessage,
+            'lastMessageTime': chat.lastMessageTime.toIso8601String(),
+            'messageStatusEnum': chat.messageStatusEnum.index,
+            'messageTypeEnum': chat.messageTypeEnum.index,
+          }, conflictAlgorithm: ConflictAlgorithm.replace);
         }
+
         await batch.commit(noResult: true);
       });
+    } on Exception catch (e) {
+      throw Exception('Failed to save chats to local database: $e');
+    }
   }
 }
