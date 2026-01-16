@@ -1,11 +1,9 @@
-import 'package:chatter/core/feuille/failure.dart';
-import 'package:chatter/feature/Chats%20List/domain/entities/chat_list_Item_entity.dart';
-import 'package:dartz/dartz.dart';
+import 'package:chatter/feature/Chats%20List/data/models/chat_list_model.dart';
 
-abstract class ChatListRepository {
-  Future<Either<Failure, List<ChatListItemEntity>>> fetchChatsList();
-  Future<Either<Failure, Unit>> muteChat(String chatId);
-  Future<Either<Failure, Unit>> unmuteChat(String chatId);
-  Future<Either<Failure, Unit>> pinChat(String chatId);
-  Future<Either<Failure, Unit>> unpinChat(String chatId);
+abstract class ChatListRemoteDataSource {
+  Future<List<ChatListModel>> fetchChatsList(String userId);
+  Future<void> toggleMuteChat(String userId, String conversationId);
+  // Future<void> unmuteChat(String userId, String conversationId);
+  Future<void> togglePinChat(String userId, String conversationId);
+  // Future<void> unpinChat(String userId, String conversationId);
 }

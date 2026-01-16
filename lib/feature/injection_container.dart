@@ -8,12 +8,14 @@ import 'package:chatter/feature/User%20Profile/presentation/controllers/user_pro
 // import 'package:chatter/feature/Authentication/presentation/manager/auht_bloc/validation/bloc/validation_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 final sl = GetIt.instance;
 Future<void> init() async {
   sl.registerLazySingleton(
     () => NetworkCheckerImplemant(connectionChecker: sl()),
   );
+  sl.registerLazySingleton<SupabaseClient>(() => Supabase.instance.client);
   sl.registerLazySingleton<DatabaseHelper>(() => DatabaseHelper());
   sl.registerLazySingleton<AuthRepo>(() => AuthRepoDataLayer());
   sl.registerFactory(() => SendVarifyBloc(authRepo: sl()));
