@@ -9,4 +9,5 @@ abstract class ChatListLocalDataSource {
   Future<void> muteChat(String chatId);
   Future<void> unmuteChat(String chatId);
   Future<List<ChatListModel>> searchAtUser(String userNameQuery);
+  Future<void>toggleDeleteChat(String conversationId);
 }

@@ -9,47 +9,22 @@ class ChatListImp implements ChatListRepository {
   final ChatListRemoteDataSource chatListRemoteDataSource;
   final ChatListLocalDataSource chatListLocalDataSource;
   ChatListImp(this.chatListLocalDataSource,this.chatListRemoteDataSource);
+  
   @override
   Future<Either<Failure, Unit>> deleteChat(String chatId) {
     // TODO: implement deleteChat
     throw UnimplementedError();
   }
-
+  
   @override
   Future<Either<Failure, List<ChatListItemEntity>>> getChatsList() {
     // TODO: implement getChatsList
     throw UnimplementedError();
   }
-
+  
   @override
-  Future<Either<Failure, Unit>> muteChat(String chatId) {
-    // TODO: implement muteChat
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<Either<Failure, Unit>> pinChat(String chatId) {
-    // TODO: implement pinChat
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<Either<Failure, List<ChatListItemEntity>>> searchAtUser(
-    String userNameQuery,
-  ) {
+  Future<Either<Failure, List<ChatListItemEntity>>> searchAtUser(String userNameQuery) {
     // TODO: implement searchAtUser
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<Either<Failure, Unit>> unmuteChat(String chatId) {
-    // TODO: implement unmuteChat
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<Either<Failure, Unit>> unpinChat(String chatId) {
-    // TODO: implement unpinChat
     throw UnimplementedError();
   }
   
@@ -64,4 +39,6 @@ class ChatListImp implements ChatListRepository {
     // TODO: implement togglepinChat
     throw UnimplementedError();
   }
+  
+  
 }

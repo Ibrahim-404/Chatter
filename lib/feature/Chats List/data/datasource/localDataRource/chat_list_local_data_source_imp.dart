@@ -165,4 +165,17 @@ class ChatListLocalDataSourceImp extends BaseLocalDataSource
       throw Exception('Failed to save chats to local database: $e');
     }
   }
+  
+  @override
+  Future<void> toggleDeleteChat(String conversationId) {
+    final db = databaseHelper.database;
+    return db.then(
+      (database) => database.update(
+        'chat_list',
+        {'isDeleted': 1},
+        where: 'conversationId = ?',
+        whereArgs: [conversationId],
+      ),
+    );
+  }
 }

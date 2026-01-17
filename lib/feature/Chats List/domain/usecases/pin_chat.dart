@@ -5,7 +5,7 @@ import 'package:dartz/dartz.dart';
 class PinChat {
   final ChatListRepository repository;
   PinChat(this.repository);
-  Future<Either<Failure, Unit>> call(String chatId) {
-    return repository.pinChat(chatId);
+  Future<Either<Failure, Unit>> call(String userId, String conversationId) {
+    return repository.togglepinChat( userId, conversationId);
   }
 }

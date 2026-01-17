@@ -5,7 +5,7 @@ import 'package:dartz/dartz.dart';
 class MuteChat {
   final ChatListRepository repository;
   MuteChat(this.repository);
-  Future<Either<Failure, Unit>> call(String chatId) {
-    return repository.muteChat(chatId);
+  Future<Either<Failure, Unit>> call(String userId, String conversationId) {
+    return repository.toggleMuteChat( userId, conversationId);
   }
 }
