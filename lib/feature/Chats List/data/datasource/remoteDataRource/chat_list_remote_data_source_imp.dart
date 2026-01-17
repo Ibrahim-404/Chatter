@@ -61,11 +61,50 @@ conversation_id,
             .eq('conversation_id', conversationId)
             .eq('user_id', userId)
             .single();
-    final bool currentMuted = response['muted'] as bool;
+    final bool currentpined = response['muted'] as bool;
     supabaseClient
         .from('Participants')
-        .update({'muted': !currentMuted})
+        .update({'muted': !currentpined})
         .eq('conversation_id', conversationId)
         .eq('user_id', userId);
   }
+
+  @override
+  Future<List<ChatListModel>> searchAtuser(String query) async {
+    final response = await supabaseClient.from('participants').select('''
+conversation_id,
+      muted,
+      role,
+      conversations(
+      conversation_id,
+        type,
+        last_message_time,
+       messages(
+       message_id,
+          content,
+          message_type,
+          sent_at,
+          sender_id
+      )
+    ),users(
+    id,
+    name,
+    profile_photo_link,
+    phone_number
+    )
+  }
+}
+''').like('users.name', '%query%');
+return response.map((chat) => ChatListModel.fromMap(chat)).toList();
+  }
+  
+  @override
+  Future<void> toggleDeleteChat(String conversationId) async {
+   try {
+  await supabaseClient.from('conversations').delete().eq('conversation_id', conversationId);
+  
+} on Exception catch (e) {
+  throw Exception('Failed to delete conversation: $e');}
+  }
+  
 }

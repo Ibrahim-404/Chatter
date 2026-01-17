@@ -6,4 +6,6 @@ abstract class ChatListRemoteDataSource {
   // Future<void> unmuteChat(String userId, String conversationId);
   Future<void> togglePinChat(String userId, String conversationId);
   // Future<void> unpinChat(String userId, String conversationId);
+  Future<List<ChatListModel>> searchAtuser(String query);
+  Future<void> toggleDeleteChat(String conversationId);
 }

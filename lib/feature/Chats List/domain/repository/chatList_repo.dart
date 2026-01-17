@@ -5,11 +5,10 @@ import 'package:dartz/dartz.dart';
 abstract class ChatListRepository {
   Future<Either<Failure, List<ChatListItemEntity>>> getChatsList();
   Future<Either<Failure, Unit>> deleteChat(String chatId);
-  Future<Either<Failure, Unit>> pinChat(String chatId);
-  Future<Either<Failure, Unit>> unpinChat(String chatId);
+  Future<Either<Failure, Unit>> togglepinChat(String userId, String conversationId);
+  
 
-  Future<Either<Failure, Unit>> muteChat(String chatId);
-  Future<Either<Failure, Unit>> unmuteChat(String chatId);
+  Future<Either<Failure, Unit>> toggleMuteChat(String userId, String conversationId);
   Future<Either<Failure, List<ChatListItemEntity>>> searchAtUser(
     String userNameQuery,
   );

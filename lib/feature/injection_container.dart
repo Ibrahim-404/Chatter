@@ -3,6 +3,8 @@ import 'package:chatter/core/network/network_checker_implemant.dart';
 import 'package:chatter/feature/Authentication/data/repository/Auth_Repo_dataLayer.dart';
 import 'package:chatter/feature/Authentication/domain/repository/domain_auth_repo.dart';
 import 'package:chatter/feature/Authentication/presentation/manager/auht_bloc/bloc/send_varify_bloc.dart';
+import 'package:chatter/feature/Chats%20List/data/datasource/localDataRource/chat_list_local_data_source_imp.dart';
+import 'package:chatter/feature/Chats%20List/data/datasource/remoteDataRource/chat_list_remote_data_source_imp.dart';
 import 'package:chatter/feature/User%20Profile/presentation/controllers/profile_picture_bloc/bloc/profile_picture_bloc.dart';
 import 'package:chatter/feature/User%20Profile/presentation/controllers/user_profile_bloc/bloc/mange_user_profile_bloc.dart';
 // import 'package:chatter/feature/Authentication/presentation/manager/auht_bloc/validation/bloc/validation_bloc.dart';
@@ -15,12 +17,18 @@ Future<void> init() async {
   sl.registerLazySingleton(
     () => NetworkCheckerImplemant(connectionChecker: sl()),
   );
-  sl.registerLazySingleton<SupabaseClient>(() => Supabase.instance.client);
   sl.registerLazySingleton<DatabaseHelper>(() => DatabaseHelper());
+  sl.registerLazySingleton(() => ImagePicker());
+  sl.registerLazySingleton<SupabaseClient>(() => Supabase.instance.client);
+  //
   sl.registerLazySingleton<AuthRepo>(() => AuthRepoDataLayer());
   sl.registerFactory(() => SendVarifyBloc(authRepo: sl()));
-  sl.registerLazySingleton(() => ImagePicker());
+  //
+
   sl.registerLazySingleton(() => ProfilePictureBloc(sl()));
   sl.registerLazySingleton(() => MangeUserProfileBloc(sl(), sl(), sl()));
   // sl.registerFactory(() => ValidationBloc());
+  sl.registerLazySingleton(() => ChatListRemoteDataSourceImp(SupabaseClient(sl(), sl())));
+  sl.registerLazySingleton(()=>ChatListLocalDataSourceImp(databaseHelper: sl()));
+
 }
