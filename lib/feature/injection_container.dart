@@ -28,7 +28,10 @@ Future<void> init() async {
   sl.registerLazySingleton(() => ProfilePictureBloc(sl()));
   sl.registerLazySingleton(() => MangeUserProfileBloc(sl(), sl(), sl()));
   // sl.registerFactory(() => ValidationBloc());
-  sl.registerLazySingleton(() => ChatListRemoteDataSourceImp(SupabaseClient(sl(), sl())));
-  sl.registerLazySingleton(()=>ChatListLocalDataSourceImp(databaseHelper: sl()));
-
+  sl.registerLazySingleton(
+    () => ChatListRemoteDataSourceImp(SupabaseClient(sl(), sl())),
+  );
+  sl.registerLazySingleton(
+    () => ChatListLocalDataSourceImp(databaseHelper: sl()),
+  );
 }

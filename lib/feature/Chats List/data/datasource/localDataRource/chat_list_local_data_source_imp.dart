@@ -58,31 +58,9 @@ class ChatListLocalDataSourceImp extends BaseLocalDataSource
     }
   }
 
-  @override
-  Future<void> muteChat(String chatId) {
-    final db = databaseHelper.database;
-    return db.then(
-      (database) => database.update(
-        'chat_list',
-        {'isMuted': 1},
-        where: 'chatId = ?',
-        whereArgs: [chatId],
-      ),
-    );
-  }
 
   @override
-  Future<void> pinChat(String chatId) {
-    final db = databaseHelper.database;
-    return db.then(
-      (database) => database.update(
-        'chat_list',
-        {'isPinned': 1},
-        where: 'chatId = ?',
-        whereArgs: [chatId],
-      ),
-    );
-  }
+ 
 
   @override
   Future<List<ChatListModel>> searchAtUser(String userNameQuery) {
@@ -114,30 +92,9 @@ class ChatListLocalDataSourceImp extends BaseLocalDataSource
   }
 
   @override
-  Future<void> unmuteChat(String chatId) {
-    final db = databaseHelper.database;
-    return db.then(
-      (database) => database.update(
-        'chat_list',
-        {'isMuted': 0},
-        where: 'chatId = ?',
-        whereArgs: [chatId],
-      ),
-    );
-  }
+ 
 
-  @override
-  Future<void> unpinChat(String chatId) {
-    final db = databaseHelper.database;
-    return db.then(
-      (database) => database.update(
-        'chat_list',
-        {'isPinned': 0},
-        where: 'chatId = ?',
-        whereArgs: [chatId],
-      ),
-    );
-  }
+  
 
   @override
   Future<void> saveChatsList(List<ChatListModel> chatList) async {
@@ -165,7 +122,7 @@ class ChatListLocalDataSourceImp extends BaseLocalDataSource
       throw Exception('Failed to save chats to local database: $e');
     }
   }
-  
+
   @override
   Future<void> toggleDeleteChat(String conversationId) {
     final db = databaseHelper.database;
@@ -178,4 +135,19 @@ class ChatListLocalDataSourceImp extends BaseLocalDataSource
       ),
     );
   }
+  
+  @override
+  Future<void> toggleMuteChat(String chatId) {
+    // TODO: implement toggleMuteChat
+    throw UnimplementedError();
+  }
+  
+  @override
+  Future<void> togglePinChat(String chatId) {
+    // TODO: implement togglePinChat
+    throw UnimplementedError();
+  }
+  
+  
+
 }

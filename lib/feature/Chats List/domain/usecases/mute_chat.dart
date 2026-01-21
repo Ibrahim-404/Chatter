@@ -6,6 +6,6 @@ class MuteChat {
   final ChatListRepository repository;
   MuteChat(this.repository);
   Future<Either<Failure, Unit>> call(String userId, String conversationId) {
-    return repository.toggleMuteChat( userId, conversationId);
+    return repository.toggleMuteChat(userId, conversationId);
   }
 }

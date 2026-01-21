@@ -6,6 +6,6 @@ class PinChat {
   final ChatListRepository repository;
   PinChat(this.repository);
   Future<Either<Failure, Unit>> call(String userId, String conversationId) {
-    return repository.togglepinChat( userId, conversationId);
+    return repository.togglepinChat(userId, conversationId);
   }
 }

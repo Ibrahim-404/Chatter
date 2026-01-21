@@ -71,7 +71,9 @@ conversation_id,
 
   @override
   Future<List<ChatListModel>> searchAtuser(String query) async {
-    final response = await supabaseClient.from('participants').select('''
+    final response = await supabaseClient
+        .from('participants')
+        .select('''
 conversation_id,
       muted,
       role,
@@ -94,17 +96,20 @@ conversation_id,
     )
   }
 }
-''').like('users.name', '%query%');
-return response.map((chat) => ChatListModel.fromMap(chat)).toList();
+''')
+        .like('users.name', '%query%');
+    return response.map((chat) => ChatListModel.fromMap(chat)).toList();
   }
-  
+
   @override
   Future<void> toggleDeleteChat(String conversationId) async {
-   try {
-  await supabaseClient.from('conversations').delete().eq('conversation_id', conversationId);
-  
-} on Exception catch (e) {
-  throw Exception('Failed to delete conversation: $e');}
+    try {
+      await supabaseClient
+          .from('conversations')
+          .delete()
+          .eq('conversation_id', conversationId);
+    } on Exception catch (e) {
+      throw Exception('Failed to delete conversation: $e');
+    }
   }
-  
 }

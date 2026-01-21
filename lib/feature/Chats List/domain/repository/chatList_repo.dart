@@ -3,12 +3,17 @@ import 'package:chatter/feature/Chats%20List/domain/entities/chat_list_Item_enti
 import 'package:dartz/dartz.dart';
 
 abstract class ChatListRepository {
-  Future<Either<Failure, List<ChatListItemEntity>>> getChatsList();
+  Future<Either<Failure, List<ChatListItemEntity>>> getChatsList(String userId);
   Future<Either<Failure, Unit>> deleteChat(String chatId);
-  Future<Either<Failure, Unit>> togglepinChat(String userId, String conversationId);
-  
+  Future<Either<Failure, Unit>> togglepinChat(
+    String userId,
+    String conversationId,
+  );
 
-  Future<Either<Failure, Unit>> toggleMuteChat(String userId, String conversationId);
+  Future<Either<Failure, Unit>> toggleMuteChat(
+    String userId,
+    String conversationId,
+  );
   Future<Either<Failure, List<ChatListItemEntity>>> searchAtUser(
     String userNameQuery,
   );

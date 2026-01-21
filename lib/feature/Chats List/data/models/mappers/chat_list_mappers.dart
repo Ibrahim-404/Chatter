@@ -1,9 +1,13 @@
 import 'package:chatter/feature/Chats%20List/data/models/chat_list_model.dart';
 import 'package:chatter/feature/Chats%20List/domain/entities/chat_list_Item_entity.dart';
 
-extension ChatListMapper on ChatListItemEntity {
-  ChatListModel toModel() {
-    return ChatListModel(
+extension ChatListMapper on ChatListModel {
+  ChatListItemEntity toEntity() {
+    return ChatListItemEntity(
+      
+      messageStatusEnum, 
+      messageTypeEnum,
+      
       chatId: chatId,
       userId: userId,
       phoneNumber: phoneNumber,
@@ -11,8 +15,6 @@ extension ChatListMapper on ChatListItemEntity {
       photoUrl: photoUrl,
       lastMessage: lastMessage,
       lastMessageTime: lastMessageTime,
-      messageStatusEnum: messageStatusEnum,
-      messageTypeEnum: messageTypeEnum,
     );
   }
 }

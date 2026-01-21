@@ -6,8 +6,8 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 class UserProfileRemoteDataSourceImplementation
     implements UserProfileRemoteDataSource {
- final SupabaseClient supabase;
-   UserProfileRemoteDataSourceImplementation(this.supabase);
+  final SupabaseClient supabase;
+  UserProfileRemoteDataSourceImplementation(this.supabase);
   SupabaseStorageClient supabaseStorage = Supabase.instance.client.storage;
   @override
   Future<UserProfileModel> getUserProfile(String userId) async {
