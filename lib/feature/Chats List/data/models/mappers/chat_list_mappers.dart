@@ -4,10 +4,9 @@ import 'package:chatter/feature/Chats%20List/domain/entities/chat_list_Item_enti
 extension ChatListMapper on ChatListModel {
   ChatListItemEntity toEntity() {
     return ChatListItemEntity(
-      
-      messageStatusEnum, 
+      messageStatusEnum,
       messageTypeEnum,
-      
+
       chatId: chatId,
       userId: userId,
       phoneNumber: phoneNumber,

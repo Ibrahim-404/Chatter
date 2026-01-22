@@ -5,7 +5,7 @@ abstract class ChatListLocalDataSource {
   Future<void> saveChatsList(List<ChatListModel> chatList);
   Future<void> togglePinChat(String conversationId);
   Future<void> toggleMuteChat(String conversationId);
-  
+
   Future<List<ChatListModel>> searchAtUser(String userNameQuery);
   Future<void> toggleDeleteChat(String conversationId);
 }

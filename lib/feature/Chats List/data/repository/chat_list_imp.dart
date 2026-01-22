@@ -20,50 +20,50 @@ class ChatListImp implements ChatListRepository {
   @override
   Future<Either<Failure, Unit>> deleteChat(String chatId) async {
     if (await networkChecker.isConnected) {
-    try{
-      await chatListRemoteDataSource.toggleDeleteChat(chatId);
-      
-      return Right(unit);
-    }catch(e){
-      return Left(ServerFailure());
-    }
+      try {
+        await chatListRemoteDataSource.toggleDeleteChat(chatId);
+
+        return Right(unit);
+      } catch (e) {
+        return Left(ServerFailure());
+      }
     } else {
-try{
-      await chatListLocalDataSource.toggleDeleteChat(chatId);
-      
-      return Right(unit);
-    }catch(e){
-      return Left(CacheFailure());
-    }
+      try {
+        await chatListLocalDataSource.toggleDeleteChat(chatId);
+
+        return Right(unit);
+      } catch (e) {
+        return Left(CacheFailure());
+      }
     }
   }
 
   @override
- Future<Either<Failure, List<ChatListItemEntity>>> getChatsList(
-  String userId,
-) async {
-  if (await networkChecker.isConnected) {
-    try {
-      final remoteChatList =
-          await chatListRemoteDataSource.fetchChatsList(userId);
+  Future<Either<Failure, List<ChatListItemEntity>>> getChatsList(
+    String userId,
+  ) async {
+    if (await networkChecker.isConnected) {
+      try {
+        final remoteChatList = await chatListRemoteDataSource.fetchChatsList(
+          userId,
+        );
 
-      await chatListLocalDataSource.saveChatsList(remoteChatList);
+        await chatListLocalDataSource.saveChatsList(remoteChatList);
 
-      return Right(remoteChatList.map((e) => e.toEntity()).toList());
-    } catch (_) {
-      return Left(ServerFailure());
-    }
-  } else {
-    try {
-      final localChatList = await chatListLocalDataSource.getChatsList();
+        return Right(remoteChatList.map((e) => e.toEntity()).toList());
+      } catch (_) {
+        return Left(ServerFailure());
+      }
+    } else {
+      try {
+        final localChatList = await chatListLocalDataSource.getChatsList();
 
-      return Right(localChatList.map((e) => e.toEntity()).toList());
-    } catch (_) {
-      return Left(CacheFailure());
+        return Right(localChatList.map((e) => e.toEntity()).toList());
+      } catch (_) {
+        return Left(CacheFailure());
+      }
     }
   }
-}
-
 
   @override
   Future<Either<Failure, List<ChatListItemEntity>>> searchAtUser(
@@ -94,7 +94,7 @@ try{
   Future<Either<Failure, Unit>> toggleMuteChat(
     String userId,
     String conversationId,
-  )async {
+  ) async {
     if (await networkChecker.isConnected) {
       try {
         await chatListRemoteDataSource.toggleMuteChat(userId, conversationId);
@@ -112,29 +112,25 @@ try{
     }
   }
 
- @override
-Future<Either<Failure, Unit>> togglepinChat(
-  String userId,
-  String conversationId,
-) async {
-  if (await networkChecker.isConnected) {
-    try {
-      await chatListRemoteDataSource.togglePinChat(
-        userId,
-        conversationId,
-      );
-      return Right(unit);
-    } catch (_) {
-      return Left(ServerFailure());
-    }
-  } else {
-    try {
-      await chatListLocalDataSource.togglePinChat(conversationId);
-      return Right(unit);
-    } catch (_) {
-      return Left(CacheFailure());
+  @override
+  Future<Either<Failure, Unit>> togglepinChat(
+    String userId,
+    String conversationId,
+  ) async {
+    if (await networkChecker.isConnected) {
+      try {
+        await chatListRemoteDataSource.togglePinChat(userId, conversationId);
+        return Right(unit);
+      } catch (_) {
+        return Left(ServerFailure());
+      }
+    } else {
+      try {
+        await chatListLocalDataSource.togglePinChat(conversationId);
+        return Right(unit);
+      } catch (_) {
+        return Left(CacheFailure());
+      }
     }
   }
-}
-
 }
