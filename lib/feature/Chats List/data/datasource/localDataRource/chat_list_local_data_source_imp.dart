@@ -9,20 +9,7 @@ class ChatListLocalDataSourceImp extends BaseLocalDataSource
     implements ChatListLocalDataSource {
   ChatListLocalDataSourceImp({required super.databaseHelper});
 
-  @override
-  Future<void> deleteChat(String chatId) async {
-    final db = await databaseHelper.database;
-    final rows = db.delete(
-      'chat_list',
-      where: 'chatId = ?',
-      whereArgs: [chatId],
-    );
-
-    if (rows == 0) {
-      throw Exception('Chat with chatId $chatId not found for deletion');
-    }
-    return;
-  }
+ 
 
   @override
   Future<List<ChatListModel>> getChatsList() async {
@@ -59,7 +46,7 @@ class ChatListLocalDataSourceImp extends BaseLocalDataSource
   }
 
 
-  @override
+  
  
 
   @override
@@ -90,8 +77,6 @@ class ChatListLocalDataSourceImp extends BaseLocalDataSource
       }).toList();
     });
   }
-
-  @override
  
 
   
@@ -124,23 +109,42 @@ class ChatListLocalDataSourceImp extends BaseLocalDataSource
   }
 
   @override
-  Future<void> toggleDeleteChat(String conversationId) {
-    final db = databaseHelper.database;
-    return db.then(
-      (database) => database.update(
-        'chat_list',
-        {'isDeleted': 1},
-        where: 'conversationId = ?',
-        whereArgs: [conversationId],
-      ),
+  Future<void> toggleDeleteChat(String conversationId)async {
+       final db = await databaseHelper.database;
+    final rows = await db.delete(
+      'chat_list',
+      where: 'chatId = ?',
+      whereArgs: [conversationId],
     );
+
+    if (rows == 0) {
+      throw Exception('Chat with chatId $conversationId not found for deletion');
+    }
+    return;
   }
   
   @override
-  Future<void> toggleMuteChat(String chatId) {
-    // TODO: implement toggleMuteChat
-    throw UnimplementedError();
-  }
+@override
+Future<void> toggleMuteChat(String chatId) async {
+  final db = await databaseHelper.database;
+
+  final result = await db.query(
+    'chat_list',
+    columns: ['isMuted'],
+    where: 'chatId = ?',
+    whereArgs: [chatId],
+  );
+
+  final bool current = (result.first['isMuted'] as int) == 1;
+
+  await db.update(
+    'chat_list',
+    {'isMuted': current ? 0 : 1},
+    where: 'chatId = ?',
+    whereArgs: [chatId],
+  );
+}
+
   
   @override
   Future<void> togglePinChat(String chatId) {

@@ -53,21 +53,25 @@ conversation_id,
   }
 
   @override
-  Future<void> togglePinChat(String userId, String conversationId) async {
-    final response =
-        await supabaseClient
-            .from('Participants')
-            .select('pin')
-            .eq('conversation_id', conversationId)
-            .eq('user_id', userId)
-            .single();
-    final bool currentpined = response['muted'] as bool;
-    supabaseClient
-        .from('Participants')
-        .update({'muted': !currentpined})
-        .eq('conversation_id', conversationId)
-        .eq('user_id', userId);
-  }
+ @override
+Future<void> togglePinChat(String userId, String conversationId) async {
+  final response =
+      await supabaseClient
+          .from('Participants')
+          .select('pin')
+          .eq('conversation_id', conversationId)
+          .eq('user_id', userId)
+          .single();
+
+  final bool currentPinned = response['pin'] as bool;
+
+  await supabaseClient
+      .from('Participants')
+      .update({'pin': !currentPinned})
+      .eq('conversation_id', conversationId)
+      .eq('user_id', userId);
+}
+
 
   @override
   Future<List<ChatListModel>> searchAtuser(String query) async {
