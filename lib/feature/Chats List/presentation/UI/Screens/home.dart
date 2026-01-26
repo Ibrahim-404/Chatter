@@ -60,8 +60,6 @@ class CustomSearchWidget extends StatefulWidget {
 }
 
 class _CustomSearchWidgetState extends State<CustomSearchWidget> {
- 
- 
   @override
   Widget build(BuildContext context) {
     return Container(

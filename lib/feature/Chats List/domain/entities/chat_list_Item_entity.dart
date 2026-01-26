@@ -23,18 +23,13 @@ class ChatListItemEntity extends Equatable {
     required this.lastMessage,
     required this.lastMessageTime,
   });
-  
+
   @override
-  // TODO: implement props
   List<Object?> get props => [
-        chatId,
-        userId,
-        phoneNumber,
-        displayName,
-        photoUrl,
-        lastMessage,
-        lastMessageTime,
-        messageStatusEnum,
-        messageTypeEnum,
-      ];
+    chatId,
+    lastMessage,
+    lastMessageTime,
+    messageStatusEnum,
+    messageTypeEnum,
+  ];
 }
