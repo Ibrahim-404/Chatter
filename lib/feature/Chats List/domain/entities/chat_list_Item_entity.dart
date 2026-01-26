@@ -1,7 +1,8 @@
 import 'package:chatter/feature/Chats%20List/domain/entities/enums/message_status.dart';
 import 'package:chatter/feature/Chats%20List/domain/entities/enums/message_type.dart';
+import 'package:equatable/equatable.dart';
 
-class ChatListItemEntity {
+class ChatListItemEntity extends Equatable {
   final String chatId;
   final String userId;
   final String phoneNumber;
@@ -22,4 +23,18 @@ class ChatListItemEntity {
     required this.lastMessage,
     required this.lastMessageTime,
   });
+  
+  @override
+  // TODO: implement props
+  List<Object?> get props => [
+        chatId,
+        userId,
+        phoneNumber,
+        displayName,
+        photoUrl,
+        lastMessage,
+        lastMessageTime,
+        messageStatusEnum,
+        messageTypeEnum,
+      ];
 }
