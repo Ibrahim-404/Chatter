@@ -39,31 +39,30 @@ class ChatListImp implements ChatListRepository {
   }
 
   @override
-  Future<Either<Failure, List<ChatListItemEntity>>> getChatsList(
-    String userId,
-  ) async {
-    if (await networkChecker.isConnected) {
-      try {
-        final remoteChatList = await chatListRemoteDataSource.fetchChatsList(
-          userId,
-        );
-
-        await chatListLocalDataSource.saveChatsList(remoteChatList);
-
-        return Right(remoteChatList.map((e) => e.toEntity()).toList());
-      } catch (_) {
-        return Left(ServerFailure());
-      }
-    } else {
-      try {
-        final localChatList = await chatListLocalDataSource.getChatsList();
-
-        return Right(localChatList.map((e) => e.toEntity()).toList());
-      } catch (_) {
-        return Left(CacheFailure());
-      }
+Stream<Either<Failure, List<ChatListItemEntity>>> getChatsList(
+  String userId,
+) async* {
+  if (await networkChecker.isConnected) {
+    yield* chatListRemoteDataSource
+        .fetchChatsList(userId)
+        .map((models) {
+          chatListLocalDataSource.saveChatsList(models);
+          final entities = models.map((e) => e.toEntity()).toList();
+          return Right<Failure, List<ChatListItemEntity>>(entities);
+        })
+        .handleError((_) {
+          return Left(ServerFailure());
+        });
+  } else {
+    try {
+      final localChatList = await chatListLocalDataSource.getChatsList();
+      yield Right(localChatList.map((e) => e.toEntity()).toList());
+    } catch (_) {
+      yield Left(CacheFailure());
     }
   }
+}
+
 
   @override
   Future<Either<Failure, List<ChatListItemEntity>>> searchAtUser(

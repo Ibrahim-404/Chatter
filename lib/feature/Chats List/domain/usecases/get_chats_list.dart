@@ -6,7 +6,7 @@ import 'package:dartz/dartz.dart';
 class GetChatsList {
   final ChatListRepository repository;
   GetChatsList(this.repository);
-  Future<Either<Failure, List<ChatListItemEntity>>> call(String userId) {
+  Stream<Either<Failure, List<ChatListItemEntity>>> call(String userId) {
     return repository.getChatsList(userId);
   }
 }

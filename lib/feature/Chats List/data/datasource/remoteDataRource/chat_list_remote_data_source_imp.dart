@@ -6,33 +6,15 @@ class ChatListRemoteDataSourceImp implements ChatListRemoteDataSource {
   final SupabaseClient supabaseClient;
   const ChatListRemoteDataSourceImp(this.supabaseClient);
   @override
-  Future<List<ChatListModel>> fetchChatsList(String userId) async {
-    final response = await supabaseClient
+  Stream<List<ChatListModel>> fetchChatsList(String userId) {
+    return supabaseClient
         .from('participants')
-        .select('''
-conversation_id,
-      muted,
-      role,
-      conversations(
-      conversation_id,
-        type,
-        last_message_time,
-       messages(
-       message_id,
-          content,
-          message_type,
-          sent_at,
-          sender_id
-      )
-    ),users(
-    id,
-    name,
-    profile_photo_link,
-    phone_number
-    )
-       ''')
-        .eq('user_id', userId);
-    return response.map((chat) => ChatListModel.fromMap(chat)).toList();
+        .stream(primaryKey: ['conversation_id', 'user_id'])
+        .eq('user_id', userId)
+        .map((data) {
+          return data.map((chat) => ChatListModel.fromMap(chat)).toList();
+        })
+        .distinct();
   }
 
   @override
@@ -116,3 +98,28 @@ conversation_id,
     }
   }
 }
+
+/*
+'''
+conversation_id,
+      muted,
+      role,
+      conversations(
+      conversation_id,
+        type,
+        last_message_time,
+       messages(
+       message_id,
+          content,
+          message_type,
+          sent_at,
+          sender_id
+      )
+    ),users(
+    id,
+    name,
+    profile_photo_link,
+    phone_number
+    )
+       '''
+*/
