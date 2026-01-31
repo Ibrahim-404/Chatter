@@ -1,8 +1,11 @@
+import 'dart:async';
+
 import 'package:bloc/bloc.dart';
+import 'package:chatter/core/network/network_checker.dart';
+import 'package:chatter/core/network/network_state.dart';
 import 'package:chatter/feature/Chats%20List/domain/entities/chat_list_Item_entity.dart';
 import 'package:chatter/feature/Chats%20List/domain/usecases/get_chats_list.dart';
 import 'package:chatter/feature/Chats%20List/domain/usecases/search_at_user.dart';
-import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
 
 part 'chat_list_event.dart';
@@ -11,58 +14,29 @@ part 'chat_list_state.dart';
 class ChatListBloc extends Bloc<ChatListEvent, ChatListState> {
   final GetChatsList getChatsList;
   final SearchAtUser searchAtUser;
-  ChatListBloc(this.getChatsList, this.searchAtUser)
+  late StreamSubscription _netWorkSub;
+  StreamSubscription? _chatSub;
+  final NetworkChecker networkChecker;
+
+
+  
+  ChatListBloc(this.getChatsList, this.searchAtUser, this.networkChecker)
     : super(ChatListInitial()) {
+    _netWorkSub= networkChecker.onStatusChange.listen((event) {
+      if(event == NetworkState.online){
+        add(FetchChatListEvent(userId: "current_user_id")); 
+      }
+    });
     on<FetchChatListEvent>((event, emit) async {
+await _chatSub?.cancel();
       emit(ChatListLoading());
-      try {
-        final chats = await getChatsList(event.userId);
-        chats.fold((failure) => emit(ChatListError()), (chats) {
-          if (chats.isEmpty) {
-            emit(ChatListEmpty());
-          } else {
-            if (state is ChatListLoaded) {
-              final oldChat = (state as ChatListLoaded).chats;
-              if (const DeepCollectionEquality().equals(oldChat, chats)) {
-                return;
-              }
-            }
-            emit(ChatListLoaded(chats));
-          }
-        });
-      } catch (e) {
-        emit(ChatListError());
-      }
+      _chatSub = getChatsList(event.userId).listen((either) {
+        either.fold(
+          (failure) => emit(ChatListError()),
+          (chatList) => emit(ChatListLoaded( chatList)),
+        );
+      });
     });
-    on<RefreshChatListEvent>((event, emit) async {
-      emit(ChatListLoading());
-      try {
-        final chats = await getChatsList('');
-        chats.fold((failure) => emit(ChatListError()), (chats) {
-          if (chats.isEmpty) {
-            emit(ChatListEmpty());
-          } else {
-            emit(ChatListLoaded(chats));
-          }
-        });
-      } catch (e) {
-        emit(ChatListError());
-      }
-    });
-    on<SearchChatListEvent>((event, emit) async {
-      emit(ChatListLoading());
-      try {
-        final chats = await searchAtUser(event.query);
-        chats.fold((failure) => emit(ChatListError()), (chats) {
-          if (chats.isEmpty) {
-            emit(ChatListEmpty());
-          } else {
-            emit(ChatListLoaded(chats));
-          }
-        });
-      } catch (e) {
-        emit(ChatListError());
-      }
-    });
+    on<SearchChatListEvent>((event, emit) async {});
   }
 }

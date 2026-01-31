@@ -9,7 +9,7 @@ sealed class ChatListEvent extends Equatable {
 
 final class FetchChatListEvent extends ChatListEvent {
   final String userId;
-  const FetchChatListEvent(this.userId);
+  const FetchChatListEvent({required this.userId});
 
   @override
   List<Object> get props => [userId];
