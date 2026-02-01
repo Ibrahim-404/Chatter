@@ -17,14 +17,15 @@ class ChatListBloc extends Bloc<ChatListEvent, ChatListState> {
   late StreamSubscription _netWorkSub;
   StreamSubscription? _chatSub;
   final NetworkChecker networkChecker;
+  final String currentUserId ; 
 
 
   
-  ChatListBloc(this.getChatsList, this.searchAtUser, this.networkChecker)
+  ChatListBloc(this.getChatsList, this.searchAtUser, this.networkChecker,{required this.currentUserId})
     : super(ChatListInitial()) {
     _netWorkSub= networkChecker.onStatusChange.listen((event) {
       if(event == NetworkState.online){
-        add(FetchChatListEvent(userId: "current_user_id")); 
+        add(FetchChatListEvent(userId: currentUserId));
       }
     });
     on<FetchChatListEvent>((event, emit) async {
@@ -32,11 +33,18 @@ await _chatSub?.cancel();
       emit(ChatListLoading());
       _chatSub = getChatsList(event.userId).listen((either) {
         either.fold(
-          (failure) => emit(ChatListError()),
+          (failure) => emit(ChatListError()), 
           (chatList) => emit(ChatListLoaded( chatList)),
         );
       });
     });
-    on<SearchChatListEvent>((event, emit) async {});
+    on<SearchChatListEvent>((event, emit) async {
+      emit(ChatListLoading());
+      final results = await searchAtUser(event.query);
+      results.fold(
+        (failure) => emit(ChatListError()),
+        (searchResults) => emit(ChatListSearchResults(searchResults)),
+      );
+    });
   }
 }

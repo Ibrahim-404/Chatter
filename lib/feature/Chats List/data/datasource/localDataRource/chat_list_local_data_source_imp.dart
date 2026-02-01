@@ -34,9 +34,7 @@ class ChatListLocalDataSourceImp extends BaseLocalDataSource
                   MessageType.values[chatMap['messageTypeEnum'] ?? 0],
             );
           }).toList();
-      if (chatList.isEmpty) {
-        throw Exception('No chats found in local database');
-      }
+      
       return chatList;
     } on Exception catch (e) {
       throw Exception('Failed to load chats from local database: $e');
@@ -76,7 +74,7 @@ class ChatListLocalDataSourceImp extends BaseLocalDataSource
   Future<void> saveChatsList(List<ChatListModel> chatList) async {
     final db = await databaseHelper.database;
     try {
-      db.transaction((txn) async {
+      await db.transaction((txn) async {
         final batch = txn.batch();
         for (var chat in chatList) {
           batch.insert('chat_list', {
