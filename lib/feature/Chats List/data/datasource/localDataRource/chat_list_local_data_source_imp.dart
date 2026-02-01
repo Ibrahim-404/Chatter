@@ -34,7 +34,7 @@ class ChatListLocalDataSourceImp extends BaseLocalDataSource
                   MessageType.values[chatMap['messageTypeEnum'] ?? 0],
             );
           }).toList();
-      
+
       return chatList;
     } on Exception catch (e) {
       throw Exception('Failed to load chats from local database: $e');
