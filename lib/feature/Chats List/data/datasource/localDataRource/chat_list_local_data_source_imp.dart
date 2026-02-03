@@ -1,4 +1,6 @@
 import 'package:chatter/core/database/base_local_data_source.dart';
+import 'package:chatter/core/database/database_helper.dart';
+
 import 'package:chatter/feature/Chats%20List/data/datasource/localDataRource/chat_list_local_data_source.dart';
 import 'package:chatter/feature/Chats%20List/data/models/chat_list_model.dart';
 import 'package:chatter/feature/Chats%20List/domain/entities/enums/message_status.dart';
@@ -7,7 +9,9 @@ import 'package:sqflite/sqflite.dart';
 
 class ChatListLocalDataSourceImp extends BaseLocalDataSource
     implements ChatListLocalDataSource {
-  ChatListLocalDataSourceImp({required super.databaseHelper});
+  final DatabaseHelper databaseHelper;
+  ChatListLocalDataSourceImp({required this.databaseHelper})
+    : super(databaseHelper: databaseHelper);
 
   @override
   Future<List<ChatListModel>> getChatsList() async {
@@ -115,7 +119,6 @@ class ChatListLocalDataSourceImp extends BaseLocalDataSource
   }
 
   @override
-  @override
   Future<void> toggleMuteChat(String chatId) async {
     final db = await databaseHelper.database;
 
@@ -137,8 +140,28 @@ class ChatListLocalDataSourceImp extends BaseLocalDataSource
   }
 
   @override
-  Future<void> togglePinChat(String chatId) {
-    // TODO: implement togglePinChat
-    throw UnimplementedError();
+  @override
+  Future<void> togglePinChat(String chatId) async {
+    final db = await databaseHelper.database;
+
+    final result = await db.query(
+      'chat_list',
+      columns: ['isPinned'],
+      where: 'chatId = ?',
+      whereArgs: [chatId],
+    );
+
+    if (result.isEmpty) {
+      throw Exception('Chat with chatId $chatId not found');
+    }
+
+    final bool current = (result.first['isPinned'] as int) == 1;
+
+    await db.update(
+      'chat_list',
+      {'isPinned': current ? 0 : 1},
+      where: 'chatId = ?',
+      whereArgs: [chatId],
+    );
   }
 }

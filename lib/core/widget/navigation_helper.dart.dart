@@ -31,6 +31,3 @@ Route createAnimatedRoute(Widget screen) {
     },
   );
 }
-
-
-
