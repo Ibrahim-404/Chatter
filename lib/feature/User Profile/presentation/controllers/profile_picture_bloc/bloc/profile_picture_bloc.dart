@@ -47,5 +47,3 @@ class ProfilePictureBloc
     });
   }
 }
-
-// Handle gallery permission and image selection

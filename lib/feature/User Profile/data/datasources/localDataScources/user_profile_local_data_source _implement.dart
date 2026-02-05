@@ -5,11 +5,14 @@ import 'package:chatter/feature/User%20Profile/data/models/user_profile_model.da
 
 class UserProfileLocalDataSourceImplement extends BaseLocalDataSource
     implements UserProfileLocalDataSource {
-  UserProfileLocalDataSourceImplement()
-    : super(databaseHelper: DatabaseHelper());
+  final DatabaseHelper databaseHelper;
+
+  UserProfileLocalDataSourceImplement(this.databaseHelper)
+    : super(databaseHelper: databaseHelper);
+
   @override
   Future<void> cacheUserProfile(UserProfileModel userProfile) async {
-    final db = await getDatabase();
+    final db = await databaseHelper.database;
     await db.insert('users', {
       'id': userProfile.userId,
       'name': userProfile.name,
@@ -22,7 +25,7 @@ class UserProfileLocalDataSourceImplement extends BaseLocalDataSource
 
   @override
   Future<UserProfileModel> getCachedUserProfile(String userId) async {
-    final db = await getDatabase();
+    final db = await databaseHelper.database;
     final List<Map<String, dynamic>> maps = await db.query(
       'users',
       where: 'id = ?',
