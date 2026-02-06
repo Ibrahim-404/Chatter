@@ -51,7 +51,7 @@ class ChatListImp implements ChatListRepository {
             return Right<Failure, List<ChatListItemEntity>>(entities);
           })
           .handleError((_) {
-            return Left(ServerFailure());
+            return throw ServerFailure();
           });
     } else {
       try {

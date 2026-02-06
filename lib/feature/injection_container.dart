@@ -8,6 +8,11 @@ import 'package:chatter/feature/Chats%20List/data/datasource/localDataRource/cha
 import 'package:chatter/feature/Chats%20List/data/datasource/localDataRource/chat_list_local_data_source_imp.dart';
 import 'package:chatter/feature/Chats%20List/data/datasource/remoteDataRource/chat_list_remote_data_source.dart';
 import 'package:chatter/feature/Chats%20List/data/datasource/remoteDataRource/chat_list_remote_data_source_imp.dart';
+import 'package:chatter/feature/Chats%20List/domain/usecases/delete_chat.dart';
+import 'package:chatter/feature/Chats%20List/domain/usecases/get_chats_list.dart';
+import 'package:chatter/feature/Chats%20List/domain/usecases/mute_chat.dart';
+import 'package:chatter/feature/Chats%20List/domain/usecases/pin_chat.dart';
+import 'package:chatter/feature/Chats%20List/domain/usecases/search_at_user.dart';
 import 'package:chatter/feature/User%20Profile/data/datasources/localDataScources/user_profile_local_data_source%20.dart';
 import 'package:chatter/feature/User%20Profile/data/datasources/localDataScources/user_profile_local_data_source%20_implement.dart';
 import 'package:chatter/feature/User%20Profile/data/datasources/remoteDataSources/user_profile_remote_data_source%20.dart';
@@ -39,12 +44,7 @@ Future<void> init() async {
     ),
   );
   sl.registerLazySingleton<DatabaseHelper>(() => DatabaseHelper());
-  sl.registerLazySingleton<ChatListRemoteDataSource>(
-    () => ChatListRemoteDataSourceImp(sl<SupabaseClient>()),
-  );
-  sl.registerLazySingleton<ChatListLocalDataSource>(
-    () => ChatListLocalDataSourceImp(databaseHelper: sl<DatabaseHelper>()),
-  );
+
 
   // feature - Auth
   sl.registerLazySingleton<AuthRepo>(() => AuthRepoDataLayer());
@@ -66,7 +66,19 @@ Future<void> init() async {
   sl.registerFactory(() => MangeUserProfileBloc(sl(), sl(), sl()));
 
   // feature - Chats List
+  sl.registerLazySingleton<ChatListRemoteDataSource>(
+    () => ChatListRemoteDataSourceImp(sl<SupabaseClient>()),
+  );
+  sl.registerLazySingleton<ChatListLocalDataSource>(
+    () => ChatListLocalDataSourceImp(databaseHelper: sl<DatabaseHelper>()),
+  );
+  // use cases for chat list
+  sl.registerLazySingleton(() => DeleteChat(sl()));
+  sl.registerLazySingleton(() => PinChat(sl()));
+  sl.registerLazySingleton(() => MuteChat(sl()));
+  sl.registerLazySingleton(() => GetChatsList(sl()));
+  sl.registerLazySingleton(() => SearchAtUser(sl()));
+  //state management for chat list
+  
 
-  // sl.registerLazySingleton(() => ProfilePictureBloc(sl()));
-  // sl.registerLazySingleton(() => MangeUserProfileBloc(sl(), sl(), sl()));
 }

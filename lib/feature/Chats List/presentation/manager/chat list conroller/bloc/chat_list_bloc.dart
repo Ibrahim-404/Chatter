@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:bloc/bloc.dart';
 import 'package:chatter/core/network/network_checker.dart';
@@ -18,6 +19,24 @@ class ChatListBloc extends Bloc<ChatListEvent, ChatListState> {
   StreamSubscription? _chatSub;
   final NetworkChecker networkChecker;
   final String currentUserId;
+  List<ChatListItemEntity>? _lastChatList;
+  // List<ChatListItemEntity>? get lastChatList => _lastChatList;
+  bool _hasMeaingfulChange(
+    List<ChatListItemEntity> newChatList,
+    List<ChatListItemEntity> oldChatList,
+  ) {
+    if (newChatList.length != oldChatList.length) return true;
+    for (int i = 0; i < oldChatList.length; i++) {
+      if (newChatList[i].chatId != oldChatList[i].chatId) return true;
+      if (oldChatList[i].lastMessage != newChatList[i].lastMessage ||
+          oldChatList[i].lastMessageTime != newChatList[i].lastMessageTime ||
+          oldChatList[i].messageStatusEnum !=
+              newChatList[i].messageStatusEnum) {
+        return true;
+      }
+    }
+    return false;
+  }
 
   ChatListBloc(
     this.getChatsList,
@@ -34,10 +53,13 @@ class ChatListBloc extends Bloc<ChatListEvent, ChatListState> {
       await _chatSub?.cancel();
       emit(ChatListLoading());
       _chatSub = getChatsList(event.userId).listen((either) {
-        either.fold(
-          (failure) => emit(ChatListError()),
-          (chatList) => emit(ChatListLoaded(chatList)),
-        );
+        either.fold((failure) => emit(ChatListError()), (chatList) {
+          if (_lastChatList != null ||
+              _hasMeaingfulChange(chatList, _lastChatList!)) {
+            _lastChatList = chatList;
+            emit(ChatListLoaded(chatList));
+          }
+        });
       });
     });
     on<SearchChatListEvent>((event, emit) async {
