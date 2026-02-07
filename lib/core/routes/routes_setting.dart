@@ -5,6 +5,7 @@ import 'package:chatter/feature/Authentication/presentation/manager/auht_bloc/va
 import 'package:chatter/feature/Authentication/presentation/pages/intro_first_opeing.dart';
 import 'package:chatter/feature/Authentication/presentation/pages/otp_screen.dart';
 import 'package:chatter/feature/Chats%20List/presentation/UI/Screens/home.dart';
+import 'package:chatter/feature/User%20Profile/ui/Screens/user_profile_page.dart';
 import 'package:chatter/feature/injection_container.dart';
 import 'package:chatter/feature/splash/presentation/splash_screen.dart';
 import 'package:flutter/material.dart';
@@ -35,6 +36,9 @@ class RoutesSettings {
         return createAnimatedRoute(
           OtpScreen(phoneNumber: phone, dialCode: dialCode),
         );
+      case RoutesNames.profile:
+        final phoneNumber = settings.arguments as String;
+        return createAnimatedRoute(UserProfilePage(phoneNumber: phoneNumber));
       case RoutesNames.home:
         return MaterialPageRoute(builder: (_) => HomeScreen());
       default:

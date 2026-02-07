@@ -34,7 +34,7 @@ class _OtpScreenState extends State<OtpScreen> {
           const SizedBox(height: 10),
           CustomRichTextEnterOtp(phoneNumber: widget.phoneNumber),
           const SizedBox(height: 24),
-          Center(child: OtpTextField()),
+          Center(child: OtpTextField(phoneNumber: widget.phoneNumber)),
           const SizedBox(height: 24),
           ResendOtpWithTimer(
             phoneNumber: widget.phoneNumber,
@@ -155,6 +155,7 @@ class ResendOtpWithTimer extends StatelessWidget {
                         },
                         child: Text(
                           "Resend OTP",
+
                           style: Theme.of(
                             context,
                           ).textTheme.bodyMedium?.copyWith(

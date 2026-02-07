@@ -1,3 +1,4 @@
+import 'package:chatter/core/routes/routes_names.dart';
 import 'package:chatter/feature/Authentication/presentation/manager/auht_bloc/bloc/send_varify_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -5,7 +6,8 @@ import 'package:logger/logger.dart';
 import 'package:pinput/pinput.dart';
 
 class OtpTextField extends StatefulWidget {
-  const OtpTextField({super.key});
+  final String phoneNumber;
+  const OtpTextField({super.key, required this.phoneNumber});
   @override
   State<OtpTextField> createState() => _OtpTextFieldState();
 }
@@ -53,7 +55,13 @@ class _OtpTextFieldState extends State<OtpTextField> {
               backgroundColor: theme.colorScheme.primary,
             ),
           );
-          // Navigator.of(context).pop();
+          Logger().i("OTP Verified Successfully!");
+          Navigator.pushNamedAndRemoveUntil(
+            context,
+            RoutesNames.profile,
+            (route) => false,
+            arguments: widget.phoneNumber,
+          );
         }
         if (state is VerifyCodeLoading) {
           CircularProgressIndicator(color: theme.colorScheme.primary);

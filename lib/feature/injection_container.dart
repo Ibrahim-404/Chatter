@@ -45,7 +45,6 @@ Future<void> init() async {
   );
   sl.registerLazySingleton<DatabaseHelper>(() => DatabaseHelper());
 
-
   // feature - Auth
   sl.registerLazySingleton<AuthRepo>(() => AuthRepoDataLayer());
   sl.registerFactory(() => SendVarifyBloc(authRepo: sl()));
@@ -79,6 +78,4 @@ Future<void> init() async {
   sl.registerLazySingleton(() => GetChatsList(sl()));
   sl.registerLazySingleton(() => SearchAtUser(sl()));
   //state management for chat list
-  
-
 }
