@@ -3,52 +3,43 @@ import 'package:chatter/feature/Chats%20List/presentation/UI/widget/customSearch
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatelessWidget {
-  TextEditingController searchController = TextEditingController();
+  final TextEditingController searchController = TextEditingController();
   HomeScreen({super.key});
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text('Chat', style: TextStyle(color: Colors.black)),
-        backgroundColor: Colors.white,
-        elevation: 1,
-      ),
-      body: CustomScrollView(
-        slivers: [
-          SliverToBoxAdapter(
-            child: Column(
-              children: [
-                Row(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Text(
-                        'Recent Chats',
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                        ),
+    return CustomScrollView(
+      slivers: [
+        SliverToBoxAdapter(
+          child: Column(
+            children: [
+              Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Text(
+                      'Recent Chats',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
-                  ],
-                ),
-                CustomSearchWidget(searchController: searchController),
-                ListView.builder(
-                  itemBuilder: (context, index) {
-                    return ChatTile();
-                  },
-                  itemCount: 15,
-                  shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
-                ),
-                // Add more widgets here as needed
-              ],
-            ),
+                  ),
+                ],
+              ),
+              CustomSearchWidget(searchController: searchController),
+              ListView.builder(
+                itemBuilder: (context, index) {
+                  return ChatTile();
+                },
+                itemCount: 15,
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+              ),
+              // Add more widgets here as needed
+            ],
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
-

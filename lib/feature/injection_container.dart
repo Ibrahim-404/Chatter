@@ -13,6 +13,7 @@ import 'package:chatter/feature/Chats%20List/domain/usecases/get_chats_list.dart
 import 'package:chatter/feature/Chats%20List/domain/usecases/mute_chat.dart';
 import 'package:chatter/feature/Chats%20List/domain/usecases/pin_chat.dart';
 import 'package:chatter/feature/Chats%20List/domain/usecases/search_at_user.dart';
+import 'package:chatter/feature/Chats%20List/presentation/manager/chat%20list%20conroller/bloc/chat_list_bloc.dart';
 import 'package:chatter/feature/User%20Profile/data/datasources/localDataScources/user_profile_local_data_source%20.dart';
 import 'package:chatter/feature/User%20Profile/data/datasources/localDataScources/user_profile_local_data_source%20_implement.dart';
 import 'package:chatter/feature/User%20Profile/data/datasources/remoteDataSources/user_profile_remote_data_source%20.dart';
@@ -78,4 +79,13 @@ Future<void> init() async {
   sl.registerLazySingleton(() => GetChatsList(sl()));
   sl.registerLazySingleton(() => SearchAtUser(sl()));
   //state management for chat list
+  sl.registerFactoryParam<ChatListBloc, String, void>(
+    (userId,_) => ChatListBloc(
+      sl(),
+      sl(),
+      sl(),
+      currentUserId: userId,
+    ),
+  );
+  
 }
