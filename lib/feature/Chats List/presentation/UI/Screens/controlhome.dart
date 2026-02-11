@@ -3,7 +3,6 @@ import 'package:chatter/feature/Chats%20List/presentation/manager/chat%20list%20
 import 'package:chatter/feature/injection_container.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class Controlhome extends StatelessWidget {
@@ -11,7 +10,7 @@ class Controlhome extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final userId = FirebaseAuth.instance.currentUser?.uid; // Replace with actual user ID
+    final userId = FirebaseAuth.instance.currentUser?.uid; 
     return Scaffold( 
       body: MultiBlocProvider(
         providers: [

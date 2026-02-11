@@ -21,7 +21,7 @@ class ChatListBloc extends Bloc<ChatListEvent, ChatListState> {
   List<ChatListItemEntity>? _lastChatList;
   // List<ChatListItemEntity>? get lastChatList => _lastChatList;
   bool _hasMeaingfulChange(
-    List<ChatListItemEntity> newChatList,
+    List<ChatListItemEntity> newChatList, 
     List<ChatListItemEntity> oldChatList,
   ) {
     if (newChatList.length != oldChatList.length) return true;
@@ -53,8 +53,8 @@ class ChatListBloc extends Bloc<ChatListEvent, ChatListState> {
       emit(ChatListLoading());
       _chatSub = getChatsList(event.userId).listen((either) {
         either.fold((failure) => emit(ChatListError()), (chatList) {
-          if (_lastChatList != null ||
-              _hasMeaingfulChange(chatList, _lastChatList!)) {
+          if (_lastChatList == null ||
+        _hasMeaingfulChange(chatList, _lastChatList!)) {
             _lastChatList = chatList;
             emit(ChatListLoaded(chatList));
           }
